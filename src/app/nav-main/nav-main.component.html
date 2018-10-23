@@ -1,0 +1,12 @@
+<nav id="nav-main" role="navigation">
+  <img clas="site-logo" src="http://www.dummyimage.com/48x48" alt="logo image placeholder">
+  <div class="site-header">
+    <h4 class="site-title">{{navTitle}}</h4>
+    <h6 class="site-subtitle">{{navSubtitle}}</h6>
+  </div>
+  <div class="header-seperator">&nbsp;</div>
+  <a *ngFor="let item of this.routes" href="{{item.path}}">{{item.displayText}}</a>
+
+  
+
+</nav>

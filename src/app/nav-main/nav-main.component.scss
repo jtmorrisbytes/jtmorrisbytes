@@ -1,0 +1,49 @@
+$nav-height:80px;
+$site-header-height:$nav-height - 10px;
+$site-header-vertical-margin: ($nav-height - $site-header-height)/2;
+
+
+nav#nav-main{
+    *{
+        margin:0;
+        padding: 0;
+    }
+    .site-logo {
+        height: 100%;
+    }
+    display:flex;
+    flex-flow: row nowrap;
+    align-items: center;
+    height:$nav-height;
+
+    div.site-header, div.header-seperator {
+       
+        flex-shirnk:1;
+    }
+
+    div.site-header{
+        display:flex;
+        flex-flow: column nowrap;
+ 
+        flex-shirnk:1;
+        //margin: $site-header-vertical-margin  0px;
+        //height: $site-header-height;
+        .site-title{
+            margin-bottom:10px;
+        }
+        .site-subtitle {
+            //
+        }
+    }
+
+    div.header-seperator{
+       
+        width:3px;
+        margin:0px 10px;
+        height: 60%;
+        // maybe the background color should be a gradient?
+        background-color:black
+    }
+
+}
+    

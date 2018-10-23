@@ -1,0 +1,118 @@
+  What would happen if an aspiring coder with a social disability
+wrote a story to the world in the form of the website?
+
+I would call this an inside perspective on what it feels like to be a person struggling to understand people.
+
+Hi there! My name Is ERROR!! SENDER.NAME is UNDFINED! oh wait... i forgot to set my protocol so I can open my sockets to be able to connect to my audience. hold on one second...
+
+var JTMorrisBytes = {}
+var say = console.log
+
+JTMorrisBytes.isReadyToSpeak = false;
+
+
+
+
+JTMorrisBytes.name = "Jordan T Morris"
+JTMorrisBytes.age = 24;
+JTMorrisBytes.language = "English"
+JTMorrisBytes.protocol = "Modern English grammar "
+JTMorrisBytes.wantsToConnectToAudience = True
+JTMorrisBytes.lovesToCode = True
+JTMorrisBytes.knowsEverything = False
+JTMorrisBytes.makesMistakes = True
+JTMorrisBytes.learnsFromMistakes = "True..... Well... Mostly :)"
+JTMorrisBytes.getsFrustratedSometimesWhenThingsDontWorkAsPlanned = True
+JTMorrisBytes.comesBackAfterMonthsOfHeadScracthingAndBrokenKeyboards = True
+JTMorrisBytes.hasLotsOfBadHumor = true;
+JTMorrisBytes.isConnectedToAudience = false;
+
+var audience = {}
+
+audience.name = "audience"
+audience.language = "English"
+audience.protocol = "Modern English grammar"
+audience.IsListening = true;
+
+
+DoIntroToWebsite();
+
+function DoIntroToWebsite(){
+    var weUnderstandEachOther = false;
+    say(`preparing to connect with ${audience.name}.. please wait.....`)
+    weUnderstandEachOther = PrepareToCommunicate(JTMorrisBytes, audience);
+    if(weUnderstandEachOther){
+        JTMorrisBytes.connectTo(audience)
+        if(JTMorrisBytes.isConnectedToAudience){
+            say("yay Im connected to my audience! lets do this thing")
+            printIntroParagraph();
+        }
+
+    }
+    else{
+        say("sigh, it looks like nobody is home or we dont understand each other")
+    }
+
+    
+}
+
+
+
+
+JTMorrisBytes.connectTo = function connectTo(reciever){
+    if(reciever.IsListening){
+        self.isConnectedToAudience = true;
+        say(`${self.name} is connected to`)
+    }
+    else{
+        say(`${reciever.name} is not listening right now, so I cant connect with them)
+        self.isConnectedToAudience = false
+    }
+    
+}
+
+
+
+
+begin function PrepareToCommunicate(sender, reciever) {
+    var readyToCommunicate = True
+    var notReadyToCommunicate = False
+    if (sender != undefined && reciever != undefined){
+       say("Whew! looks like we are all here. wait, do you speak my language? checking now"). 
+
+       if(sender.language === reciever.language){
+           say("YAY! we speak the same language theres a good chance that we will probaly be able to talk. ")
+           if(sender.protocol === reciever.protocol){
+               say("Houston... We finally discovered that aliens do speak our language. we are ready to make first contact");
+               return readyToCommunicate
+           }
+       }
+       else {
+           say("If you can understand this, please use translation software" )
+           return notReadyToCommunicate;
+       }
+    }
+    else{
+        say("Uh oh! it looks like one or more of us are missing from the equation. I cant speak if nobody is here. sad face. :(")
+        
+        return notReadyToCommunicate 
+    }
+    
+}
+
+function printIntroParagraph(){
+    say(`Hello, My name is ${JTMorrisBytes.name} I am ${JTMorrisBytes.age} years old`)
+}
+
+
+
+
+
+
+computers do whatever I tell them, and I can deconstruct their inner workings to understand them. people however are a whole different story.
+
+I can tell a computer to connect to another computer and have them understand each other. however, developing understanding and implementing a set of protocols for communicating between humans is challenging for me. unlike computers that are 100% logical, rational, and (mostly) predictable, us humans can be far more complex and far more unpredictable. As such, trying to understand other people is difficult to me.
+
+The process of understanding another human being is far different than understanding a computer or software system. I can break down a software system to its component parts to see how it works and can look into the brain of the computer to see what it is thinking. Sadly I dont have the same access to be able to see plainly how people work and I cant see into their heads and know exactly what they are thinking. all I really can rely on is the fact that I can adhere mostly to the same protocol that they do and hope that i can understand enough about how pepole work in order to communicate with them. The defining difference in my opinion is that computers can do whatever I tell them to, even to a fault. Other people however do not.
+
+I have come a long way trying to understand both people and computers. It has taken me many years to learn how to speak the languages and understand the protocols of both man and machine. I am not perfect, nor am I an expert. I cant dazzle you with fancy words and CGI, but I can promise you that I will do the best I can to learn how to speak your language and understand your protocol so our sockets can connect and we can understand what we are saying. I will do my best to be the ambassador of man and machine. If you give me the time and chance to stumble, fall, and learn, I will do everything I can to work with you and our beloved machines to help you understand and develop technologies. lets do this together, one epic byte at a time
