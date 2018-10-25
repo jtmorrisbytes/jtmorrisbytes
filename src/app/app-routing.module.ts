@@ -1,53 +1,52 @@
 import { NgModule } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
-import {HomeComponent} from "./home/home.component";
-import {AboutComponent} from './about/about.component';
-import {MyProjectsComponent} from "../app/my-projects/my-projects.component";
+import { Routes, RouterModule, RoutesRecognized } from '@angular/router';
+import {HomeComponent} from "./pages/home/home.component";
+import {AboutComponent} from './pages/about/about.component';
+import * as appRoutes from './data/routes.json'
+import {E404Component} from './pages/e404/e404.component';
+import { dashCaseToCamelCase } from '@angular/compiler/src/util';
+ 
+let routes = [
+  {path: '', component: HomeComponent}
 
-import {pageNotFoundComponent} from './page-not-found/page-not-found.component';
-var appRoutes = require("./data/routes.json").routes
-
+]
 
 const PageComponents = [
   HomeComponent,
-  MyProjectsComponent,
   AboutComponent
 ];
 
-
-function buildRoutingTable() {
-  let routes = [];
-  console.log("building routing table")
-  let routeNum = 0;
-  for(routeNum = 0; routeNum < PageComponents.length; routeNum++){
-    let currentRoute = appRoutes[routeNum];
-    if(currentRoute.path.startsWith("/")){
-      currentRoute.path = currentRoute.path.substr(1,currentRoute.length);
-    }
-    let currentComponent = PageComponents[routeNum];
-    if(currentRoute.component ===currentComponent.name){
-      routes.push({path:currentRoute.path, component:currentComponent});
-    }
-    console.log(routes);
-    
-  }
-  return routes;
-}
 console.log(HomeComponent.name);
 @NgModule({
-  imports: [RouterModule.forRoot(buildRoutingTable()],
+  imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule]
 })
-
 
 export class AppRoutingModule {
   public routes = [];
   constructor(){
     // set up the route with references to the routes.
   }
-  public _routes = [
-    {path: '', component: HomeComponent}
-  ];
 
+  public buildRoutingTable() {
+    let routes = [];
+    console.log("building routing table")
+    let routeNum = 0;
+    for(routeNum = 0; routeNum < PageComponents.length; routeNum++){
+      let currentRoute = appRoutes[routeNum];
+      if(currentRoute.path.startsWith("/")){
+        currentRoute.path = currentRoute.path.substr(1,currentRoute.length);
+      }
+      let currentComponent = PageComponents[routeNum];
+      if(currentRoute.component ===currentComponent.name){
+        routes.push({path:currentRoute.path, component:currentComponent});
+      }
+      console.log(routes);
+      
+    }
+    return routes;
   }
+
 }
+
+export let SharedRoutingModule = new AppRoutingModule();

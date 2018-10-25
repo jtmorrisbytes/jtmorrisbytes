@@ -3,25 +3,25 @@ import { NgModule } from '@angular/core';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { NavMainComponent } from './nav-main/nav-main.component';
-import { HomeComponent } from './home/home.component';
-import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
-import { AboutComponent } from './about/about.component';
-import { MyProjectsComponent } from './my-projects/my-projects.component';
+import { NavMainComponent } from './components/nav-main/nav-main.component';
+import { HomeComponent } from './pages/home/home.component';
+import { AboutComponent } from './pages/about/about.component';
+import { ProjectsModule } from './pages/projects/projects.module';
+import { E500Component } from './pages/e500/e500.component';
+import { E404Component } from './pages/e404/e404.component';
+import { AppPagesModule } from "./pages/app-pages.module"
 
 
 @NgModule({
   declarations: [
     AppComponent,
     NavMainComponent,
-    HomeComponent,
-    PageNotFoundComponent,
-    AboutComponent,
-    MyProjectsComponent
+    
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    AppPagesModule
   ],
   providers: [],
   bootstrap: [AppComponent]

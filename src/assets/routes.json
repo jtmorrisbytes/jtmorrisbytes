@@ -1,8 +1,8 @@
-//this file is the database for the routes until i get to implementing the backend.
 {
-    "routes":
-    [
-        {"path":"","component":"HomeComponent", "displayText":"Home"},
-        {"path":"about", "component":"AboutComponent", "displayText":"About"}        
+    "routes":[
+        {"path":"/","component":"HomeComponent", "displayText":"Home"},
+        {"path":"/my-projects", "component":"MyProjectsComponent", "displayText":"My Projects"},
+        {"path":"/about", "component":"AboutComponent", "displayText":"About"}
+        
     ]
 }
