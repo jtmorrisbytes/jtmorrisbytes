@@ -24,7 +24,7 @@
             "tsConfig": "src/tsconfig.app.json",
             "assets": [
               "src/favicon.ico",
-              "src/assets"
+              "src/@src"
               
             ],
             "styles": [
@@ -91,7 +91,7 @@
             "scripts": [],
             "assets": [
               "src/favicon.ico",
-              "src/assets"
+              "src/@src"
             ]
           }
         },

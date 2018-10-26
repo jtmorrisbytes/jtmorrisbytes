@@ -1,9 +1,9 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule, RoutesRecognized } from '@angular/router';
-import {HomeComponent} from "./pages/home/home.component";
-import {AboutComponent} from './pages/about/about.component';
+import {HomeComponent} from "@app/pages/home/home.component";
+import {AboutComponent} from '@app/pages/about/about.component';
 import * as appRoutes from './data/routes.json'
-import {E404Component} from './pages/e404/e404.component';
+import {E404Component} from '@app/pages/e404/e404.component';
 import { dashCaseToCamelCase } from '@angular/compiler/src/util';
  
 let routes = [

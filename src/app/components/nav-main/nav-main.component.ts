@@ -1,19 +1,17 @@
 
 
 
-var testdata = require("./data.json")
+
 import { Component, OnInit, ViewChild, Input } from '@angular/core';
-//import * as routes from '../../../assets/routes.json';
-import * as _ from "lodash"
-//testing a theory here
+// testing relative import of directory
+var testJsonAsset = "assets/test.json"
+console.log(`importing test asset ${testJsonAsset} using require`)
 
-
-console.log(testdata);
-
+var appConfig = require("@app/assets/app.config.json")
 import { RouteReuseStrategy } from '@angular/router';
 // import * as appRoutes from "../data/routes.json";
 //console.log(appConfig);
-console.log("routes:")
+console.log(appConfig.title)
 
 
 @Component({

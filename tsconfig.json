@@ -5,7 +5,14 @@
     "e2e/*"
   ],
   "compilerOptions": {
-    "baseUrl": "./",
+    "baseUrl": "./src",
+    "paths": {
+      "@app/*":[
+        "app/*"
+      ],
+    },
+    
+
     "outDir": "./dist/out-tsc",
     "sourceMap": true,
     "declaration": false,
