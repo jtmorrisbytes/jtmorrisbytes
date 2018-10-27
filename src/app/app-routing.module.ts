@@ -10,7 +10,6 @@ let routes = [
   {path: '', component: HomeComponent, name:"home",abc:"123"}
 
 ]
-__dirname
 const PageComponents = [
   HomeComponent,
   AboutComponent
@@ -47,5 +46,3 @@ export class AppRoutingModule {
   }
 
 }
-
-export let SharedRoutingModule = new AppRoutingModule();

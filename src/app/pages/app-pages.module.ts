@@ -14,9 +14,10 @@ import { E500Component } from './e500/e500.component'
   declarations: [
     HomeComponent,
     AboutComponent,
+
+    E404Component,
     
     E500Component,
-    E404Component
   ]
 })
 export class AppPagesModule { }

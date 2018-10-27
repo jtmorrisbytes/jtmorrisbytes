@@ -2,16 +2,10 @@
 
 
 
-import { Component, OnInit, ViewChild, Input } from '@angular/core';
+import { Component, OnInit, Injectable, inject } from '@angular/core';
+import {TestService} from "@app/services/test-service.service"
 // testing relative import of directory
-var testJsonAsset = "assets/test.json"
-console.log(`importing test asset ${testJsonAsset} using require`)
-
-var appConfig = require("@app/assets/app.config.json")
 import { RouteReuseStrategy } from '@angular/router';
-// import * as appRoutes from "../data/routes.json";
-//console.log(appConfig);
-console.log(appConfig.title)
 
 
 @Component({
@@ -19,12 +13,18 @@ console.log(appConfig.title)
   templateUrl: './nav-main.component.html',
   styleUrls: ['./nav-main.component.scss']
 })
+
+
+
+
 export class NavMainComponent implements OnInit {
+  
   navTitle:string = "placeholder text";
   appTitle:string = "placeholder text";
   navSubtitle:string;
   routes: any;
-  constructor() {
+  constructor(private Test:TestService) {
+
     this.appTitle = "placeholder-text"
     this.navTitle = "App name placeholder"
     //this.routes = routes;
@@ -36,6 +36,7 @@ export class NavMainComponent implements OnInit {
     
   }
   ngOnInit() {
+    this.navTitle = this.Test.getGreeting();
   }
 
 }
