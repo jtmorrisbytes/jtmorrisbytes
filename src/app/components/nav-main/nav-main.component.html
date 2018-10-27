@@ -6,7 +6,18 @@
   </div>
   <div class="header-seperator">&nbsp;</div>
   <a *ngFor="let item of this.routes" href="{{item.path}}">{{item.displayText}}</a>
+  <!-- each link needs some data to make it work
+    each link needs:
+    a href url for the resource
+    a title
+    current/active/inactive state
+    a reference to any sublinks if applicable
 
+
+    I want the site links to be backed by the imported page modules
+  
+  
+  -->
   
 
 </nav>

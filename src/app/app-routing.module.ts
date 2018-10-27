@@ -1,16 +1,16 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule, RoutesRecognized } from '@angular/router';
-import {HomeComponent} from "@app/pages/home/home.component";
+import {HomeComponent} from "./pages/home/home.component";
 import {AboutComponent} from '@app/pages/about/about.component';
 import * as appRoutes from './data/routes.json'
 import {E404Component} from '@app/pages/e404/e404.component';
 import { dashCaseToCamelCase } from '@angular/compiler/src/util';
  
 let routes = [
-  {path: '', component: HomeComponent}
+  {path: '', component: HomeComponent, name:"home",abc:"123"}
 
 ]
-
+__dirname
 const PageComponents = [
   HomeComponent,
   AboutComponent
@@ -23,7 +23,6 @@ console.log(HomeComponent.name);
 })
 
 export class AppRoutingModule {
-  public routes = [];
   constructor(){
     // set up the route with references to the routes.
   }

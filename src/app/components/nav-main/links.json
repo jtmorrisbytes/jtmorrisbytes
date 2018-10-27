@@ -1,0 +1,33 @@
+{
+    "baseurl":"/",
+    "links":
+        [
+            {
+                "path":"index",
+                "href": "/index",
+                "title":"home",
+                "component":"HomeComponent",
+                "sublinks": null
+            },
+            {
+                "href":"/about",
+                "title":"About Me",
+                "component":"AboutComponent",
+                "sublinks":null
+            },
+            {
+                "href":"/projects",
+                "title": "My Projects",
+                "component": "ProjectsModule",
+                "sublinks": 
+                [
+                    {
+                        "href":"index",
+                        "title":"My projects overview",
+                        "component":"ProjectsComponent",
+                        "sublinks":null   
+                    }
+                ]
+            }
+        ]
+    }

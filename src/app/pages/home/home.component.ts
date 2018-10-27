@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import {IPage } from '../ipage'
+import {IPage } from '@app/lib/page/ipage'
 import { inherits } from 'util';
-import { Page } from '../page';
+import { Page } from '../../lib/page/page';
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
@@ -11,9 +11,10 @@ export class HomeComponent extends Page implements OnInit,IPage {
   
   constructor() { 
     super();
-    this.name="HomePage";
-    this.navLinkText = "Home"
+    this.title="Welcome To jtmorrisbytes";
+    this.subtitle= "An experiment by Jordan Morris"
     this.path = "";
+    this.parent = null;
     
   }
   
