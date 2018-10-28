@@ -1,0 +1,14 @@
+language: node_js
+node_js:
+ - "8"
+git:
+ - depth: 3
+before_install:
+ - npm i -g @angular/cli
+ 
+ jobs:
+   include:
+   - stage: build
+     script: ng build --verbose --base-href "http://www.jtmorrisbytes.com/"
+   - stage: test
+     script: skip
