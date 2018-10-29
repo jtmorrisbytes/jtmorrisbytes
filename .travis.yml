@@ -11,4 +11,4 @@ before_install:
    - stage: build
      script: ng build --verbose --base-href "http://www.jtmorrisbytes.com/"
    - stage: test
-     script: skip
+     script: ng test --watch=false --browsers=ChromeHeadless
