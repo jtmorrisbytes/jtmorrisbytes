@@ -1,0 +1,1 @@
+ng build --verbose --base-href="http://www.jtmorrisbytes.com"
