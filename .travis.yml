@@ -11,9 +11,9 @@ git:
 before_install:
  - npm i -g @angular/cli
  
- jobs:
-   include:
-   - stage: build
-     script: ./scripts/build-dev.sh
-   - stage: test
-     script: ./scripts/test-dev.sh
+jobs:
+  include:
+    - stage: build
+      script: ./scripts/build-dev.sh
+    - stage: test
+      script: ./scripts/test-dev.sh
