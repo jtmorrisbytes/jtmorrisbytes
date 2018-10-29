@@ -9,6 +9,6 @@ before_install:
  jobs:
    include:
    - stage: build
-     script: ng build --verbose --base-href "http://www.jtmorrisbytes.com/"
+     script: ./scripts/build-dev.sh
    - stage: test
-     script: ng test --watch=false --browsers=ChromeHeadless
+     script: ./scripts/test-dev.sh
