@@ -6,7 +6,8 @@ node_js:
 
 cache: npm
 
-git: depth: 3
+git: 
+  depth: 3
 before_install:
  - npm i -g @angular/cli
  
