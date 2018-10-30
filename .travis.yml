@@ -1,8 +1,7 @@
 language: node_js
 node_js:
- - "8"
- - "10"
- - "11"
+  - "8"
+  - "10"
 
 cache: npm
 
@@ -13,7 +12,9 @@ before_install:
  
 jobs:
   include:
+    - stage: lint
+      script: lint
     - stage: build
-      script: ng build --prod --base-href="http://www.jtmorrisbytes.com/"
+      script: bulld-dev
     - stage: test
-      script: skip
+      script: test-ci

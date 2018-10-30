@@ -1,27 +1,10 @@
-# TheAngularExperiment
+# README.MD
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 7.0.2.
+# www.jtmorrisbytes.com
+This is my personal website experiment. I call it my experiment because I set out to prove that I could sucessfully design, document, and implement a personal website.
 
-## Development server
+This website will be a personal documentary of all my projects that I will create in my spare time between work and family. I am working on breaking into the tech sector and hope that I will impress someone somewhere.
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+#Dev notes!
 
-## Code scaffolding
-
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
-
-## Build
-
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
-
-## Running unit tests
-
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
-
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+- node-sass@4.9.4 will not work on ubuntu 64-bit on nodejs versions later than ten, even with the expected runtime installed. use node verisions 10 or earlier
