@@ -11,9 +11,6 @@ before_install:
   - npm rebuid node-sass
 jobs:
   include:
-    - stage: lint
-      script: lint
-    - stage: build
-      script: bulld-dev
+    - stage: build-dev
+  exclude:
     - stage: test
-      script: test-ci
