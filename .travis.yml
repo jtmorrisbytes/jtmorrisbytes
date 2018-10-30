@@ -11,6 +11,4 @@ before_install:
   - npm rebuid node-sass
 jobs:
   include:
-    - stage: build-dev
-  exclude:
-    - stage: test
+    - stage: build
