@@ -6,7 +6,7 @@
     "start": "ng serve",
     "build": "ng build",
     "build-prod": "ng build --prod --base-href='http://www.jtmorrisbytes.com'",
-    "build-dev" : "ng build --base-href='http://www.jtmorrisbytes.com/ --source-map --verbose'",
+    "build-dev": "ng build --base-href='http://www.jtmorrisbytes.com/ --source-map --verbose'",
     "test": "ng test --browsers=ChromeHeadless",
     "lint": "ng lint",
     "e2e": "ng e2e"
