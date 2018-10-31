@@ -14,8 +14,7 @@ before_install:
 - openssl aes-256-cbc -K $encrypted_f778b6d5ee91_key -iv $encrypted_f778b6d5ee91_iv
   -in deploy_rsa.enc -out deploy_rsa -d
 - npm i -g @angular/cli
-before_script:
-- npm install normalize
+
 
 deploy:
   provider: script
