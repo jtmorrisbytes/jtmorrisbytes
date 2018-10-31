@@ -10,4 +10,4 @@ before_install:
 jobs:
   include:
     - stage: build
-      script: build-dev
+      script: npm run build-dev
