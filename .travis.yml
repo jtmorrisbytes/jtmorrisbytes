@@ -21,11 +21,13 @@ jobs:
     script: echo "linting"
   - stage: test
     script: echo "testing"
-  - stage: build
+  - stage: build-development
     if: branch = alpha
     script: echo "building for development"
+  - stage: build-production
     if: branch = master
     script: echo "building for deployment"
+  - stage: build-staging
     if: branch = staging
     script: echo "building for staging"
   - stage: deploy
