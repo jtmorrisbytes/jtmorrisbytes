@@ -1,1 +1,5 @@
-ng build --verbose --base-href="http://www.jtmorrisbytes.com"
+#!usr/bin/env bash
+
+printf "building for development\n\n"
+
+ng build --verbose --output-path="$TRAVIS_BUILD_DIR/dev"
