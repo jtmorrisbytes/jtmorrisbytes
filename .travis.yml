@@ -15,6 +15,13 @@ before_install:
   -in deploy_rsa.enc -out deploy_rsa -d
 - npm i -g @angular/cli
 
+env:
+  global:
+    if: branch = master
+      - buildFor="PRODUCTION"
+
+
+
 jobs:
   include:
   - stage: lint
