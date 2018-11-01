@@ -22,6 +22,11 @@ jobs:
   - stage: test
     script: echo "testing"
   - stage: build
-    script: echo "building"
+    if: branch = v0.0.1-dev
+    script: echo "building for development"
+    if: branch = master
+    script: echo "building for deployment"
+    if: branch = staging
+    script: echo "building for staging"
   - stage: deploy
     script: echo "deploying"
