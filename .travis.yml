@@ -15,17 +15,13 @@ before_install:
   -in deploy_rsa.enc -out deploy_rsa -d
 - npm i -g @angular/cli
 
-
-deploy:
-  provider: script
-  skip_cleanup: true
-  script: rsync -r --delete-after --quiet $TRAVIS_BUILD_DIR/dist u8oxe9eqah5d@jtmorrisbytes.com:beta_build/
-  on:
-    branch: master
-build:
-  provider: script
-  skip_cleanup: true
-  script: ng build --base-href"http://www.jtmorrisbytes.com/" --output-path $TRAVIS_BUILD_DIR/dist
-test:
-  provider: script
-  script: skip
+jobs:
+  include:
+  - stage: lint
+    script: echo "linting"
+  - stage: test
+    script: echo "testing"
+  - stage: build
+    script: echo "building"
+  - stage: deploy
+    script: echo "deploying"
