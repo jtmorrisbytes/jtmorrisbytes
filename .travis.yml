@@ -30,7 +30,7 @@ jobs:
     script: echo "testing"
   - stage: build-development
     if: branch = alpha
-    script: ./scripts/build-dev.sh
+    script: ls
   - stage: build-production
     if: branch = master
     script: echo "building for deployment"
