@@ -22,7 +22,7 @@ jobs:
   - stage: test
     script: echo "testing"
   - stage: build
-    if: branch = v0.0.1-dev
+    if: branch = alpha
     script: echo "building for development"
     if: branch = master
     script: echo "building for deployment"
