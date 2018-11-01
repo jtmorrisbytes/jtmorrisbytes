@@ -1,5 +1,5 @@
 language: node_js
-node_js: 10.12.0
+node_js: 10.13.0
 cache: npm
 git:
   depth: 3
@@ -23,6 +23,9 @@ jobs:
     script: echo "testing"
   - stage: build-development
     if: branch = alpha
+    env:
+      - buildFor="DEVELOPMENT"
+
     script: echo "building for development"
   - stage: build-production
     if: branch = master
@@ -31,4 +34,4 @@ jobs:
     if: branch = staging
     script: echo "building for staging"
   - stage: deploy
-    script: echo "deploying"
+    script: echo $buildFor
