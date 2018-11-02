@@ -33,5 +33,8 @@ jobs:
   - stage: build-staging
     if: branch = staging
     script: echo "building for staging"
-  - stage: deploy
-    script: ls dist
+deploy:
+  provider: script
+  script: ls dist
+  on:
+    all_branches: true
