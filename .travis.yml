@@ -5,36 +5,31 @@ git:
   depth: 3
 addons:
   ssh_known_hosts: jtmorrisbytes.com
-before_deploy:
-- openssl aes-256-cbc -K $encrypted_<...>_key -iv $encrypted_<...>_iv -in deploy_rsa.enc -out /tmp/deploy_rsa -d
-- eval "$(ssh-agent -s)"
-- chmod 600 /tmp/deploy_rsa
-- ssh-add /tmp/deploy_rsa
+before_deploy: 
+  - openssl aes-256-cbc -K $encrypted_<...>_key -iv $encrypted_<...>_iv -in deploy_rsa.enc -out /tmp/deploy_rsa -d
+  - eval "$(ssh-agent -s)"
+  - chmod 600 /tmp/deploy_rsa
+  - ssh-add /tmp/deploy_rsa
 before_install:
-- openssl aes-256-cbc -K $encrypted_f778b6d5ee91_key -iv $encrypted_f778b6d5ee91_iv
+- openssl aes-256-cbc -K $encrypted_fa5cceff5009_key -iv $encrypted_fa5cceff5009_iv
   -in deploy_rsa.enc -out deploy_rsa -d
 - npm i -g @angular/cli
-
 env:
   global:
-    if: branch = master
-      - buildFor="PRODUCTION"
-
-
-
+    if: branch = master - buildFor="PRODUCTION"
 jobs:
   include:
   - stage: build-development
     if: branch = alpha
-    script: ./scripts/build-dev.sh
+    script: "./scripts/build-dev.sh"
   - stage: build-production
     if: branch = master
-    script: ./scripts/build-production.sh
+    script: "./scripts/build-production.sh"
   - stage: build-staging
     if: branch = staging
     script: echo "building for staging"
 deploy:
   provider: script
-  script: ls dist
+  script: rsync -v -r --delete-after $TRAVIS_BUILD_DIR/dist/ u8oxe9eqah5d@jtmorrisbytes.com:~/beta_build
   on:
-    all_branches: true
+    branch: alpha
