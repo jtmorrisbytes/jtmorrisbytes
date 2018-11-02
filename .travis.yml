@@ -16,6 +16,9 @@ before_install:
 
 jobs:
   include:
+  - stage: build-dev
+    if: branch = alpha
+    script: ./scripts/build-dev.sh
   - stage: build-production
     if: branch = master
     script: ./scripts/build-production.sh
