@@ -24,16 +24,12 @@ env:
 
 jobs:
   include:
-  - stage: lint
-    script: echo "linting"
-  - stage: test
-    script: echo "testing"
   - stage: build-development
     if: branch = alpha
-    script: ls
+    script: ./scripts/build-dev.sh
   - stage: build-production
     if: branch = master
-    script: echo "building for deployment"
+    script: ./scripts/build-production.sh
   - stage: build-staging
     if: branch = staging
     script: echo "building for staging"
