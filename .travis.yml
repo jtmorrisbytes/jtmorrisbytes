@@ -34,4 +34,4 @@ jobs:
     if: branch = staging
     script: echo "building for staging"
   - stage: deploy
-    script: echo $buildFor
+    script: ls dist
