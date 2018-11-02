@@ -18,10 +18,10 @@ jobs:
   include:
   - stage: build-production
     if: branch = master
-    script: "./scripts/build-production.sh"
+    script: ./scripts/build-production.sh
   - stage: build-staging
     if: branch = staging
-    script: ./build-dev.sh
+    script: ./scripts/build-dev.sh
 deploy:
   - provider: script
     skip_cleanup: true
