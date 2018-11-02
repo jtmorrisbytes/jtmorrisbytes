@@ -11,6 +11,7 @@ before_deploy:
 - eval "$(ssh-agent -s)"
 - chmod 600 ./temp/deploy_rsa
 - ssh-add ./temp/deploy_rsa
+- ls -a $TRAVIS_BUILD_DIR
 before_install:
 - npm i -g @angular/cli
 env:
@@ -29,6 +30,7 @@ jobs:
     script: echo "building for staging"
 deploy:
   provider: script
+  skip_cleanup: true
   script: rsync -v -r --delete-after $TRAVIS_BUILD_DIR/dist/ u8oxe9eqah5d@jtmorrisbytes.com:~/beta_build
   on:
     branch: alpha
