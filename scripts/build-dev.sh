@@ -1,4 +1,4 @@
-#!usr/bin/env bash
+#!/bin/bash
 
 printf "building for development\n\n"
 
