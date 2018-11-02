@@ -28,8 +28,14 @@ jobs:
     if: branch = staging
     script: echo "building for staging"
 deploy:
-  provider: script
-  skip_cleanup: true
-  script: rsync -v -r --delete-after $TRAVIS_BUILD_DIR/dist/ u8oxe9eqah5d@jtmorrisbytes.com:~/beta_build
-  on:
-    branch: alpha
+  - provider: script
+    skip_cleanup: true
+    script: rsync -v -r --delete-after $TRAVIS_BUILD_DIR/dist/ u8oxe9eqah5d@jtmorrisbytes.com:~/test_build
+    on:
+      branch: alpha
+  - provider: script
+    skip_cleanup: true
+    script: rsync -v -r --delete-after $TRAVIS_BUILD_DIR/dist/ u8oxe9eqah5d@jtmorrisbytes.com:~/beta_build
+    on:
+      branch: staging
+    
