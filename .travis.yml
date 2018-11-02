@@ -13,26 +13,16 @@ before_deploy:
 - ssh-add ./temp/deploy_rsa
 before_install:
 - npm i -g @angular/cli
-env:
-  global:
-    if: branch = master - buildFor="PRODUCTION"
+
 jobs:
   include:
-  - stage: build-development
-    if: branch = alpha
-    script: "./scripts/build-dev.sh"
   - stage: build-production
     if: branch = master
     script: "./scripts/build-production.sh"
   - stage: build-staging
     if: branch = staging
-    script: echo "building for staging"
+    script: ./build-dev.sh
 deploy:
-  - provider: script
-    skip_cleanup: true
-    script: rsync -v -r --delete-after $TRAVIS_BUILD_DIR/dist/ u8oxe9eqah5d@jtmorrisbytes.com:~/test_build
-    on:
-      branch: alpha
   - provider: script
     skip_cleanup: true
     script: rsync -v -r --delete-after $TRAVIS_BUILD_DIR/dist/ u8oxe9eqah5d@jtmorrisbytes.com:~/beta_build
