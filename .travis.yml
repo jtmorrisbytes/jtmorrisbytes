@@ -16,6 +16,8 @@ before_install:
 
 jobs:
   include:
+  - stage: test
+    script: ng test --no-watch --browsers=ChromeHeadless
   - stage: build-dev
     if: branch = alpha
     script: ./scripts/build-dev.sh

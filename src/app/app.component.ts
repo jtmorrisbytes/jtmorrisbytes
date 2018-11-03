@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import {NavMainComponent} from './components/nav-main/nav-main.component';
+import {AppNavComponent} from './components/nav-main/nav-main.component';
 
 
 @Component({
@@ -9,10 +9,10 @@ import {NavMainComponent} from './components/nav-main/nav-main.component';
 })
 
 export class AppComponent {
-  appTitle: string;
+  title: string;
   subtitle: string;
   public constructor() {
-    this.appTitle = 'JTMorris.me';
+    this.title = 'jtmorrisbytes.com';
     this.subtitle = 'An experiment by Jordan Morris';
   }
   

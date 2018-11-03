@@ -5,11 +5,10 @@
 import { Component, OnInit, Injectable, inject } from '@angular/core';
 import {TestService} from "@app/services/test-service.service"
 // testing relative import of directory
-import { RouteReuseStrategy } from '@angular/router';
 
 
 @Component({
-  selector: 'app-nav-main',
+  selector: 'nav-main',
   templateUrl: './nav-main.component.html',
   styleUrls: ['./nav-main.component.scss']
 })
@@ -17,7 +16,7 @@ import { RouteReuseStrategy } from '@angular/router';
 
 
 
-export class NavMainComponent implements OnInit {
+export class AppNavComponent implements OnInit {
   
   navTitle:string = "placeholder text";
   appTitle:string = "placeholder text";
