@@ -7,10 +7,10 @@ import { FooterComponent } from './components/footer/footer.component';
 import { DebugElement, DebugNode } from '@angular/core';
 
 describe('AppComponent', () => {
-  let app : AppComponent;
-  let fixture : ComponentFixture<AppComponent>;
+  let app: AppComponent;
+  let fixture: ComponentFixture<AppComponent>;
   let AppNavigation: DebugElement;
-  let appElement : HTMLElement;
+  let appElement: HTMLElement;
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [
@@ -25,47 +25,47 @@ describe('AppComponent', () => {
   fixture = TestBed.createComponent(AppComponent);
   app = fixture.componentInstance;
   AppNavigation = fixture.debugElement.query(By.directive(AppNavComponent));
-  appElement= fixture.nativeElement;
+  appElement = fixture.nativeElement;
   }));
-  
+
 
   it('should create the app', () => {
     expect(app).toBeTruthy();
   });
 
-  it("should have a title", () => {
+  it('should have a title', () => {
     expect(app.title).toBeDefined();
-    expect(app.title).toBe("jtmorrisbytes.com");
+    expect(app.title).toBe('jtmorrisbytes.com');
   });
-  it("should have a subtilte", () =>{
-    expect(app.subtitle).toBeDefined("app subtitle should be defined");
-    expect(app.subtitle).toBe("An experiment by Jordan Morris");
+  it('should have a subtilte', () => {
+    expect(app.subtitle).toBeDefined('app subtitle should be defined');
+    expect(app.subtitle).toBe('An experiment by Jordan Morris');
   });
-  it("should create the navigation component", () => {
-    
-    //const AppNavigation = fixture.debugElement.query(By.directive(AppNavComponent));
+  it('should create the navigation component', () => {
+
+    // const AppNavigation = fixture.debugElement.query(By.directive(AppNavComponent));
     expect(AppNavigation)
-    .toBeTruthy("make sure the AppNavComponent is correctly defined "+
-                "in app.component.ts and app.component.html"
+    .toBeTruthy('make sure the AppNavComponent is correctly defined ' +
+                'in app.component.ts and app.component.html'
      );
-    //const navigation = TestBed.createComponent(AppNavComponent)
-    //navigation.detectChanges()
-    
-  });
-  it("should render the app router", () => {
+    // const navigation = TestBed.createComponent(AppNavComponent)
+    // navigation.detectChanges()
 
-      
-        
-
-      //expect(fixture.nativeElement).toContain(Ap)
   });
-  it("should correctly render the navigation menu", ()=>{
-    
-    const navElement : NodeList = appElement.querySelectorAll(AppNavigation.name)
+  it('should render the app router', () => {
+
+
+
+
+      // expect(fixture.nativeElement).toContain(Ap)
+  });
+  it('should correctly render the navigation menu', () => {
+
+    const navElement: NodeList = appElement.querySelectorAll(AppNavigation.name);
     expect(navElement).toBeDefined();
     expect(navElement).toBeTruthy();
     expect(navElement.length)
-      .toBeGreaterThan(0, 
+      .toBeGreaterThan(0,
         `There should be at least one ${AppNavigation.name} element in AppCompnent`
       );
     expect(navElement.length)
@@ -73,13 +73,13 @@ describe('AppComponent', () => {
         `There should be no more than one ${AppNavigation.name} element in AppComponent`
       );
   });
-  it("should create the footer component", () => {
+  it('should create the footer component', () => {
     const appFooter = fixture.debugElement.query(By.directive(FooterComponent));
-    //console.log(fixture.debugElement.children)
-    expect(appFooter).toBeTruthy("make sure the app footer is defined in " +
-                                 "the AppComponent Template");
-    //expect(appFooter).toBeTruthy();
+    // console.log(fixture.debugElement.children)
+    expect(appFooter).toBeTruthy('make sure the app footer is defined in ' +
+                                 'the AppComponent Template');
+    // expect(appFooter).toBeTruthy();
 
 
-  })
+  });
 });

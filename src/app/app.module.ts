@@ -9,8 +9,8 @@ import { AboutComponent } from '@app/pages/about/about.component';
 import { ProjectsModule } from '@app/pages/projects/projects.module';
 import { E500Component } from '@app/pages/e500/e500.component';
 import { E404Component } from '@app/pages/e404/e404.component';
-import { AppPagesModule } from "@app/pages/app-pages.module";
-import { FooterComponent } from './components/footer/footer.component'
+import { AppPagesModule } from '@app/pages/app-pages.module';
+import { FooterComponent } from './components/footer/footer.component';
 
 
 @NgModule({
@@ -18,7 +18,7 @@ import { FooterComponent } from './components/footer/footer.component'
     AppComponent,
     AppNavComponent,
     FooterComponent,
-    
+
   ],
   imports: [
     BrowserModule,
@@ -29,8 +29,7 @@ import { FooterComponent } from './components/footer/footer.component'
   bootstrap: [AppComponent]
 })
 export class AppModule {
-  constructor(){
-    new AppPagesModule()
+  constructor() {
 
   }
 

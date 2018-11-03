@@ -15,5 +15,4 @@ export class AppComponent {
     this.title = 'jtmorrisbytes.com';
     this.subtitle = 'An experiment by Jordan Morris';
   }
-  
 }
