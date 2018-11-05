@@ -7,14 +7,15 @@ import { Page } from '../../lib/page/page';
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss']
 })
-export class HomeComponent extends Page implements OnInit, IPage {
-
+export class HomeComponent implements OnInit, IPage {
+  static path = 'home';
+  someStaticStringTest = "staticStringSuccess";
+  title: string;
+  subtitle: string;
+  titlebarMsg: string;
   constructor() {
-    super();
-    this.title = 'Welcome To jtmorrisbytes';
+    this.titlebarMsg = this.title = 'Welcome To jtmorrisbytes';
     this.subtitle = 'An experiment by Jordan Morris';
-    this.path = '';
-    this.parent = null;
 
   }
 
