@@ -24,7 +24,7 @@
                     {
                         "href":"index",
                         "title":"My projects overview",
-                        "component":"ProjectsComponent",
+                        "component":"ProjectsIndexComponent",
                         "sublinks":null   
                     }
                 ]

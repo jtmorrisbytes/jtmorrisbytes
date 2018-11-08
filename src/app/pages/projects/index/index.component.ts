@@ -3,10 +3,10 @@ import { IPage } from '@app/lib/page/ipage';
 
 @Component({
   selector: 'app-projects',
-  templateUrl: './projects.component.html',
-  styleUrls: ['./projects.component.scss']
+  templateUrl: './index.component.html',
+  styleUrls: ['./index.component.scss']
 })
-export class ProjectsComponent implements OnInit, IPage {
+export class ProjectsIndexComponent implements OnInit, IPage {
   path: string = 'projects';
   title: string;
   titlebarText:string

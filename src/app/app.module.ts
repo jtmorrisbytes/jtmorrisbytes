@@ -9,10 +9,6 @@ import { CommonModule } from '@angular/common';
 
 
 @NgModule({
-  imports: [
-    CommonModule
-  ],
-
   declarations: [
     AppComponent,
     AppNavComponent,
@@ -21,6 +17,7 @@ import { CommonModule } from '@angular/common';
   ],
   imports: [
     BrowserModule,
+    CommonModule,
     //AppRoutingModule,
     AppPagesModule
   ],
@@ -29,7 +26,7 @@ import { CommonModule } from '@angular/common';
 })
 export class AppModule {
   constructor() {
-
+    
   }
 
  }
