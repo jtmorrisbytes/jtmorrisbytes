@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { Page } from '@app/lib/page/page';
 import { IPage } from '@app/lib/page/ipage';
 
 @Component({
@@ -8,10 +7,12 @@ import { IPage } from '@app/lib/page/ipage';
   styleUrls: ['./projects.component.scss']
 })
 export class ProjectsComponent implements OnInit, IPage {
-  static path = 'projects';
+  path: string = 'projects';
   title: string;
+  titlebarText:string
   constructor() {
     this.title = 'My Projects';
+    this.titlebarText = this.title;
    }
 
   ngOnInit() {

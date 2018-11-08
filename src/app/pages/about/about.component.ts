@@ -1,12 +1,15 @@
 import { Component, OnInit } from '@angular/core';
+import { IPage } from '@app/lib/page/ipage';
 
 @Component({
   selector: 'app-about',
   templateUrl: './about.component.html',
   styleUrls: ['./about.component.scss']
 })
-export class AboutComponent implements OnInit {
-
+export class AboutComponent implements OnInit, IPage {
+  path:         string  = "about"
+  title:        string  = "About this website";
+  titlebarText: string  = "About jtmorrisbytes.com"; 
   constructor() { }
 
   ngOnInit() {

@@ -7,9 +7,9 @@ import { IPage } from '@app/lib/page/ipage';
   styleUrls: ['./e500.component.scss']
 })
 export class E500Component implements OnInit, IPage {
-  static path = '500';
+  path: string = '500';
   title: string;
-  titlebarMsg: string;
+  titlebarText: string;
   constructor() { }
 
   ngOnInit() {

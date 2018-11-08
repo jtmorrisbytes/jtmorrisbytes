@@ -5,7 +5,7 @@
     <h6 class="site-subtitle">{{navSubtitle}}</h6>
   </div>
   <div class="header-seperator">&nbsp;</div>
-  <a *ngFor="let item of this.routes" href="{{item.path}}">{{item.displayText}}</a>
+  <a *ngFor="let item of this.navigationProvider.navigationItems" href="{{item.path}}">{{item.title}}</a>
   <!-- each link needs some data to make it work
     each link needs:
     a href url for the resource

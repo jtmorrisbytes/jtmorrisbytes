@@ -9,12 +9,12 @@ import { IPage } from '@app/lib/page/ipage';
 })
 export class E404Component implements OnInit, IPage, IErrorPage {
   title: string;
-  titlebarMsg: string;
+  titlebarText: string;
   errorCode = 404;
   message: string;
   
   constructor() {
-    this.titlebarMsg = `Error ${this.errorCode}!`;
+    this.titlebarText = `Error ${this.errorCode}!`;
     this.title = "These are not the code bytes you are looking for !";
     this.message  = " the resource you are looking for was not found."
   }

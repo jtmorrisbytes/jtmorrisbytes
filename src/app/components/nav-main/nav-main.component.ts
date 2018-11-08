@@ -4,6 +4,7 @@
 
 import { Component, OnInit, Injectable, inject } from '@angular/core';
 import {TestService} from '@app/services/test-service.service';
+import { NavigationProviderService } from '@app/services/navigation/navigation-provider.service'
 // testing relative import of directory
 
 
@@ -22,8 +23,8 @@ export class AppNavComponent implements OnInit {
   appTitle = 'placeholder text';
   navSubtitle: string;
   routes: any;
-  constructor(private Test: TestService) {
-
+  constructor(private Test: TestService, private navigationProvider: NavigationProviderService) {
+    
     this.appTitle = 'placeholder-text';
     this.navTitle = 'App name placeholder';
     // this.routes = routes;

@@ -19,9 +19,10 @@ export interface IPage {
         path: the portion of the url excluding the leading forward slash
         that defines where to find the webpage
     */
+    path:string;
     /*
         parentModule: a reference to the parent module if it exists;
     */
 
-     titlebarMsg:string;
+     titlebarText:string;
 }

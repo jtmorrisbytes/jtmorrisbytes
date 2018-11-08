@@ -1,0 +1,20 @@
+{
+    "root":{
+        "name":"test1",
+        "type":"module",
+        "objectReference":"set to object",
+        "children":[
+            {
+                "name":"test_sub1",
+                "type":"component",
+                "objectReference":"set to object",
+                "children": []
+            },
+            {
+                "name":"test_sub2",
+                "type":"component"
+            }
+        ]
+    }
+
+}
