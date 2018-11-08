@@ -1,10 +1,10 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ProjectsComponent } from './projects.component';
+import { ProjectsIndexComponent } from './index/index.component';
 import { RouterModule } from '@angular/router';
 const projectsRoot = 'projects';
 const routes = [
-  {path: `${projectsRoot}`, component: ProjectsComponent}
+  {path: `${projectsRoot}`, component: ProjectsIndexComponent}
 ];
 
 
@@ -13,7 +13,7 @@ const routes = [
     CommonModule,
     RouterModule.forChild(routes)
   ],
-  declarations: [ProjectsComponent],
+  declarations: [ProjectsIndexComponent],
   exports: [RouterModule]
 })
 export class ProjectsModule { }

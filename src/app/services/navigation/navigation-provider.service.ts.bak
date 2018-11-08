@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HomeComponent } from '@app/pages/home/home.component';
 import { AboutComponent } from '@app/pages/about/about.component';
-import { ProjectsComponent } from '@app/pages/projects/projects.component';
+import { ProjectsIndexComponent } from '@app/pages/projects/projects.component';
 import { Component, NgModule } from '@angular/compiler/src/core';
 import { AppPagesModule } from "@app/pages/app-pages.module"
 import { INavigationComponent } from '@app/lib/navigation/INavigationComponent';
@@ -30,7 +30,7 @@ export class NavigationProviderService {
         {
           objectReference: ProjectsModule,
           children: [
-            {objectReference: ProjectsComponent},
+            {objectReference: ProjectsIndexComponent},
             {
               objectReference: SacrificalGoatModule,
               children:[

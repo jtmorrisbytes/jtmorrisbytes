@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HomeComponent } from '@app/pages/home/home.component';
 import { AboutComponent } from '@app/pages/about/about.component';
-import { ProjectsComponent } from '@app/pages/projects/projects.component';
+import { ProjectsIndexComponent } from '@app/pages/projects/index/index.component';
 import { Component, NgModule } from '@angular/compiler/src/core';
-import { AppPagesModule } from "@app/pages/app-pages.module"
+
 import { INavigationComponent } from '@app/lib/navigation/INavigationComponent';
 import { ProjectsModule } from '@app/pages/projects/projects.module';
 import { SacrificalGoatModule } from '@app/goats/sacrifical-goat/sacrifical-goat.module';
@@ -15,6 +15,13 @@ import { WhiteBabyGoatComponent } from '@app/goats/sacrifical-goat/white-baby-go
 import { SacrificialLambModule } from '@app/goats/sacrifical-goat/sacrificial-lamb/sacrificial-lamb.module';
 import { RedLambComponent } from '@app/goats/sacrifical-goat/sacrificial-lamb/red-lamb/red-lamb.component';
 import { GreenLambComponent } from '@app/goats/sacrifical-goat/sacrificial-lamb/green-lamb/green-lamb.component';
+import { DirectoryProvider } from '../directory/directory-provider.service';
+
+const appPagesRoot = '@app/pages/';
+const appPagesModuleLocation = appPagesRoot + 'app-pages.module';
+
+import { AppPagesModule } from '@app/pages/app-pages.module';
+
 @Injectable({
   providedIn: 'root'
 })
@@ -22,8 +29,8 @@ export class NavigationProviderService {
   rootModule = new AppPagesModule();
   ItemsToEnumerate;
   navigationTree: INavigationModule;
-  constructor() {
-    
+  constructor(directoryProvider: DirectoryProvider) {
+    directoryProvider.rootDirectory = appPagesRoot;
     this.ItemsToEnumerate = {
       root: this.rootModule,
       children:[ 
@@ -43,16 +50,16 @@ export class NavigationProviderService {
     
   }
   generateNavigationTree(){
-  console.log("generating navigation tree");
-  console.log(" root object on following line");
+  // console.log("generating navigation tree");
+  // console.log(" root object on following line");
   let rootModule = this.navigationTree.objectReference;
-  console.log( rootModule )
+  //console.log( rootModule )
 
   }
   searchEnumerationTreeForChildren(children:any, result:[{}] = [{}]){
     if(children){
-      console.log("children was defined")
-      console.log(children);
+      // console.log("children was defined")
+      // console.log(children);
       if(children.length > 0){
         if(children.objectReference){
           

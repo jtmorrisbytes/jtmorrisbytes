@@ -11,7 +11,7 @@ import { NavigationProviderService } from '@app/services/navigation/navigation-p
 import { type } from 'os';
 
 
-//const NavigationProvider = new NavigationProviderService()
+// const NavigationProvider = new NavigationProviderService()
 const appNavigationItems = []
 
 const defaultRoutes = [
@@ -19,7 +19,6 @@ const defaultRoutes = [
   {path: '**', component: E404Component }
 ];
 const appRoutes = [].concat(appNavigationItems, defaultRoutes)
-console.log(`AppRoutes:appRoutes`)
 @Injectable({
   providedIn: 'root'
 })
@@ -39,29 +38,8 @@ console.log(`AppRoutes:appRoutes`)
   exports: [RouterModule]
 })
 export class AppPagesModule {
-  children: []
-
-  ngInjectorDef = this.__proto__.constructor.ngInjectorDef;
-  imports: [] = this.ngInjectorDef;
+  static rootDir: string = "";
+  children: [];
   constructor() {
-    console.log("hello from appPagesModule");
-    this.removeUneededItemsFromImports(this.imports)
-    //console.log()
-    
-  }
-  removeUneededItemsFromImports(imports:[]){
-    for(let currentIndex = 0; currentIndex < imports.length; currentIndex ++){
-      let currentItem= imports[currentIndex];
-      if (currentItem.constructor.name === "Object"){
-        let currentObject = currentItem.constructor.name;
-        if(currentObject){
-          currentObject = currentItem['ngModule'];
-          if (currentObject.name === "ngModule"){
-            console.log(imports.splice(currentIndex,1));
-          }
-        }
-      }
-    }
-
   }
 }

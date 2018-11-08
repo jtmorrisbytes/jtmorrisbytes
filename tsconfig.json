@@ -5,10 +5,10 @@
     "e2e/*"
   ],
   "compilerOptions": {
-    "baseUrl": "./src",
+    "baseUrl": "/home/jordan/Documents/github/www.jtmorrisbytes.com/",
     "paths": {
       "@app/*":[
-        "app/*"
+        "src/app/*"
       ],
     },
     
