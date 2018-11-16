@@ -13,9 +13,7 @@ export class DirectoryProvider {
     rootDirectory: string = null;
     nullRootDirectoryError: ReferenceError;
     constructor() {
-        walk("/").on("directories", ()=>{
-
-        })
+        
     }
     setRootDirectory(newRootDirectory: string) {
         this.rootDirectory = newRootDirectory;

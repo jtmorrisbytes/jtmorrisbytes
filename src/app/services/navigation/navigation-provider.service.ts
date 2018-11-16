@@ -1,22 +1,3 @@
-import { Injectable } from '@angular/core';
-import { HomeComponent } from '@app/pages/home/home.component';
-import { AboutComponent } from '@app/pages/about/about.component';
-import { ProjectsIndexComponent } from '@app/pages/projects/index/index.component';
-import { Component, NgModule } from '@angular/compiler/src/core';
-
-import { INavigationComponent } from '@app/lib/navigation/INavigationComponent';
-import { ProjectsModule } from '@app/pages/projects/projects.module';
-import { SacrificalGoatModule } from '@app/goats/sacrifical-goat/sacrifical-goat.module';
-import { INavigationTree } from '@app/lib/navigation/INavigationTree';
-import { INavigationModule } from '@app/lib/navigation/INavigationModule';
-import { AppComponent } from '@app/app.component';
-import { BlackBabyGoatComponent } from '@app/goats/sacrifical-goat/black-baby-goat/black-baby-goat.component';
-import { WhiteBabyGoatComponent } from '@app/goats/sacrifical-goat/white-baby-goat/white-baby-goat.component';
-import { SacrificialLambModule } from '@app/goats/sacrifical-goat/sacrificial-lamb/sacrificial-lamb.module';
-import { RedLambComponent } from '@app/goats/sacrifical-goat/sacrificial-lamb/red-lamb/red-lamb.component';
-import { GreenLambComponent } from '@app/goats/sacrifical-goat/sacrificial-lamb/green-lamb/green-lamb.component';
-import { DirectoryProvider } from '../directory/directory-provider.service';
-
 const appPagesRoot = '@app/pages/';
 const appPagesModuleLocation = appPagesRoot + 'app-pages.module';
 

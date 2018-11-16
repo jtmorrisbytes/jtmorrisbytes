@@ -22,6 +22,6 @@ which may also work for dynamic content as such:
 -  `/` <- returns a page with a list of projects
 -  `/sort/<sort-type>/<sort-direction>/<item-limit>/<page-number>`
     * `/sort/date/ascending/100/page-1` <- returns a page sorted by date in ascending order limiting the results to 100
--  `/name/the-angular-experiment/`
+-  `/the-angular-experiment/`
 
 -  `http://www.jtmorrisbytes.com/projects/the-angular-experiment` <- returns a page outlining the project

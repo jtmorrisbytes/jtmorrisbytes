@@ -1,13 +1,11 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 
-import { AppComponent } from './app.component';
+import { AppComponent } from '@app/app.component';
 import { AppNavComponent } from './components/nav-main/nav-main.component';
-import { AppPagesModule } from '@app/pages/app-pages.module';
 import { FooterComponent } from './components/footer/footer.component';
 import { CommonModule } from '@angular/common';
-
-
+import { AppConfig } from "@app/app.config";
 @NgModule({
   declarations: [
     AppComponent,
@@ -16,7 +14,7 @@ import { CommonModule } from '@angular/common';
 
   ],
   imports: [
-    BrowserModule,
+    BrowserModule.withServerTransition({appId: AppConfig.appID}),
     CommonModule,
     //AppRoutingModule,
     AppPagesModule
@@ -30,3 +28,4 @@ export class AppModule {
   }
 
  }
+ 
