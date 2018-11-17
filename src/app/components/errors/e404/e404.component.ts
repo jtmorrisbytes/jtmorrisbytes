@@ -12,7 +12,7 @@ export class E404Component implements OnInit, IPage, IErrorPage {
   titlebarText: string;
   errorCode = 404;
   message: string;
-  
+  path: string;
   constructor() {
     this.titlebarText = `Error ${this.errorCode}!`;
     this.title = "These are not the code bytes you are looking for !";

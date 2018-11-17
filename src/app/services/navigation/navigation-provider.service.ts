@@ -1,39 +1,34 @@
+import { Injectable } from "@angular/core";
+
 const appPagesRoot = '@app/pages/';
 const appPagesModuleLocation = appPagesRoot + 'app-pages.module';
 
-import { AppPagesModule } from '@app/pages/app-pages.module';
 
 @Injectable({
   providedIn: 'root'
 })
 export class NavigationProviderService {
-  rootModule = new AppPagesModule();
+  // rootModule = new AppPagesModule();
   ItemsToEnumerate;
-  navigationTree: INavigationModule;
-  constructor(directoryProvider: DirectoryProvider) {
-    directoryProvider.rootDirectory = appPagesRoot;
-    this.ItemsToEnumerate = {
-      root: this.rootModule,
-      children:[ 
-        { objectReference: AboutComponent}
-      ]
-    }
+  // navigationTree: INavigationModule;
+  constructor() {
+    
     //this.generateNavLinks();
-    this.navigationTree = {
-      name: "App Navigation root",
-      path: "",
-      objectReference: this.rootModule,
-      children:[
+    // this.navigationTree = {
+    //   name: "App Navigation root",
+    //   path: "",
+    //   objectReference: this.rootModule,
+    //   children:[
         
-      ]
-    };
-    this.generateNavigationTree();
+    //   ]
+    // };
+    //this.generateNavigationTree();
     
   }
   generateNavigationTree(){
   // console.log("generating navigation tree");
   // console.log(" root object on following line");
-  let rootModule = this.navigationTree.objectReference;
+  // let rootModule = this.navigationTree.objectReference;
   //console.log( rootModule )
 
   }

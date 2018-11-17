@@ -1,4 +1,4 @@
-import { GlobalConfig } from "src/global.config";
+import { GlobalConfig } from "../global.config";
 
 export class AppConfig extends GlobalConfig{
 
