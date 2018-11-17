@@ -7,12 +7,13 @@ import { inherits } from 'util';
   styleUrls: ['./home.component.scss']
 })
 export class HomeComponent implements OnInit, IPage {
-  path: string = 'home';
+  path: string;
   someStaticStringTest = "staticStringSuccess";
   title: string;
   subtitle: string;
   titlebarText: string;
   constructor() {
+    this.path ='home'
     this.titlebarText = this.title = 'Welcome To jtmorrisbytes';
     this.subtitle = 'An experiment by Jordan Morris';
 

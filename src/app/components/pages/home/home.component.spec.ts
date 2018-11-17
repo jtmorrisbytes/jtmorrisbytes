@@ -22,6 +22,6 @@ describe('HomeComponent', () => {
     expect(component).toBeTruthy();
   });
   it('should have a defined routing path', () => {
-    expect(HomeComponent.path).toBeTruthy();
+    expect(component.path).toBeTruthy();
   });
 });

@@ -1,14 +1,7 @@
 import { TestBed, async } from '@angular/core/testing';
 
 import { DirectoryProvider } from './directory-provider.service';
-it("should set the root directory when calling setRootDirectory()", () => {
-        const testdirectoryString = "/home";
-        provider.setRootDirectory(testdirectoryString);
-        const result = provider.getRootDirectory();
-        expect(result.rootDirectory).toBeTruthy();
-        expect(result.error).toBeNull();
 
-     })
 describe('DirectoryProvider', () => {
     let provider: DirectoryProvider;
   beforeEach(async(() => {
@@ -55,4 +48,12 @@ describe('DirectoryProvider', () => {
         expect(result.error).toBeNull();
 
      })
+     it("should set the root directory when calling setRootDirectory()", () => {
+      const testdirectoryString = "/home";
+      provider.setRootDirectory(testdirectoryString);
+      const result = provider.getRootDirectory();
+      expect(result.rootDirectory).toBeTruthy();
+      expect(result.error).toBeNull();
+
+   })
 });
