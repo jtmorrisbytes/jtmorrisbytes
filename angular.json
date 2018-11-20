@@ -28,6 +28,7 @@
               
             ],
             "styles": [
+              "src/grid.scss",
               "src/styles.scss",
 		          "src/app/assets/normalize.css"
             ],
