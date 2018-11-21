@@ -93,7 +93,7 @@
             "karmaConfig": "src/karma.conf.js",
             "styles": [
               "src/styles.scss",
-	            "src/app/assets/normalize.css"
+	            "src/assets/normalize.css"
             ],
             "scripts": [],
             "assets": [
