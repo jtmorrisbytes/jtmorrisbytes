@@ -24,15 +24,19 @@
             "tsConfig": "src/tsconfig.app.json",
             "assets": [
               "src/favicon.ico",
-              "src/@src"
+              "src/@src",
+              "src/assets"
               
             ],
             "styles": [
               "src/grid.scss",
               "src/styles.scss",
-		          "src/app/assets/normalize.css"
+		          "src/assets/normalize.css"
             ],
-            "scripts": []
+            "scripts": [
+              
+              "node_modules/jquery/dist/jquery.js"
+            ]
           },
           "configurations": {
             "production": {

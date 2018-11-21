@@ -13,8 +13,8 @@ import { E404Component } from './components/errors/e404/e404.component';
 import { RouterModule } from '@angular/router';
 
 const routes = [
-  {path: "", redirectTo:"index", pathMatch:"full"},
-  {path:"index", component: HomeComponent },
+  {path:"", component: HomeComponent },
+  {path:"index", component: HomeComponent},
   {path: 'about', component: AboutComponent},
   {path: "*", redirectTo: "index", pathMatch:"full"}
 ]
