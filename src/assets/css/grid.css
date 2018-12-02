@@ -1,0 +1,69 @@
+.grid {
+    display: grid;
+
+}
+.auto-row{
+    grid-template-rows: auto;
+}
+.auto-flow-row {
+    grid-auto-flow: row;
+}
+.one-column, .two-column, .three-column, .four-column
+    .five-column, .six-column,{
+    grid-template-columns: 1fr;
+
+}
+.with-grid-gap {
+    grid-gap: .25em;
+}
+/* below media query widths credited to 
+    https://scotch.io/tutorials/default-sizes-for-twitter-bootstraps-media-queries
+ */
+/*==========  Mobile First Method  ==========*/
+
+    /* Custom, iPhone Retina */ 
+    @media only screen and (min-width : 320px) {
+        .two-column, .three-column, .four-column, .five-column, .six-column {
+            grid-template-columns: repeat(2,1fr)
+        }
+        .with-grid-gap {
+            grid-gap: .5em;
+        }
+
+    }
+
+    /* Extra Small Devices, Phones */ 
+    @media only screen and (min-width : 480px) {
+        .three-column, .four-column, .five-column, .six-column {
+            grid-template-columns: repeat(3, 1fr)
+        }
+        .with-grid-gap {
+            grid-gap: .75em
+        }
+    }
+
+    /* Small Devices, Tablets */
+    @media only screen and (min-width : 768px) {
+        .four-column, .five-column, .six-column {
+            grid-template-columns: repeat(4, 1fr);
+        }
+        .with-grid-gap{
+            grid-gap:1em;
+        }
+    }
+
+    /* Medium Devices, Desktops */
+    @media only screen and (min-width : 992px) {
+        .five-column, .six-column{
+            grid-template-columns: repeat(5,1fr);
+        }
+        
+       
+    }
+
+    /* Large Devices, Wide Screens */
+    @media only screen and (min-width : 1200px) {
+        .six-column {
+            grid-template-columns: repeat(6, 1fr)
+        }
+    }
