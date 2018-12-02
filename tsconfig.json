@@ -5,7 +5,7 @@
     "e2e/*"
   ],
   "compilerOptions": {
-    "baseUrl": "/home/jordan/Documents/github/www.jtmorrisbytes.com/",
+    "baseUrl": "./",
     "paths": {
       "@app/*":[
         "src/app/*"
