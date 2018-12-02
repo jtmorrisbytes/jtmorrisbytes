@@ -8,7 +8,6 @@ import { inherits } from 'util';
 })
 export class HomeComponent implements OnInit, IPage {
   path: string;
-  someStaticStringTest = "staticStringSuccess";
   title: string;
   subtitle: string;
   titlebarText: string;

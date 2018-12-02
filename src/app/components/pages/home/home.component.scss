@@ -1,5 +1,27 @@
 :host {
-    //display: grid
-    grid-template-columns: 2fr 1fr 2fr;
+    display: grid;
+    grid-template-columns: 1fr [gutter-left] 8fr 1fr [gutter-right];
+    grid-auto-rows:auto;
+    grid-template-areas: 
+    ". title    ."
+    ". subtitle ."
+    ". splash   ."
+
     
+    ;
+
+    .title {
+        grid-area: title;
+    }
+    .subtitle {
+        grid-area: subtitle;
+    }
+    .splash-img{
+        grid-area: splash;
+        width:100%;
+        max-height: 400px;
+    }
+    & article {
+        grid-template-areas: article;
+    }
 }
