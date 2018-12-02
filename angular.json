@@ -92,8 +92,9 @@
             "tsConfig": "src/tsconfig.spec.json",
             "karmaConfig": "src/karma.conf.js",
             "styles": [
+              "src/assets/css/grid.css",
               "src/styles.scss",
-	            "src/assets/normalize.css"
+              "src/assets/normalize.css"
             ],
             "scripts": [],
             "assets": [
