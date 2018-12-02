@@ -1,27 +1,40 @@
 :host {
     display: grid;
-    grid-template-columns: 1fr [gutter-left] 8fr 1fr [gutter-right];
-    grid-auto-rows:auto;
+    grid-template-columns:  [gutter-left] minmax(5px,1fr) [col1] minmax(50px,4fr) 
+     [col2] minmax(50px,4fr) [gutter-right] minmax(5px,1fr);
+    grid-template-rows: 20% auto max-content;
+    grid-auto-rows:min-content;
     grid-template-areas: 
-    ". title    ."
-    ". subtitle ."
-    ". splash   ."
-
-    
-    ;
-
+    ". splash   splash ."
+    ". splash   splash ."
+    ". article   article .";
+    .title, .subtitle {
+        overflow-wrap: break-word;
+    }
     .title {
         grid-area: title;
+        grid-row: 1/2;
+        grid-column-start: col2;
+        grid-column-end: gutter-right;
+        z-index: 1;
     }
     .subtitle {
         grid-area: subtitle;
+        z-index: 1;
+        grid-row: 2/3;
+        grid-column: col2/gutter-right;
     }
     .splash-img{
         grid-area: splash;
-        width:100%;
-        max-height: 400px;
+        z-index: 0;
+        width:auto;
+        max-width: 100%;
     }
-    & article {
-        grid-template-areas: article;
+     article {
+         
+        grid-area: article;
+        grid-template-columns: 1fr;
+        display: grid;
+        grid-auto-flow: row;
     }
 }
