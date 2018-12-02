@@ -1,8 +1,9 @@
-import { Component, OnInit, Injectable, inject } from '@angular/core';
+import { Component, OnInit, Injectable, inject, Inject, PLATFORM_ID } from '@angular/core';
 import {TestService} from '@app/services/test-service.service';
 import * as $ from "jquery";
 import { NavigationProviderService } from '@app/services/navigation/navigation-provider.service'
 import {debounce } from "underscore";
+import { isPlatformBrowser } from '@angular/common';
 // testing relative import of directory
 
 
@@ -25,13 +26,19 @@ export class AppNavComponent implements OnInit {
   appTitle = 'placeholder text';
   navSubtitle: string;
   routes: any;
-  constructor(private Test: TestService, private navigationProvider: NavigationProviderService) {
+  isBrowser;
+   
+  constructor(@Inject(PLATFORM_ID) private platformId,private Test: TestService, private navigationProvider: NavigationProviderService) {
     this.navLinksSelector = "app-nav-links";
     this.appTitle = 'placeholder-text';
     this.navTitle = 'App name placeholder';
-    window.addEventListener("resize",
-    debounce((event) => this.removeDisplayAttributeWhenNoLongerMobileWidth(event), 2));
-   }
+    this.isBrowser = isPlatformBrowser(platformId);
+    if (this.isBrowser) {
+      window.addEventListener("resize",
+      debounce((event) => this.removeDisplayAttributeWhenNoLongerMobileWidth(event), 2));
+     }
+    }
+   
   calcDocumentWidth() {
     return Math.max(
       document.documentElement["clientWidth"],
