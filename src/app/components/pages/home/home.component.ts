@@ -14,7 +14,7 @@ export class HomeComponent implements OnInit, IPage {
   titlebarText: string;
   constructor() {
     this.path ='home'
-    this.titlebarText = this.title = 'Welcome To jtmorrisbytes';
+    this.titlebarText = this.title = 'jtmorrisbytes.com';
     this.subtitle = 'An experiment by Jordan Morris';
 
   }
