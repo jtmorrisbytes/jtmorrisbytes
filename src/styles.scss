@@ -1,70 +1,77 @@
 /* You can add global styles to this file, and also import other style files */
+@import "node_modules/mathsass/dist/_math.scss";
+
+
 @font-face {
     font-family: "TenbyFive";
     src: url("assets/fonts/tenby-five.otf") format("embedded-opentype")
     
 }
+$font-size: 20px;
 body {
-    h1,h2,h3,h4,h5,h6,p, label, button,
-    article,div,input,object,aside{
-        font-family: "TenbyFive", 'Courier New', Courier, monospace;
-    }
+    
 }
 *{
     z-index: 0;
 }
-:root {
-    font-size: 10px;
-}
 
-@media screen and (max-width: 260px) {
-    :root{
-        font-size: 11px;
+ $base : 1.2;
+ $intercept: 2.0;
+ $ratio: .80
+ ;
+
+
+
+
+
+
+    @for $heading from 6 to 0{
+        h#{$heading}{
+        font-size: #{$base}rem;
+        }
+        // $base: $base + ($ratio+ $ratio*(1.0/$heading));
+        // $base: 1.45 *($ratio * $base + (1/$heading))+$intercept;
+        $base : 1.45 * ($ratio * $base) 
     }
-    
-}
-@media screen and (max-width:320px){
-    :root {
-        font-size:12px;
+
+
+html {
+    h1,h2,h3,h4,h5,h6,p, label, button,
+    article,div,input,object,aside{
+        font-family: "TenbyFive", 'Courier New', Courier, monospace;
+        line-height: 1.45;
     }
-    
-    
+    font-size: $font-size;
 }
-@media screen and (max-width: 480px) {
-    :root {
-        font-size: 13px;
-    }
+p {
+    font-size: 1.0rem;
 }
-@media screen and (max-width:560px){
-    :root {
-        font-size: 14px;
-    }
-    
-}
-@media screen and (max-width:720px) {
-    :root {
-        font-size: 16px;
-    }
-}
-@media screen and (max-width:960px){
-    :root {
-        font-size: 18px;
-    }
-    
-}
-@media screen and (max-width:1200px){
-    :root {
-        font-size: 20px;
-    }
-}
+// h6 {
+//     font-size: 2em;
+// }
+// h5 {
+//     font-size: 3em;
+// }
+// h4 {
+//     font-size: 4em;
+// }
+// h3 {
+//     font-size: 5em;
+// }
+// h2 {
+//     font-size: 6em;
+// }
+// h1 {
+//     font-size: 7em;
+// }
+@media only screen and (max-width: 260px) {}
+@media screen and (max-width:320px)  {}
+@media screen and (max-width: 480px) {}
+@media screen and (max-width:560px)  {}
+@media screen and (max-width:720px)  {}
+@media screen and (max-width:960px)  {}
+@media screen and (max-width:1200px){}
 @media screen and (max-width:1600px){
-    :root {
-        font-size: 22px;
-    }
-
 }
-@media screen and (min-width:1601px){
-    :root {
-        font-size: 30px;
-    }
+@media screen and (max-width:3825px){
 }

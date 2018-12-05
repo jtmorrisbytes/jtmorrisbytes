@@ -29,13 +29,14 @@
               
             ],
             "styles": [
+              "src/assets/normalize.css",
               "src/grid.scss",
-              "src/styles.scss",
-		          "src/assets/normalize.css"
+              "src/styles.scss"
+		          
             ],
             "scripts": [
               
-              "node_modules/jquery/dist/jquery.js"
+              
             ]
           },
           "configurations": {

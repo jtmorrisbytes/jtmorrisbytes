@@ -11,15 +11,17 @@ export class HomeComponent implements OnInit, IPage {
   title: string;
   subtitle: string;
   titlebarText: string;
-  authorName = 'Jordan T Morris';
+  authorFName = 'Jordan';
+  authorMName = 'Taylor';
+  authorLName = 'Morris';
+  authorName:string;
   authorQualities:Array<string>;
   websiteName= 'jtmorrisbytes.com';
   constructor() {
     this.path ='home'
     this.titlebarText='';
-    this.title = this.authorName;
     this.authorQualities= [
-      'Developer.',
+      'Web Developer.',
       'IT Guy.',
       'Really Cool Dude.'
     ];

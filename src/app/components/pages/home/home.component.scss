@@ -6,15 +6,27 @@
     grid-auto-rows:min-content;
     grid-template-areas:
     ". title    title     ."
+    ". splash   splash    ."
     ". subtitle subtitle ." 
-    ". splash   splash    ."
-    ". splash   splash    ."
     ". article   article  .";
     .title {
         grid-area: title;
     }
-    .subtitle {
+    .subtitle-container {
         grid-area: subtitle;
+        display: grid;
+        // grid-template-columns: 1fr;
+        grid-auto-flow: row;
+        :first-child{
+            margin-block-end:.15rem;
+        }
+        :last-child {
+            margin-block-start: .15rem;
+        }
+        .subtitle {
+            margin-block-start: .25em;
+            margin-block-end: .25em;
+        }
     }
     .splash-img{
         grid-area: splash;
@@ -23,6 +35,11 @@
     }
     article {
         grid-area: article;
+        margin-top:3em;
+        h3 {
+           margin: 0px;
+           padding: 0px;
+        }
     }
     @media screen and (max-width:320px){
     
@@ -30,23 +47,22 @@
     @media screen and (max-width:560px) {
         
     }
-    @media screen  and (min-width:560px){
-        .title {
-            grid-row: 1/2;
-            grid-column-start: col2;
-            grid-column-end: gutter-right;
-            z-index: 1;
-        }
-        .subtitle {
-            grid-area: subtitle;
-            z-index: 1;
-            grid-row: 2/3;
-            grid-column: col2/gutter-right;
-        }
-        .splash-img{
-            grid-row: 1/3;
-            z-index: 0;
-            
+    @media screen  and (max-width:960px){
+        // .title {
+        //     grid-row: 1/2;
+        //     grid-column-start: col2;
+        //     grid-column-end: gutter-right;
+        //     z-index: 1;
+        // }
+        // .subtitle {
+        //     grid-area: subtitle;
+        //     z-index: 1;
+        //     grid-row: 2/3;
+        //     grid-column: col2/gutter-right;
+        // }
+        .subtitle-container {
+            // grid-auto-flow: column;
+            // grid-column-gap: 1%;
         }
     }
     .title, .subtitle {
