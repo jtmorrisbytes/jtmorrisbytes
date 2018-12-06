@@ -11,6 +11,7 @@ import { HomeComponent } from './components/pages/home/home.component';
 import { E500Component } from './components/errors/e500/e500.component';
 import { E404Component } from './components/errors/e404/e404.component';
 import { RouterModule } from '@angular/router';
+import { ProjectsModule } from './components/projects/projects.module';
 
 const routes = [
   {path: '', component: HomeComponent },
@@ -37,6 +38,7 @@ const routes = [
 
   ],
   imports: [
+    ProjectsModule,
     RouterModule.forRoot(routes),
     BrowserModule.withServerTransition({appId: AppConfig.appID}),
     CommonModule,

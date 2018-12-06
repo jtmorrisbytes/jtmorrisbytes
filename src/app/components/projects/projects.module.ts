@@ -4,7 +4,7 @@ import { ProjectsIndexComponent } from './index/index.component';
 import { RouterModule } from '@angular/router';
 const projectsRoot = 'projects';
 const routes = [
-  {path: `${projectsRoot}`, component: ProjectsIndexComponent}
+  {path: '', component: ProjectsIndexComponent}
 ];
 
 
