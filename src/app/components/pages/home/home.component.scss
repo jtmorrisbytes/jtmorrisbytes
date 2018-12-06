@@ -17,12 +17,6 @@
         display: grid;
         // grid-template-columns: 1fr;
         grid-auto-flow: row;
-        :first-child{
-            margin-block-end:.15rem;
-        }
-        :last-child {
-            margin-block-start: .15rem;
-        }
         .subtitle {
             margin-block-start: .25em;
             margin-block-end: .25em;
