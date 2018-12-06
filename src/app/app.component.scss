@@ -1,8 +1,10 @@
-
+$content-margin-percent: 10;
 :host {
     .router-container {
-      margin: 0 8%;
-      margin: 0 8vmin;
+      padding: 0 "#{$content-margin-percent}%";
+      padding: 0 #{$content-margin-percent}vw;
+      margin:0 auto;
+      max-width: 1200px;
        //border: 1px solid red; 
     }
 }
