@@ -1,5 +1,5 @@
-import { Injectable } from "@angular/core";
-import { MySQLService} from "../mysql/my-sql.service";
+import { Injectable } from '@angular/core';
+import { MySQLService} from '../mysql/my-sql.service';
 
 
 @Injectable({
@@ -7,6 +7,5 @@ import { MySQLService} from "../mysql/my-sql.service";
 })
 export class NavigationProviderService {
   constructor(private database: MySQLService) {
-    
   }
 }

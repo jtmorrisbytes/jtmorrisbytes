@@ -7,9 +7,9 @@ import { IPage } from '@app/lib/page/ipage';
   styleUrls: ['./index.component.scss']
 })
 export class ProjectsIndexComponent implements OnInit, IPage {
-  path: string = 'projects';
+  path = 'projects';
   title: string;
-  titlebarText:string
+  titlebarText: string;
   constructor() {
     this.title = 'My Projects';
     this.titlebarText = this.title;

@@ -1,5 +1,5 @@
-import { GlobalConfig } from "../global.config";
+import { GlobalConfig } from '../global.config';
 
-export class AppConfig extends GlobalConfig{
+export class AppConfig extends GlobalConfig {
 
 }

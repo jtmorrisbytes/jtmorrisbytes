@@ -1,1 +1,1 @@
-export { AppServerModule } from "./app/server.module"
+export { AppServerModule } from './app/server.module';

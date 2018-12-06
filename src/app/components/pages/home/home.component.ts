@@ -14,18 +14,18 @@ export class HomeComponent implements OnInit, IPage {
   authorFName = 'Jordan';
   authorMName = 'Taylor';
   authorLName = 'Morris';
-  authorName:string;
-  authorQualities:Array<string>;
-  websiteName= 'jtmorrisbytes.com';
+  authorName: string;
+  authorQualities: Array<string>;
+  websiteName = 'jtmorrisbytes.com';
   constructor() {
-    this.path ='home'
-    this.titlebarText='';
-    this.authorQualities= [
+    this.path = 'home';
+    this.titlebarText = '';
+    this.authorQualities = [
       'Web Developer.',
       'IT Guy.',
       'Really Cool Dude.'
     ];
-    this.subtitle ="";
+    this.subtitle = '';
 
   }
 

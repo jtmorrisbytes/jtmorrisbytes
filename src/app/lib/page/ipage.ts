@@ -8,7 +8,7 @@ export interface IPage {
     // to catch the attention of the reader. should lead into the subtitle, if
      one is provided
     */
-    
+
     title: string;
 
     /* subtitle: A short extension of the title meant to add to the meaning of the title
@@ -19,10 +19,10 @@ export interface IPage {
         path: the portion of the url excluding the leading forward slash
         that defines where to find the webpage
     */
-    path:string;
+    path: string;
     /*
         parentModule: a reference to the parent module if it exists;
     */
 
-     titlebarText:string;
+     titlebarText: string;
 }

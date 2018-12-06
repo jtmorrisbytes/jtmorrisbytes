@@ -7,9 +7,9 @@ import { IPage } from '@app/lib/page/ipage';
   styleUrls: ['./about.component.scss']
 })
 export class AboutComponent implements OnInit, IPage {
-  path:         string  = "about"
-  title:        string  = "About this website";
-  titlebarText: string  = "About jtmorrisbytes.com"; 
+  path          = 'about';
+  title         = 'About this website';
+  titlebarText  = 'About jtmorrisbytes.com';
   constructor() { }
 
   ngOnInit() {

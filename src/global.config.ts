@@ -1,3 +1,3 @@
 export class GlobalConfig {
-    static appID = "jtmorrisbytes"
+    static appID = 'jtmorrisbytes';
 }
