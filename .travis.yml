@@ -2,7 +2,7 @@ language: node_js
 node_js: 10.13.0
 cache: npm
 git:
-  depth: 3
+  depth: 5
 addons:
   ssh_known_hosts: jtmorrisbytes.com
 before_deploy:
@@ -35,6 +35,5 @@ deploy:
   app:
     master: jtmorrisbytes
     staging: jtmorrisbytes-staging
-    alpha:  jtmorrisbytes-alpha
   on:
     all_branches: true
