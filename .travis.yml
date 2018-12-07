@@ -13,15 +13,7 @@ jobs:
   include:
   - stage: test
     script: ng test --no-watch --browsers=ChromeHeadless
-  - stage: build-dev
-    if: branch = alpha
-    script: "./scripts/build-dev.sh"
-  - stage: build-production
-    if: branch = master
-    script: "./scripts/build-production.sh"
-  - stage: build-staging
-    if: branch = staging
-    script: "./scripts/build-dev.sh"
+  - stage: build
 deploy:
   provider: heroku
   skip_cleanup: true

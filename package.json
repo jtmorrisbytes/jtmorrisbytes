@@ -12,7 +12,7 @@
     "e2e": "ng e2e",
     "build:ssr": "npm run build:client-and-server-bundles && npm run webpack:server",
     "serve:ssr": "node dist/server.js",
-    "build:client-and-server-bundles": "ng build --prod --aot && ng run jtmorrisbytes:server",
+    "build:client-and-server-bundles": "npm run-script ng build --prod --aot && npm run-script ng run jtmorrisbytes:server",
     "webpack:server": "webpack --config webpack.server.config.js --progress --colors"
   },
   "private": true,
