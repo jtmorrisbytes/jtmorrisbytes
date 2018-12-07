@@ -1,0 +1,138 @@
+import { Injectable } from '@angular/core';
+import { HomeComponent } from '@app/pages/home/home.component';
+import { AboutComponent } from '@app/pages/about/about.component';
+import { ProjectsIndexComponent } from '@app/pages/projects/projects.component';
+import { Component, NgModule } from '@angular/compiler/src/core';
+import { AppPagesModule } from "@app/pages/app-pages.module"
+import { INavigationComponent } from '@app/lib/navigation/INavigationComponent';
+import { ProjectsModule } from '@app/pages/projects/projects.module';
+import { SacrificalGoatModule } from '@app/goats/sacrifical-goat/sacrifical-goat.module';
+import { INavigationTree } from '@app/lib/navigation/INavigationTree';
+import { INavigationModule } from '@app/lib/navigation/INavigationModule';
+import { AppComponent } from '@app/app.component';
+import { BlackBabyGoatComponent } from '@app/goats/sacrifical-goat/black-baby-goat/black-baby-goat.component';
+import { WhiteBabyGoatComponent } from '@app/goats/sacrifical-goat/white-baby-goat/white-baby-goat.component';
+import { SacrificialLambModule } from '@app/goats/sacrifical-goat/sacrificial-lamb/sacrificial-lamb.module';
+import { RedLambComponent } from '@app/goats/sacrifical-goat/sacrificial-lamb/red-lamb/red-lamb.component';
+import { GreenLambComponent } from '@app/goats/sacrifical-goat/sacrificial-lamb/green-lamb/green-lamb.component';
+@Injectable({
+  providedIn: 'root'
+})
+export class NavigationProviderService {
+  ItemsToEnumerate;
+  navigationTree: INavigationModule;
+  constructor() {
+    
+    this.ItemsToEnumerate = {
+      root: AppPagesModule,
+      children:[
+        {objectReference: HomeComponent},
+        {
+          objectReference: ProjectsModule,
+          children: [
+            {objectReference: ProjectsIndexComponent},
+            {
+              objectReference: SacrificalGoatModule,
+              children:[
+                {objectReference: BlackBabyGoatComponent},
+                {objectReference: WhiteBabyGoatComponent},
+                {
+                  objectReference: SacrificialLambModule, 
+                  children: [
+                    {objectReference: RedLambComponent},
+                    {objectReference: GreenLambComponent}
+                  ]
+                }
+              ]
+            }
+          ]
+        }, 
+        { objectReference: AboutComponent}
+      ]
+    }
+    //this.generateNavLinks();
+    this.navigationTree = {
+      name: "App Navigation root",
+      path: "",
+      objectReference: AppPagesModule,
+      children:[
+        
+      ]
+    };
+    this.generateNavigationTree();
+    
+  }
+  generateNavigationTree(){
+    console.log("logging items to enumerate");
+    console.log(this.ItemsToEnumerate);
+    let children = this.ItemsToEnumerate.children
+    if(children.length > 0){
+      for (let childIndex = 0; childIndex < children.length; childIndex++){
+        console.log(`childIndex= ${childIndex}`)
+        let currentChild = children[childIndex];
+      
+        //console.log("currentChild: " + currentChild.toString())
+        if(currentChild.objectReference){
+          //console.log(currentChild.objectReference);
+          if(currentChild.children){
+            this.searchEnumerationTreeForChildren(currentChild.children, [{}]);
+          }
+        }
+        else{
+          console.log("error parsing navigation tree, " +
+           " Could not find an object to reference at "
+          )
+        }
+        
+      }
+    }
+    else {
+      console.log("no items were found to add to the app root")
+    }
+    
+
+  }
+  searchEnumerationTreeForChildren(children:any, result:[{}] = [{}]){
+    if(children){
+      console.log("children was defined")
+      console.log(children);
+      if(children.length > 0){
+        if(children.objectReference){
+          
+        }
+        console.log("recursive search found children");
+        console.log(children[0])
+        
+      }
+      
+    }
+    else{
+      console.log("children was undefined or null")
+      console.log(children)
+    }
+    
+  }
+  generateNavigationComponent(objectReference:any){
+      
+  }
+
+
+  // generateNavLinks(){
+  //   for(let i=0; i < this.components.length; i++){
+  //     let currentComponent = this.components[i];
+  //     let currentComponentInstance = new currentComponent;
+  //     let navigationItem:INavigationItem = 
+  //     {
+  //       path: currentComponentInstance.path,
+  //       component: currentComponent,
+  //       children: [],
+  //       title: currentComponentInstance.title,
+  //       titlebarText: currentComponentInstance.titlebarText
+  //     }
+  //     this.navigationItems.push(navigationItem);
+    
+        
+  //   } 
+    
+}
+

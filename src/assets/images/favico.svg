@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="242.47658"
+   height="230.18231"
+   viewBox="0 0 242.47658 230.18231"
+   version="1.1"
+   id="SVGRoot"
+   inkscape:version="0.92.3 (2405546, 2018-03-11)"
+   sodipodi:docname="favico.svg">
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.90196078"
+     inkscape:pageshadow="2"
+     inkscape:zoom="1.4"
+     inkscape:cx="139.95329"
+     inkscape:cy="30.787012"
+     inkscape:document-units="px"
+     inkscape:current-layer="layer1"
+     showgrid="false"
+     inkscape:window-width="2354"
+     inkscape:window-height="1172"
+     inkscape:window-x="670"
+     inkscape:window-y="345"
+     inkscape:window-maximized="0"
+     fit-margin-top="30"
+     fit-margin-left="2"
+     fit-margin-bottom="30"
+     fit-margin-right="2" />
+  <defs
+     id="defs3721" />
+  <metadata
+     id="metadata3724">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     id="layer1"
+     inkscape:groupmode="layer"
+     inkscape:label="logo Text"
+     style="display:inline"
+     transform="translate(-2.7477701,-0.651931)">
+    <g
+       style="font-style:normal;font-weight:normal;font-size:40px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
+       id="flowRoot3756" />
+    <g
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:40px;line-height:1.25;font-family:PixelOperator;-inkscape-font-specification:PixelOperator;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
+       id="flowRoot3780" />
+    <g
+       aria-label="jt"
+       style="font-style:normal;font-weight:normal;font-size:373.33334351px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
+       id="text4678"
+       transform="translate(-2.1428572,-44.285714)">
+      <path
+         d="m 23.882816,245.11995 v -5.66406 h -5.664063 v -5.66407 H 12.55469 v -5.66406 H 6.8906273 V 160.0288 H 52.268235 v 45.3776 h 11.328126 v -73.69792 h 45.442709 v 96.41928 h -5.72916 v 5.66406 h -5.664067 v 5.66407 H 91.98178 v 5.66406 z M 63.596361,114.65119 V 74.937645 h 45.442709 v 39.713545 z"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:266.66668701px;font-family:Pixeldown;-inkscape-font-specification:Pixeldown;fill:#ff0000;fill-opacity:1"
+         id="path5705"
+         inkscape:connector-curvature="0" />
+      <path
+         d="m 160.27605,245.11995 v -5.66406 h -5.66406 v -5.66407 h -5.72917 v -5.66406 h -5.66406 V 120.31525 H 131.89063 V 86.265771 h 11.32813 V 74.937645 h 45.37761 v 11.328126 h 56.77084 v 34.049479 h -56.77084 v 79.42709 h 11.39323 v -68.03386 h 45.37761 v 96.41928 h -5.66407 v 5.66406 h -5.66406 v 5.66407 h -5.72917 v 5.66406 z"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:266.66668701px;font-family:Pixeldown;-inkscape-font-specification:Pixeldown;fill:#ff0000;fill-opacity:1"
+         id="path5707"
+         inkscape:connector-curvature="0" />
+    </g>
+    <g
+       style="font-style:normal;font-weight:normal;font-size:40px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
+       id="flowRoot4629" />
+    <g
+       style="font-style:normal;font-weight:normal;font-size:40px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
+       id="flowRoot5477" />
+  </g>
+</svg>

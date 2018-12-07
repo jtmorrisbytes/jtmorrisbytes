@@ -4,11 +4,11 @@ import { Injectable } from '@angular/core';
   providedIn: 'root'
 })
 export class TestService {
-  greeting:string;
-  constructor() { 
-    this.greeting = "Hello from testService"
+  greeting: string;
+  constructor() {
+    this.greeting = 'Hello from testService';
   }
-  getGreeting(){
+  getGreeting() {
     return this.greeting;
   }
 }
