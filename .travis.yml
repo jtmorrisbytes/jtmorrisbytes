@@ -7,33 +7,29 @@ addons:
   ssh_known_hosts: jtmorrisbytes.com
 before_deploy:
 - mkdir ./temp -p
-- openssl aes-256-cbc -K $encrypted_fa5cceff5009_key -iv $encrypted_fa5cceff5009_iv -in deploy_rsa.enc -out ./temp/deploy_rsa -d
-- eval "$(ssh-agent -s)"
-- chmod 600 ./temp/deploy_rsa
-- ssh-add ./temp/deploy_rsa
 before_install:
 - npm i -g @angular/cli
-
 jobs:
   include:
   - stage: test
     script: ng test --no-watch --browsers=ChromeHeadless
   - stage: build-dev
     if: branch = alpha
-    script: ./scripts/build-dev.sh
+    script: "./scripts/build-dev.sh"
   - stage: build-production
     if: branch = master
-    script: ./scripts/build-production.sh
+    script: "./scripts/build-production.sh"
   - stage: build-staging
     if: branch = staging
-    script: ./scripts/build-dev.sh
+    script: "./scripts/build-dev.sh"
 deploy:
   provider: heroku
   skip_cleanup: true
   api_key:
-    secure: "1d392c2f-6d53-4ba8-8d92-7142169ccea8"
+    secure: VgbBU7JCDf9D6GSjHKx0+dfCcb9bfXkjpgvsCo994ZA1HCKa6zt9IDq6Lq+RynKDmqYC++TuDeEblR8zlzfkpAf6PZv2b8oGQBXKHgPfClvYTrfyXHCJmmlZX2U50s5HX0FQ0nmeo0rsQ1L3/jjTw0BDZkvrEbi2lS5qSUt9ZReS6M5iWLNTOGbjDtUooQp2IbzyY06xeHzgK+XvMYoaHVyAiPCIz++yH2a5NH7hsgFmywEkUA68XtIspu+wRWHYE43Yv/VV8EM/EH74lg8RZCqPut7ZTSfQ9WSiMHHlQSOV43r6fhZOs+Gck+FKPLBmGqJtUBvBYbS04mcGIKzjYP4MoHltJJOlsZGxhKURQI4m8CGLH8VQTL4rdoBX8AqgD3ZY6PY4zzVG2d5RTNd7fx0vv67nhekGwXSyyT/+GHU1Adt8R95za56qSHd6ppKeeDzzAB1wL2EzKIhXiqAoztotofxikkWnvbzTW71kdgMWyPuJSDEGuSVV3Zh3u3OUIFrIwjoAGsm+SvBAbI0foFusXrhvEkJjdRxv86LVTN4Sf8D3YQsH9mJiyam8zkHGHLccRFjGWTVNLU42pObIBgnS5fw+QO4u+pVUWzrEDOz4/tYnaqnU7+370grKs9P599frcIw78XrIv8YYy9KzuLlHhp8jnAQexdhuSnbvZxA=
   app:
     master: jtmorrisbytes
     staging: jtmorrisbytes-staging
+    alpha: jtmorrisbytes-alpha
   on:
     all_branches: true
