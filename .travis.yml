@@ -11,10 +11,10 @@ before_install:
 - npm i -g @angular/cli
 jobs:
   include:
-  - stage: test
-    script: ng test --no-watch --browsers=ChromeHeadless
-  - stage: build
-    script: npm run build
+    stage: build
+    script:
+      - ng test --no-watch --browsers=ChromeHeadless
+      - npm run build
 deploy:
   provider: heroku
   skip_cleanup: true
