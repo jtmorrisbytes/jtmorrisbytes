@@ -1,10 +1,14 @@
 {
   "name": "jtmorrisbytes",
   "version": "0.0.1",
+  "engines": {
+    "node": "10.x"
+  },
+  "index": "dist/server.js",
   "scripts": {
-    "ng": "ng",
-    "start": "ng serve",
-    "build": "ng build",
+    "ng": "npm run-script ng",
+    "start": "npm run serve:ssr",
+    "build": "npm run build:ssr",
     "build-prod": "ng build --prod",
     "build-dev": "ng build --source-map --verbose'",
     "test": "ng test --browsers=ChromeHeadless",
