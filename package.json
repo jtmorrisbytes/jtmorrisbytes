@@ -4,9 +4,10 @@
   "engines": {
     "node": "10.x"
   },
+  "preinstall":"npm install -g @angular/cli",
   "index": "dist/server.js",
   "scripts": {
-    "ng": "npm run-script ng",
+    "ng": "npm ng",
     "start": "npm run serve:ssr",
     "build": "npm run build:ssr",
     "build-prod": "ng build --prod",
