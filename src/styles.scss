@@ -1,1 +1,51 @@
 /* You can add global styles to this file, and also import other style files */
+@import "node_modules/mathsass/dist/_math.scss";
+
+@font-face {
+    font-family: "TenbyFive";
+    src: url("assets/fonts/tenby-five.otf") format("embedded-opentype")
+    
+}
+// default values
+$font-size: .95em;
+a,h1,h2,h3,h4,h5,h6,p, label, button,
+    article,div,input,object,aside,{
+        font-family: "TenbyFive", 'Courier New', Courier, monospace;
+        line-height: 1.45;
+        font-size: 1.0em;
+}
+
+html, body {
+    font-size: $font-size;
+    min-width: 100px;
+    line-height: 1.45;
+}
+// calc ratio for headings;
+$intercept: 2.0;
+ $ratio: .80;
+ $base : 1.2;
+@for $heading from 6 to 0{
+    h#{$heading}{
+    font-size: #{$base}em;
+    }
+    // $base: $base + ($ratio+ $ratio*(1.0/$heading));
+    // $base: 1.45 *($ratio * $base + (1/$heading))+$intercept;
+    $base : 1.45 * ($ratio * $base) 
+}
+
+$breakpoints :(3200px, 1600px, 1200px, 960px, 720px, 560px, 480px, 320px, 260px);
+$increase-font-size-by : .05em;
+$breakpoint-font-size: $increase-font-size-by * length($breakpoints) + $font-size;
+
+
+@each $breakpoint in $breakpoints {
+
+    @media only screen and (max-width: $breakpoint){
+        html, body{
+            font-size: $breakpoint-font-size;
+        }
+    }
+    $breakpoint-font-size: $breakpoint-font-size -$increase-font-size-by;
+}
+
+

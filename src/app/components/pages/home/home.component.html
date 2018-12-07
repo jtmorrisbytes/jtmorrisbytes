@@ -1,0 +1,25 @@
+
+  <div id="splash">
+  <h1 class="title">   {{ authorFName + " " + authorMName.substring(0,1) + " " + authorLName }}   </h1>
+  <!-- <object class="splash-img" data="assets/images/welcome.svg" type="image/svg+xml">welcome to the lab</object> -->
+  <img class="splash-img" src="assets/images/jordan-splash.png" alt="A photo of Jordan Morris">
+    <h2 id="subtitle-{{i}}" *ngFor="let quality of authorQualities; index as i;">{{ quality }}</h2>
+  </div>
+    
+ <hr />
+
+  <article>
+    <header>
+      <h3>Hello World!</h3>
+    </header>
+    
+    <p>My name is {{authorFName + " " + authorLName}}.
+      I love making computers do what I want to do. I use HTML, CSS, JS, Python and databses
+      to help make my creations come to life. This website is a collection of me as a person and my projects.
+    </p>
+    <p>
+      feel free to browse my creations by <a routerLink="/projects" href="/projects">clicking here</a>!
+
+
+    </p>
+  </article>

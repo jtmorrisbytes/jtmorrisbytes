@@ -1,34 +1,54 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 
-import { AppRoutingModule } from './app-routing.module';
-import { AppComponent } from './app.component';
-import { NavMainComponent } from './components/nav-main/nav-main.component';
-import { HomeComponent } from '@app/pages/home/home.component';
-import { AboutComponent } from '@app/pages/about/about.component';
-import { ProjectsModule } from '@app/pages/projects/projects.module';
-import { E500Component } from '@app/pages/e500/e500.component';
-import { E404Component } from '@app/pages/e404/e404.component';
-import { AppPagesModule } from "@app/pages/app-pages.module"
+import { AppComponent } from '@app/app.component';
+import { AppNavComponent } from './components/nav-main/nav-main.component';
+import { FooterComponent } from './components/footer/footer.component';
+import { CommonModule } from '@angular/common';
+import { AppConfig } from '@app/app.config';
+import { AboutComponent } from './components/pages/about/about.component';
+import { HomeComponent } from './components/pages/home/home.component';
+import { E500Component } from './components/errors/e500/e500.component';
+import { E404Component } from './components/errors/e404/e404.component';
+import { RouterModule } from '@angular/router';
+import { ProjectsModule } from './components/projects/projects.module';
+
+const routes = [
+  {path: '', component: HomeComponent },
+  {path: 'index', component: HomeComponent},
+  {path: 'about', component: AboutComponent},
+  {path: '*', redirectTo: 'index', pathMatch: 'full'}
+];
+
+
+
+
 
 
 @NgModule({
   declarations: [
+
     AppComponent,
-    NavMainComponent,
-    
+    AppNavComponent,
+    FooterComponent,
+    AboutComponent,
+    HomeComponent,
+    E500Component,
+    E404Component
+
   ],
   imports: [
-    BrowserModule,
-    AppRoutingModule,
-    AppPagesModule
+    ProjectsModule,
+    RouterModule.forRoot(routes),
+    BrowserModule.withServerTransition({appId: AppConfig.appID}),
+    CommonModule,
+    // AppRoutingModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
 })
 export class AppModule {
-  constructor(){
-    new AppPagesModule()
+  constructor() {
 
   }
 

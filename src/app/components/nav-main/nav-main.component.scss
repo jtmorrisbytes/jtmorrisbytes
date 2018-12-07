@@ -1,49 +1,100 @@
-$nav-height:80px;
+$nav-height:100px;
 $site-header-height:$nav-height - 10px;
 $site-header-vertical-margin: ($nav-height - $site-header-height)/2;
 
 
-nav#nav-main{
-    *{
-        margin:0;
-        padding: 0;
-    }
-    .site-logo {
-        height: 100%;
-    }
-    display:flex;
-    flex-flow: row nowrap;
+:host{
+    display:grid;
     align-items: center;
+    grid-template-rows:$nav-height 1fr;
+    grid-template-columns:
+    [logo-start] 3fr
+    [logo-end spacer-begin] 4fr
+    [spacer-end dropdown-begin] 1fr;
+    grid-template-areas:
+    "siteLogo . navDropdown"
+    "navLinks navLinks navLinks";
     height:$nav-height;
+    
 
-    div.site-header, div.header-seperator {
-       
-        flex-shirnk:1;
+    #app-nav-site-logo {
+        
+        max-height: $nav-height;
+        width: 100%;
+        
+        grid-area:siteLogo;
     }
+    #app-nav-links {
+        grid-area: navLinks;
+        display: none;
+        justify-items: end; 
+        grid-template-columns: 3fr, 1fr;
+        grid-template-rows: auto;
+        background-color: white;
+     
+        z-index: 10;
+        // grid-template-areas: 
+        
+    }
+    #app-nav-dropdown {
+        grid-area: navDropdown;
+    }
+    // Small devices (landscape phones, 576px and up)
+    @media only screen {
+        @media (min-width: 320px) {
 
-    div.site-header{
-        display:flex;
-        flex-flow: column nowrap;
- 
-        flex-shirnk:1;
-        //margin: $site-header-vertical-margin  0px;
-        //height: $site-header-height;
-        .site-title{
-            margin-bottom:10px;
         }
-        .site-subtitle {
-            //
+        @media (min-width: 576px) { 
+            #app-nav-links {
+                display: grid;
+                justify-items: stretch;
+                grid-auto-flow: column;
+
+            }
+            & {
+                grid-template-areas: 
+                "siteLogo navLinks navLinks"
+            }
+            #app-nav-dropdown {
+                display: none;
+            }
+         }
+    }
+    
+        // Medium devices (tablets, 768px and up)
+        @media (min-width: 768px) { 
+            
+    
+        // Large devices (desktops, 992px and up)
+        @media (min-width: 992px) {  }
+    
+        // Extra large devices (large desktops, 1200px and up)
+        @media (min-width: 1200px) {  }
+    }
+    @media only print {
+        #app-nav-links, #app-nav-dropdown {
+            display:none;
         }
-    }
+        
+        @media (min-width: 320px) {
 
-    div.header-seperator{
-       
-        width:3px;
-        margin:0px 10px;
-        height: 60%;
-        // maybe the background color should be a gradient?
-        background-color:black
+        }
+        @media (min-width: 576px) {  }
+    
+        // Medium devices (tablets, 768px and up)
+        @media (min-width: 768px) {  }
+    
+        // Large devices (desktops, 992px and up)
+        @media (min-width: 992px) {  }
+    
+        // Extra large devices (large desktops, 1200px and up)
+        @media (min-width: 1200px) {  }
     }
+    
 
+    
+
+    
+    
 }
     

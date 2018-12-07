@@ -1,23 +1,8 @@
-<nav id="nav-main" role="navigation">
-  <img clas="site-logo" src="http://www.dummyimage.com/48x48" alt="logo image placeholder">
-  <div class="site-header">
-    <h4 class="site-title">{{navTitle}}</h4>
-    <h6 class="site-subtitle">{{navSubtitle}}</h6>
+  <object id="app-nav-site-logo" type="image/svg+xml" data="assets/images/logo_with_dotcom.svg">JTMORRIS&lt;bytes&gt; </object>
+
+  <div id="app-nav-links">
+    <a (click)=onDropdownButtonClicked() routerLink="/" href="/">Home</a>
+    <a (click)=onDropdownButtonClicked() routerLink="/about" href="/about">about</a>
+    <a (click)=onDropdownButtonClicked() routerLink="/projects" href="/projects">projects</a>
   </div>
-  <div class="header-seperator">&nbsp;</div>
-  <a *ngFor="let item of this.routes" href="{{item.path}}">{{item.displayText}}</a>
-  <!-- each link needs some data to make it work
-    each link needs:
-    a href url for the resource
-    a title
-    current/active/inactive state
-    a reference to any sublinks if applicable
-
-
-    I want the site links to be backed by the imported page modules
-  
-  
-  -->
-  
-
-</nav>
+  <button type="button" (click)=onDropdownButtonClicked() id="app-nav-dropdown">menu</button>
