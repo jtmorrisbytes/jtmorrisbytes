@@ -25,7 +25,8 @@
             "assets": [
               "src/favicon.ico",
               "src/@src",
-              "src/assets"
+              "src/assets",
+              "src/well-known"
               
             ],
             "styles": [
@@ -100,7 +101,9 @@
             "scripts": [],
             "assets": [
               "src/favicon.ico",
-              "src/@src"
+              "src/@src",
+              "src/well-known"
+
             ]
           }
         },
