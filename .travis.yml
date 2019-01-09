@@ -13,13 +13,13 @@ jobs:
   include:
     stage: build
     script:
-      - ng test --no-watch --browsers=ChromeHeadless
-      - npm run build
+    - ng test --no-watch --browsers=ChromeHeadless
+    - npm run build
 deploy:
   provider: heroku
   skip_cleanup: true
   api_key:
-    secure: VgbBU7JCDf9D6GSjHKx0+dfCcb9bfXkjpgvsCo994ZA1HCKa6zt9IDq6Lq+RynKDmqYC++TuDeEblR8zlzfkpAf6PZv2b8oGQBXKHgPfClvYTrfyXHCJmmlZX2U50s5HX0FQ0nmeo0rsQ1L3/jjTw0BDZkvrEbi2lS5qSUt9ZReS6M5iWLNTOGbjDtUooQp2IbzyY06xeHzgK+XvMYoaHVyAiPCIz++yH2a5NH7hsgFmywEkUA68XtIspu+wRWHYE43Yv/VV8EM/EH74lg8RZCqPut7ZTSfQ9WSiMHHlQSOV43r6fhZOs+Gck+FKPLBmGqJtUBvBYbS04mcGIKzjYP4MoHltJJOlsZGxhKURQI4m8CGLH8VQTL4rdoBX8AqgD3ZY6PY4zzVG2d5RTNd7fx0vv67nhekGwXSyyT/+GHU1Adt8R95za56qSHd6ppKeeDzzAB1wL2EzKIhXiqAoztotofxikkWnvbzTW71kdgMWyPuJSDEGuSVV3Zh3u3OUIFrIwjoAGsm+SvBAbI0foFusXrhvEkJjdRxv86LVTN4Sf8D3YQsH9mJiyam8zkHGHLccRFjGWTVNLU42pObIBgnS5fw+QO4u+pVUWzrEDOz4/tYnaqnU7+370grKs9P599frcIw78XrIv8YYy9KzuLlHhp8jnAQexdhuSnbvZxA=
+    secure: WMV48SKRGEBuhoTSMsOMl6JvJvfpgtaJyeYUVCxQRZ05wpjH2D21Qk5ha77EDYimS8kiH4gD84xcIM6hNv9Pt+w+yo3dVE+ry7Zpvd8isANMXSrJOhzSZyULB2GOfzgJ4uJY2qTslUOxEi7SHvLwJgReMyT3mamERSvOr6dC/ld3CX7R9Ixq5V9VPnVFCE1Sy2CWXEEi6KUorLQFNHPh2OB0jGinKZ4gUd28zPFPn/DQnCra+Tb8dUZ5cGP824SmX9ktUzNUX6J4IFVjpO7YFNCUcfITjAgSvqPFVPv2kGbz73NpPrIEcstj0AvYw+BtSWYfbHQ3AR7u4hF7rgDL9kea5g9EH170OFJ+iIfEDhvMDSZXOpk6IyQxbOx4HZ/JVP8Ix+lFJkVXLyuDA4TpuYhgpm4MeFG4o2V8WOVmx7nNSwAPrUWPOvAZ/tqWa9TzPLYzgixEpvwcWpHPo1Rvn7uqCuKSV8N3+nThXaHlbZvXAtA6bgd50fcXctqwnfC+pGoWxS/pl983qEf11PaJl1kBBJtqlUKBUJBfDTLueOF6Z41n3mQ6Y758q+AMHRHMALEcaO8eYpOIqG2tO5srWZxru2aIT8BFkd9dQRwYHN2M+0JEtmsAE5u+FtUHHD5zn1kJCPb1i4ZtaHiIFIVhPYz/pARZeatydQoxxN4m1rs=
   app:
     master: jtmorrisbytes
     staging: jtmorrisbytes-staging
