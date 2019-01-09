@@ -18,6 +18,7 @@ const routes = [
   {path: 'index', component: HomeComponent},
   {path: 'about', component: AboutComponent},
   {path: '*', redirectTo: 'index', pathMatch: 'full'}
+  
 ];
 
 
