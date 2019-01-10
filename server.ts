@@ -38,8 +38,13 @@ app.set('ip_address', IP_ADDR);
 app.get('/api/*', (req, res) => {
   res.status(404).send('data requests are not supported');
 });
+// jtmorrisbytes.com ssl challenge
 app.get('/.well-known/acme-challenge/0mpb_J0EKcWrg3vvOgSHHGfu0mjM91AdqVbWZoK-B5s', (req, res) =>{
   res.status(200).send('0mpb_J0EKcWrg3vvOgSHHGfu0mjM91AdqVbWZoK-B5s.JRlKHWTOTxUBCaKP2GALYthdyEUQqSU85hHW9s4kmK0')
+});
+// www.jtmorrisbytes.com ssl challenge
+app.get('/.well-known/acme-challenge/BJg-6DjvAq0ow6DmEn_VgIBjpcUuOhKDogSlkFHdScw', (req, res) => {
+  res.status(200).send("BJg-6DjvAq0ow6DmEn_VgIBjpcUuOhKDogSlkFHdScw.JRlKHWTOTxUBCaKP2GALYthdyEUQqSU85hHW9s4kmK0")
 });
 // Server static files from /browser
 app.get('*.*', express.static(join(DIST_FOLDER, 'browser')));
