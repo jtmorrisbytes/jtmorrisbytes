@@ -215,6 +215,11 @@ const WORDLIST: [&'static str; 2048] = [
     "write", "wrong", "yard", "year", "yellow", "you", "young", "youth", "zebra", "zero", "zone",
     "zoo",
 ];
+
+pub const BIPS_WORDLEN_COUNT_ENTROPY_256_BITS: usize = 24;
+
+
+
 #[cfg(windows)]
 #[inline(always)]
 pub fn calculate_entropy<const N: usize>(
@@ -421,6 +426,11 @@ pub fn bips_39() -> Result<Vec<String>, Box<dyn std::error::Error>> {
     std::sync::atomic::compiler_fence(std::sync::atomic::Ordering::SeqCst);
     Ok(mnemonic)
 }
+
+pub fn is_valid_word<S: AsRef<str>>(word: S) -> bool {
+    WORDLIST.contains(&word.as_ref())
+}
+
 
 #[test]
 pub fn test_bips_39() -> Result<(), Box<dyn std::error::Error>> {

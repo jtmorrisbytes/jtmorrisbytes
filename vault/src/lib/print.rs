@@ -9,7 +9,7 @@ use windows::Win32::{
             DeleteObject, FW_BOLD, GetDeviceCaps, GetTextExtentPoint32W, HDC, LOGPIXELSX,
             LOGPIXELSY, OUT_DEFAULT_PRECIS, PatBlt, SelectObject, TextOutW,
         },
-        Printing::{GetJobW, OpenPrinterW, PRINTER_HANDLE},
+        Printing::{GetJobW, JOB_INFO_1W, OpenPrinterW, PRINTER_HANDLE},
     },
     Storage::Xps::{EndDoc, EndPage},
 };
@@ -66,7 +66,7 @@ pub fn win32_close_printer(
 fn get_job_status(
     h_printer: windows::Win32::Graphics::Printing::PRINTER_HANDLE,
     job_id: u32,
-) -> i32 {
+) -> Result<(i32,JOB_INFO_1W),Box<dyn std::error::Error>> {
     use windows::Win32::Graphics::Printing::{
         GetJobW, JOB_INFO_1W, JOB_STATUS_ERROR, JOB_STATUS_PRINTED,
     };
@@ -82,7 +82,13 @@ fn get_job_status(
 
     // 2. Fetch actual job info (Level 1)
     let status = unsafe { GetJobW(h_printer, job_id, 1, Some(&mut buffer), &mut bytes_needed).0 };
-    status
+
+    if status == 0 {
+        return Err("Failed to get job info".into())
+    }
+
+    let job_info: JOB_INFO_1W = unsafe {std::mem::transmute_copy(&buffer)};
+    Ok((status,job_info))
 }
 
 fn create_printer_font(h_dc: HDC, point_size: i32, face_name: &str) -> HFONT {
@@ -122,7 +128,7 @@ fn create_printer_font(h_dc: HDC, point_size: i32, face_name: &str) -> HFONT {
 #[cfg(windows)]
 pub fn win32_print_bip39_using_gdi(
     qr: &QrCode,
-    mut bips: Vec<String>,
+    mut bips: &Vec<String>,
 ) -> Result<(), Box<dyn std::error::Error>> {
     use windows::Win32::Graphics::Gdi::{CreateDCW, DeleteDC};
 
@@ -151,8 +157,8 @@ pub fn win32_print_bip39_using_gdi(
     doc_info.cbSize = std::mem::size_of::<DOCINFOW>().try_into()?;
     doc_info.lpszDocName = windows::core::w!("SECURE DOCUMENT");
 
-    let print_job_id = unsafe { StartDocW(hdc, &doc_info) };
-    if print_job_id == 0 {
+    let job_id = unsafe { StartDocW(hdc, &doc_info) };
+    if job_id == 0 {
         unsafe {
             let _ = DeleteDC(hdc).ok();
         }
@@ -270,10 +276,23 @@ pub fn win32_print_bip39_using_gdi(
     let _ = unsafe { DeleteObject(h_font.into()) };
 
     let _ = unsafe { DeleteDC(hdc) };
+
+    // wait for the job to complete
+    let mut printer = PRINTER_HANDLE::default();
+    unsafe {
+        OpenPrinterW(p_default_printer, &mut printer, None)?;
+    }
+    loop {
+        let job_status = get_job_status(printer, job_id as u32);
+
+
+    }
+
+
     // let mut printer_handle = PRINTER_HANDLE::default();
     // wait_for_job(printer_handle, print_job_id);
     // win32_close_printer(printer_handle)?;
-    bips.zeroize();
+    // bips.zeroize();
     Ok(())
 }
 
@@ -292,7 +311,7 @@ pub mod tests {
         let qr = qrcodegen::QrCode::encode_text(&passphrase, qrcodegen::QrCodeEcc::High)?;
         passphrase.zeroize();
 
-        let name = win32_print_bip39_using_gdi(&qr, bips)?;
+        let name = win32_print_bip39_using_gdi(&qr, &bips)?;
         Ok(())
     }
 }
