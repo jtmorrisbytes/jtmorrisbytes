@@ -5,3 +5,5 @@ pub mod bips;
 pub mod graphics;
 pub mod print;
 pub mod term;
+pub mod net;
+pub mod config;

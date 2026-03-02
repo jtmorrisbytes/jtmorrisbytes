@@ -2,6 +2,7 @@
 name="vault"
 version="0.1.0"
 edition="2024"
+authors=["jthec"]
 
 [lib]
 path="src/lib/mod.rs"
@@ -15,6 +16,12 @@ zeroize = "1.8.2"
 resvg = "0.40"
 clap = { version = "4.5.60", features = ["derive"] }
 crossterm = "0.29.0"
+hyper = { version = "1.8.1", features = ["http1", "server"] }
+tokio = { version = "1.49.0", features = ["net", "rt"] }
+hyper-util = { version = "0.1.20", features = ["tokio"] }
+serde = { version = "1.0.228", features = ["derive"] }
+figment = { version = "0.10.19", features = ["toml"] }
+toml = "1.0.3"
 
 
 [dependencies.windows]
@@ -29,6 +36,8 @@ features=[
     "Win32_Graphics_Printing",
     "Win32_UI_WindowsAndMessaging",
     "Win32_Storage_Xps",
-    "Win32_System_Console"
+    "Win32_System_Console",
+    "Win32_System_Registry",
+    "Win32_UI_Shell"
 ]
 
