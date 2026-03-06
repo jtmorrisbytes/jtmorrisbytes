@@ -174,7 +174,7 @@ extern "system" fn service_main(dw_arg_c: u32, _lpsz_arg_v: *mut windows::core::
     // run the web_ui thread
     std::thread::spawn(move || {
         let app_message_sender = app_msg_sender1;
-        let r = vault::server::rocket::tokio::runtime::Builder::new_multi_thread()
+        let r = vault_service::server::rocket::tokio::runtime::Builder::new_multi_thread()
             // .worker_threads(val)
             .thread_name("Vault-thread-fn")
             .enable_all()
@@ -186,13 +186,13 @@ extern "system" fn service_main(dw_arg_c: u32, _lpsz_arg_v: *mut windows::core::
         let rt = r.unwrap();
         rt.block_on(async {
             // TODO tell the 'app' thread that the server is starting
-            let rocket = vault::server::build_rocket(config).ignite().await;
+            let rocket = vault_service::server::build_rocket(config).ignite().await;
             if rocket.is_err() {
                 app_message_sender.send(AppMessage::RequestShutdown).ok();
             }
             let rocket = rocket.unwrap();
             let shutdown = rocket.shutdown();
-            vault::server::rocket::tokio::spawn(rocket.launch());
+            vault_service::server::rocket::tokio::spawn(rocket.launch());
             // listen for shutdown signals
             let s1 = shutdown.clone();
             let s2 = shutdown.clone();
@@ -208,8 +208,8 @@ extern "system" fn service_main(dw_arg_c: u32, _lpsz_arg_v: *mut windows::core::
                         break;
                     }
                     Err(std::sync::mpsc::TryRecvError::Empty) => {
-                        vault::server::rocket::tokio::time::sleep(
-                            vault::server::rocket::tokio::time::Duration::from_millis(200),
+                        vault_service::server::rocket::tokio::time::sleep(
+                            vault_service::server::rocket::tokio::time::Duration::from_millis(200),
                         )
                         .await;
                         continue;
@@ -263,7 +263,7 @@ pub fn app_main() {
     let ui = std::thread::spawn(move || {
         println!("Attempting to start rocket server");
         let app_message_sender = app_msg_sender1;
-        let r = vault::server::rocket::tokio::runtime::Builder::new_multi_thread()
+        let r = vault_service::server::rocket::tokio::runtime::Builder::new_multi_thread()
             // .worker_threads(val)
             .thread_name("Vault-thread-fn")
             .enable_all()
@@ -277,7 +277,7 @@ pub fn app_main() {
         rt.block_on(async {
             println!("async runtime started. attempting to start rocket");
             // TODO tell the 'app' thread that the server is starting
-            let rocket = vault::server::build_rocket(config).ignite().await;
+            let rocket = vault_service::server::build_rocket(config).ignite().await;
             
             let rocket = match rocket {
                 Ok(r) => r,
@@ -292,7 +292,7 @@ pub fn app_main() {
             
             let shutdown = rocket.shutdown();
             println!("launching");
-            let rocket_launch_result = vault::server::rocket::tokio::spawn(rocket.launch());
+            let rocket_launch_result = vault_service::server::rocket::tokio::spawn(rocket.launch());
             // listen for shutdown signals
             println!("waiting for shutdown");
             let s1 = shutdown.clone();
@@ -311,8 +311,8 @@ pub fn app_main() {
                         break;
                     }
                     Err(std::sync::mpsc::TryRecvError::Empty) => {
-                        vault::server::rocket::tokio::time::sleep(
-                            vault::server::rocket::tokio::time::Duration::from_millis(200),
+                        vault_service::server::rocket::tokio::time::sleep(
+                            vault_service::server::rocket::tokio::time::Duration::from_millis(200),
                         )
                         .await;
                         continue;

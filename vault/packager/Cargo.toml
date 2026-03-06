@@ -1,0 +1,11 @@
+[package]
+name="vault_packager"
+version="0.1.0"
+edition="2024"
+
+[dependencies]
+vault={path="../"}
+wasmer = {version="7.0.1",features=["cranelift"]}
+wasmer-compiler-cranelift = "7.0.1"
+cargo_metadata = "0.23.1"
+wasm-opt = "0.116.1"

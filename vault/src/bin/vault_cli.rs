@@ -46,6 +46,13 @@ fn package() -> Result<(),Box<dyn std::error::Error>> {
         std::process::Command::new("cargo").args(&["build", "--target","x86_64-pc-windows-msvc", "--target", "i686-pc-windows-msvc","--release","--manifest-path",package_metadata.manifest_path.as_str()]).status().ok();
     }
 
+    std::fs::remove_dir_all(path)
+    std::fs::create_dir_all(metadata.workspace_root.join("out")).ok();
+    // build the ui
+    let s = std::process::Command::new("cargo").arg(&["build", "--target","wasm32-wasip1", "-p","vault_ui_wasm"]).status()?;
+    if !s.success() {
+        return Err("Failed to compile webassembly".into())
+    }
     Ok(())
 }
 

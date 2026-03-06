@@ -8,4 +8,4 @@ pub mod term;
 pub mod net;
 pub mod config;
 pub mod crypto;
-pub mod server;
+// pub mod server;

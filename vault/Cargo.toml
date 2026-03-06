@@ -8,15 +8,15 @@ authors=["jthec"]
 path="src/lib/mod.rs"
 
 [dependencies]
-aes-gcm = "0.10.3"
-argon2 = "0.5.3"
+#aes-gcm = "0.10.3"
+#argon2 = "0.5.3"
 qrcodegen = "1.8.0"
-secrecy = "0.10.3"
+#secrecy = "0.10.3"
 zeroize = "1.8.2"
 resvg = "0.40"
 clap = { version = "4.5.60", features = ["derive"] }
 crossterm = "0.29.0"
-hyper = { version = "1.8.1", features = ["http1", "server"] }
+#hyper = { version = "1.8.1", features = ["http1", "server"] }
 tokio = { version = "1.49.0", features = ["full"] }
 hyper-util = { version = "0.1.20", features = ["tokio"] }
 serde = { version = "1.0.228", features = ["derive"] }
@@ -26,12 +26,11 @@ thiserror = "2.0.18"
 openssl = { version = "0.10.75", features = ["v111", "vendored"] }
 openssl-sys = { version = "0.9.111", features = ["vendored"] }
 anyhow = "1.0.102"
-rocket.workspace = true
+
 cargo_metadata = "0.23.1"
-wasmtime = "42.0.1"
-wasmtime-wasi = "16.0"
-
-
+#wasmer = {version="7.0.1",features=["cranelift"]}
+#wasmer-compiler-cranelift = "7.0.1"
+#wasmer-wasix = "0.700.1"
 
 [dependencies.windows]
 version = "0.61.2"

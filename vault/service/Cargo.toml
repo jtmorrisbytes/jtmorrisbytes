@@ -5,7 +5,29 @@ version="0.1.0"
 
 [dependencies]
 vault={path=".."}
-
-
+rocket.workspace = true
+wasmer = {version="7.0.1",features=["cranelift"]}
+wasmer-compiler-cranelift = "7.0.1"
+wasmer-wasix = "0.700.1"
+cargo_metadata = "0.23.1"
 [build-dependencies]
 cargo_metadata = "0.23.1"
+
+[dependencies.windows]
+version = "0.61.2"
+features=[
+    "Win32_Security_Tpm",
+    "Win32_Foundation",
+    "Win32_System_TpmBaseServices", 
+    "Win32_Security_Cryptography",
+    "Win32_System_Memory",
+    "Win32_Graphics_Gdi",
+    "Win32_Graphics_Printing",
+    "Win32_UI_WindowsAndMessaging",
+    "Win32_Storage_Xps",
+    "Win32_System_Console",
+    "Win32_System_Registry",
+    "Win32_UI_Shell",
+    "Win32_System_Services"
+]
+

@@ -12,21 +12,14 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     // all bin targets in this crate are assumed to be webassembly binaries with a main function
     let package = package.unwrap();
 
-    println!("cargo:rerun-if-changed={}",package.manifest_path);
+    println!("cargo:rerun-if-changed={}",package.manifest_path.parent().unwrap());
     // 'collect' all the binaries into multiple 'bin' flags
-    let bins: Vec<&str> = package
-        .targets
-        .iter()
-        .filter(|p| p.kind.contains(&cargo_metadata::TargetKind::Bin))
-        .map(|t| t.name.as_str())
-        .collect();
 
     let mut command = std::process::Command::new("cargo");
     let mut c: &mut Command = &mut command;
-    c = c.args(&["build","--target","wasm32-wasip1", "--release","-p",package.name.as_str()]);
-    for bin in bins {
-        c = c.args(&["--bin",bin]);
-    }
+    
+    c = c.args(&["build","--lib","--target","wasm32-wasip1", "--release","-p",package.name.as_str()])
+    .env("CARGO_TARGET_DIR", std::env::var("OUT_DIR").unwrap());    
     let status = c.status()?;
     if !status.success() {
         println!("cargo::error=\"Build Failed\"");
