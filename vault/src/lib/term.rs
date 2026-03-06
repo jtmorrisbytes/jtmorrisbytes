@@ -28,7 +28,7 @@ pub fn prompt_user_for_bips(phrases: &mut Vec<String>) -> Result<(), Box<dyn std
     loop {
         // 256 bits entropy
 
-        if phrases.len()  >= crate::bips::BIPS_WORDLEN_COUNT_ENTROPY_256_BITS -1 {
+        if phrases.len()  >= crate::bips::BIPS_WORDLEN_COUNT_ENTROPY_256_BITS {
             break;
         }
 

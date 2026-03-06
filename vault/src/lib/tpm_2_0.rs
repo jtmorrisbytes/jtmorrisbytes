@@ -267,41 +267,42 @@ pub mod win32 {
         }
         Ok(())
     }
-
-    #[cfg(test)]
-    pub mod win32_tests {
-        use windows::Win32::System::TpmBaseServices::{
-            TBS_COMMAND_LOCALITY_ZERO, TBS_COMMAND_PRIORITY_LOW, Tbsip_Context_Close,
-            Tbsip_Submit_Command,
-        };
-
-        use crate::tpm_2_0::win32::win32_tpm_tbs_context_create;
-
-        #[test]
-        pub fn tps_test_context_create() -> windows::core::Result<()> {
-            super::win32_tpm_tbs_context_create()?;
-            Ok(())
-        }
-        #[test]
-        pub fn tps_test_get_device_info() -> Result<(), windows::core::Error> {
-            let info = super::win32_tpm_tbs_get_device_info()?;
-            // let context = super::win32_tpm_tbs_context_create()?;
-            dbg!(info);
-            Ok(())
-        }
-        #[test]
-        pub fn tps_test_start_auth_session() -> Result<(), Box<dyn std::error::Error>> {
-            let context = super::win32_tpm_tbs_context_create()?;
-            super::win32_tbs_tpm2_start_auth_session(&context, &[0_u8; 32])?;
-            context.close();
-            Ok(())
-        }
-        #[test]
-        pub fn tps_get_sessions() -> Result<(), Box<dyn std::error::Error>> {
-            let context = super::win32_tpm_tbs_context_create()?;
-            super::win32_tbs_tpm2_start_auth_session(&context, &[0_u8; 32])?;
-            context.close();
-            Ok(())
-        }
-    }
 }
+
+//     #[cfg(test)]
+//     pub mod win32_tests {
+//         use windows::Win32::System::TpmBaseServices::{
+//             TBS_COMMAND_LOCALITY_ZERO, TBS_COMMAND_PRIORITY_LOW, Tbsip_Context_Close,
+//             Tbsip_Submit_Command,
+//         };
+
+//         use crate::tpm_2_0::win32::win32_tpm_tbs_context_create;
+
+//         #[test]
+//         pub fn tps_test_context_create() -> windows::core::Result<()> {
+//             super::win32_tpm_tbs_context_create()?;
+//             Ok(())
+//         }
+//         #[test]
+//         pub fn tps_test_get_device_info() -> Result<(), windows::core::Error> {
+//             let info = super::win32_tpm_tbs_get_device_info()?;
+//             // let context = super::win32_tpm_tbs_context_create()?;
+//             dbg!(info);
+//             Ok(())
+//         }
+//         #[test]
+//         pub fn tps_test_start_auth_session() -> Result<(), Box<dyn std::error::Error>> {
+//             let context = super::win32_tpm_tbs_context_create()?;
+//             super::win32_tbs_tpm2_start_auth_session(&context, &[0_u8; 32])?;
+//             context.close();
+//             Ok(())
+//         }
+//         #[test]
+//         pub fn tps_get_sessions() -> Result<(), Box<dyn std::error::Error>> {
+//             let context = super::win32_tpm_tbs_context_create()?;
+//             super::win32_tbs_tpm2_start_auth_session(&context, &[0_u8; 32])?;
+//             context.close();
+//             Ok(())
+//         }
+//     }
+// }

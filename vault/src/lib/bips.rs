@@ -1,6 +1,7 @@
 //  wordlist
 // https://github.com/bitcoin/bips/blob/master/bip-0039/english.txt
 
+use zeroize::Zeroize;
 
 const WORDLIST: [&'static str; 2048] = [
     "abandon", "ability", "able", "about", "above", "absent", "absorb", "abstract", "absurd",
@@ -218,160 +219,48 @@ const WORDLIST: [&'static str; 2048] = [
 
 pub const BIPS_WORDLEN_COUNT_ENTROPY_256_BITS: usize = 24;
 
+// #[cfg(windows)]
+// #[inline(always)]
+// pub fn calculate_entropy<const N: usize>(
+//     buffer: &mut [u8; N],
+// ) -> Result<(), Box<dyn std::error::Error>> {
+//     use windows::Win32::Security::Cryptography::{BCRYPT_RNG_ALG_HANDLE, BCryptGenRandom};
 
+//     // let mut buffer = [0_u8; N];
 
-#[cfg(windows)]
-#[inline(always)]
-pub fn calculate_entropy<const N: usize>(
-    buffer: &mut [u8; N],
-) -> Result<(), Box<dyn std::error::Error>> {
-    use windows::Win32::Security::Cryptography::{BCRYPT_RNG_ALG_HANDLE, BCryptGenRandom};
+//     unsafe {
+//         use windows::Win32::Security::Cryptography::BCRYPTGENRANDOM_FLAGS;
 
-    // let mut buffer = [0_u8; N];
+//         let status = BCryptGenRandom(
+//             Some(BCRYPT_RNG_ALG_HANDLE),
+//             buffer,
+//             BCRYPTGENRANDOM_FLAGS::default(),
+//         );
+//         if status.is_err() {
+//             return Err(windows::core::Error::new(
+//                 status.to_hresult(),
+//                 "Failed to generate entropy using win32 BcryptGenRandom",
+//             )
+//             .into());
+//         }
+//     }
+//     Ok(())
+// }
 
-    unsafe {
-        use windows::Win32::Security::Cryptography::{
-            BCRYPTGENRANDOM_FLAGS,
-        };
-
-        let status = BCryptGenRandom(
-            Some(BCRYPT_RNG_ALG_HANDLE),
-            buffer,
-            BCRYPTGENRANDOM_FLAGS::default(),
-        );
-        if status.is_err() {
-            return Err(windows::core::Error::new(
-                status.to_hresult(),
-                "Failed to generate entropy using win32 BcryptGenRandom",
-            )
-            .into());
-        }
-    }
+pub fn generate_entropy<const N: usize>(buffer: &mut [u8; N]) -> Result<(), Box<dyn std::error::Error>> {
+    openssl::rand::rand_bytes(buffer.as_mut_slice())?;
     Ok(())
 }
-#[cfg(not(windows))]
-pub fn generate_entropy<const N: usize>() -> Result<[u8; N], Box<dyn std::error::Error>> {
-    let buf = [0u8; N];
-    Ok(buf)
+
+
+pub fn sha_256(data: impl AsRef<[u8]>) -> [u8;32] {
+    
+    let o = openssl::sha::sha256(data.as_ref());    
+    o
+    
 }
 
-#[cfg(windows)]
-pub fn sha_256(data: impl AsRef<[u8]>) -> Result<Vec<u8>, Box<dyn std::error::Error>> {
-    use windows::Win32::Security::Cryptography::{
-        BCryptCloseAlgorithmProvider, BCryptCreateHash, BCryptFinishHash, BCryptHashData,
-        BCryptOpenAlgorithmProvider,
-    };
-    use windows::{
-        Win32::Security::Cryptography::{
-            BCRYPT_ALG_HANDLE, BCRYPT_HASH_HANDLE, BCRYPT_OBJECT_LENGTH,
-            BCRYPT_OPEN_ALGORITHM_PROVIDER_FLAGS,
-            BCRYPT_SHA256_ALGORITHM, BCryptGetProperty,
-        },
-        core::PCWSTR,
-    };
-    unsafe {
-        use windows::Win32::Security::Cryptography::BCRYPT_HASH_LENGTH;
-
-        let mut alg: BCRYPT_ALG_HANDLE = Default::default();
-
-        let status = BCryptOpenAlgorithmProvider(
-            &mut alg,
-            BCRYPT_SHA256_ALGORITHM,
-            PCWSTR::null(),
-            BCRYPT_OPEN_ALGORITHM_PROVIDER_FLAGS(0),
-        );
-        if status.is_err() {
-            return Err(
-                windows::core::Error::new(status.to_hresult(), "Failed to hash sha_256").into(),
-            );
-        }
-
-        // ask windows how big the hash data buffer is
-        let mut size_len = 0_u32;
-        let _ = BCryptGetProperty(
-            alg.into(),
-            BCRYPT_OBJECT_LENGTH,
-            None,
-            std::ptr::from_mut(&mut size_len),
-            0,
-        );
-        let mut buffer = vec![0_u8; size_len as usize];
-        let status = BCryptGetProperty(
-            alg.into(),
-            BCRYPT_OBJECT_LENGTH,
-            Some(&mut buffer),
-            std::ptr::from_mut(&mut size_len),
-            0,
-        );
-        if status.is_err() {
-            return Err(windows::core::Error::new(
-                status.to_hresult(),
-                "Failed to get buffer size for hash function",
-            )
-            .into());
-        }
-        let hash_size = u32::from_le_bytes(buffer.try_into().unwrap());
-        let mut hash_buffer = vec![0_u8; hash_size as usize];
-
-        let mut hash_handle = BCRYPT_HASH_HANDLE::default();
-        let status = BCryptCreateHash(
-            alg.into(),
-            &mut hash_handle,
-            Some(&mut hash_buffer),
-            None,
-            0,
-        );
-        if status.is_err() {
-            return Err(windows::core::Error::new(
-                status.to_hresult(),
-                "Failed to create hash object for sha256",
-            )
-            .into());
-        }
-        let status = BCryptHashData(hash_handle, data.as_ref(), 0);
-        if status.is_err() {
-            //
-            return Err(
-                windows::core::Error::new(status.to_hresult(), "Failed to hash data").into(),
-            );
-        }
-
-        // get the size of the hash output
-
-        let mut hash_len = 0_u32;
-        let mut cb_result = 0_u32;
-
-        BCryptGetProperty(
-            alg.into(),
-            BCRYPT_HASH_LENGTH,
-            Some(std::slice::from_raw_parts_mut(
-                &mut hash_len as *mut u32 as *mut u8,
-                4,
-            )),
-            &mut cb_result,
-            0,
-        )
-        .ok()?;
-
-        let mut output_buffer = vec![0_u8; hash_len as usize];
-
-        let status = BCryptFinishHash(hash_handle, &mut output_buffer, 0);
-        if status.is_err() {
-            return Err(windows::core::Error::new(
-                status.to_hresult(),
-                "Failed to get hash output size for hash function",
-            )
-            .into());
-        }
-        let _ = BCryptCloseAlgorithmProvider(alg, 0);
-
-        // let s: String = output_buffer.into_iter().map(|b| format!("{b:02x}")).collect();
-        // dbg!(&s);
-        Ok(output_buffer)
-    }
-}
-
-pub fn bips_39() -> Result<Vec<String>, Box<dyn std::error::Error>> {
+pub fn generate_bips() -> Result<Vec<String>, Box<dyn std::error::Error>> {
     let mut entropy = [0_u8; 32];
     #[cfg(windows)]
     {
@@ -379,8 +268,8 @@ pub fn bips_39() -> Result<Vec<String>, Box<dyn std::error::Error>> {
             windows::Win32::System::Memory::VirtualLock(entropy.as_ptr().cast(), entropy.len())?;
         }
     }
-    calculate_entropy(&mut entropy)?;
-    let entropy_hash = sha_256(&entropy)?;
+    generate_entropy(&mut entropy)?;
+    let entropy_hash = sha_256(&entropy);
     let checksum = entropy_hash
         .get(0)
         .ok_or("failed to get checksum from hash")?;
@@ -396,11 +285,9 @@ pub fn bips_39() -> Result<Vec<String>, Box<dyn std::error::Error>> {
 
     let mut mnemonic = Vec::new();
     for chunk in all_bits.chunks(11) {
-        let mut index: u16 = 0;
-        for (i, bit) in chunk.iter().enumerate() {
-            if *bit == 1 {
-                index |= 1 << (10 - i);
-            }
+        let mut index: usize = 0;
+        for bit in chunk {
+            index = (index << 1) | (*bit as usize);
         }
         mnemonic.push(WORDLIST[index as usize].to_string());
     }
@@ -431,10 +318,110 @@ pub fn is_valid_word<S: AsRef<str>>(word: S) -> bool {
     WORDLIST.contains(&word.as_ref())
 }
 
+#[derive(Debug, PartialEq, thiserror::Error)]
+#[error("Bips Verify Failed")]
+pub enum VerifyError<'a> {
+    #[error(
+        "Not enough words in phrase, expected {BIPS_WORDLEN_COUNT_ENTROPY_256_BITS} words, but recieved {recieved_len} words"
+    )]
+    NotEnoughWords { recieved_len: usize },
+    #[error("The word {word} at position {position} is not a valid word.")]
+    BadWord { position: usize, word: &'a str },
+    #[error("Failed to calculate the sha256 hash of the entropy because {message}")]
+    EntropyHashError { message: String },
+    #[error("Bad or invalid bips list")]
+    VerficationFailed,
+}
+
+pub fn verify<'a, 'b, S: AsRef<str> + 'a>(words: &'a [S]) -> Result<Vec<u8>, VerifyError<'b>>
+where
+    'a: 'b,
+{
+    // let phrases: Vec<_> = words.iter().map(|s|s.as_ref()).collect();
+    if words.len() != BIPS_WORDLEN_COUNT_ENTROPY_256_BITS {
+        return Err(VerifyError::NotEnoughWords {
+            recieved_len: words.len(),
+        });
+    }
+    let mut indices = Vec::with_capacity(words.len());
+    for (index, word) in words.iter().enumerate() {
+        if !is_valid_word(word) {
+            return Err(VerifyError::BadWord {
+                position: index + 1,
+                word: word.as_ref(),
+            });
+        }
+        let list_index = WORDLIST.binary_search(&word.as_ref()).unwrap();
+        indices.push(list_index as u16);
+    }
+
+    let word_count = indices.len();
+    let total_bits = word_count * 11;
+    let checksum_len = total_bits / 33; // 4 bits for 12 words, 8 for 24
+    let entropy_len_bytes = (total_bits - checksum_len) / 8;
+
+    // 1. Flatten indices into a bit-stream
+    let mut bit_stream = Vec::with_capacity(total_bits);
+    for &index in &indices {
+        for i in (0..11).rev() {
+            bit_stream.push((index >> i) & 1 == 1);
+        }
+    }
+
+    // 2. Extract Entropy bytes
+    let mut entropy_bytes = Vec::with_capacity(entropy_len_bytes);
+    for chunk in bit_stream.chunks(8).take(entropy_len_bytes) {
+        let mut byte = 0u8;
+        for (i, &bit) in chunk.iter().enumerate() {
+            if bit {
+                byte |= 1 << (7 - i);
+            }
+        }
+        entropy_bytes.push(byte);
+    }
+
+    // 3. Extract Checksum bits from the stream
+    let mut provided_checksum_bits: Vec<bool> = bit_stream
+        .iter()
+        .skip(total_bits - checksum_len)
+        .cloned()
+        .collect();
+
+    // 4. Calculate SHA-256 of Entropy
+    let mut hash = sha_256(&entropy_bytes);
+    // dbg!(&hash);
+
+    // 5. Compare hash bits to provided checksum bits
+    for i in 0..checksum_len {
+        let hash_byte = hash[i / 8];
+        let hash_bit = (hash_byte >> (7 - (i % 8))) & 1 == 1;
+        if hash_bit != provided_checksum_bits[i] {
+            return Err(VerifyError::VerficationFailed);
+        }
+    }
+    indices.zeroize();
+    bit_stream.zeroize();
+    hash.zeroize();
+    provided_checksum_bits.zeroize();
+    Ok(entropy_bytes)
+}
 
 #[test]
 pub fn test_bips_39() -> Result<(), Box<dyn std::error::Error>> {
-    let words = bips_39()?;
-    dbg!(words);
+    let words = generate_bips()?;
+    // dbg!(words);
+    Ok(())
+}
+
+#[test]
+pub fn test_bips_verify() -> Result<(), Box<dyn std::error::Error>> {
+    // stress test
+    for _ in 0..10240 {
+        let mut words = generate_bips()?;
+        // dbg!(&words);
+        let r = verify(&words);
+        assert!(r.is_ok());
+        words.zeroize();
+    }
     Ok(())
 }

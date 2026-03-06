@@ -11,7 +11,7 @@ const PROGRAM_NAME: &str = env!(
     "Config module needs the program name to manage configuration"
 );
 const AUTHORS: &str = env!("CARGO_PKG_AUTHORS");
-const CONFIG_FILENAME: &str = "config.toml";
+pub const CONFIG_FILENAME: &str = "config.toml";
 
 fn fmt_program_name_ascii() -> String {
     PROGRAM_NAME.replace("-", "_").to_ascii_lowercase()
@@ -187,10 +187,10 @@ pub fn figment(
     Ok(figment)
 }
 
-#[derive(Debug, serde::Serialize, serde::Deserialize)]
+#[derive(Debug, serde::Serialize, serde::Deserialize,Clone)]
 pub struct Config {
-    vault_data_directory: PathBuf,
-    vault_config_direcory: PathBuf,
+    pub vault_data_directory: PathBuf,
+    pub vault_config_direcory: PathBuf,
 }
 impl Config {
     /// creates a default config as follows:
@@ -211,8 +211,12 @@ impl Config {
         };
         Ok(s)
     }
+    pub fn try_load<P: AsRef<std::path::Path>>(p:P) -> Result<Self,Box<dyn std::error::Error>> {
+        let figment = self::figment(Some(p.as_ref()))?;
+        figment.extract().map_err(|e| e.into())
+    }
     /// loads the file at the default data directory, then merges it with the file inside the config
-    pub fn try_load() -> Result<Self, Box<dyn std::error::Error>> {
+    pub fn try_load_default_merged() -> Result<Self, Box<dyn std::error::Error>> {
         // load from the default directory first, then load from the configured directory
         let figment = self::figment(None)?;
         let config: Config = figment.extract()?;

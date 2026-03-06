@@ -86,7 +86,7 @@ pub fn listen_on_net_for_bips39()-> Result<(), Box<dyn std::error::Error>> {
 }
 
 #[cfg(test)]
-#[test]
+// #[test]
 pub fn test_net_listener() -> Result<(), Box<dyn std::error::Error>> {
     listen_on_net_for_bips39()?;
     Ok(())

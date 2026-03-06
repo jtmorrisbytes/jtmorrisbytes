@@ -1,3 +1,6 @@
+#[cfg(windows)]
+use std::io::Read;
+
 // #[cfg(windows)]
 use qrcodegen::QrCode;
 #[cfg(windows)]
@@ -9,7 +12,7 @@ use windows::Win32::{
             DeleteObject, FW_BOLD, GetDeviceCaps, GetTextExtentPoint32W, HDC, LOGPIXELSX,
             LOGPIXELSY, OUT_DEFAULT_PRECIS, PatBlt, SelectObject, TextOutW,
         },
-        Printing::{GetJobW, JOB_INFO_1W, OpenPrinterW, PRINTER_HANDLE},
+        Printing::{GetJobW, JOB_INFO_1W, JOB_STATUS_COMPLETE, JOB_STATUS_PRINTED, JOB_STATUS_PRINTING, JOB_STATUS_SPOOLING, OpenPrinterW, PRINTER_HANDLE},
     },
     Storage::Xps::{EndDoc, EndPage},
 };
@@ -62,11 +65,36 @@ pub fn win32_close_printer(
     use windows::Win32::Graphics::Printing::ClosePrinter;
     unsafe { ClosePrinter(printer_handle) }
 }
+
+
+
+
+// helper funcs for getjobstatus
+fn read_u32_le<R: std::io::Read>(r:&mut R,field_name: &str) -> Result<u32,Box<dyn std::error::Error>> {
+    let mut bytes= [0_u8; std::mem::size_of::<u32>()];
+    r.read_exact(&mut bytes).map_err(|e| format!("Failed to read {} bytes for field {field_name} because: {e}",bytes.len()))?;
+    let n = u32::from_le_bytes(bytes);
+    Ok(n)
+}
+pub fn read_pwstr_ptr_le<R:std::io::Read>(r:&mut R, field_name: &str) -> Result<windows::core::PWSTR,Box<dyn std::error::Error>> {
+    let mut bytes = [0_u8; std::mem::size_of::<windows::core::PWSTR>()];
+    r.read_exact(&mut bytes).map_err(|e| format!("Failed to read {} bytes for field {field_name} with type PWSTR because: {e}",bytes.len()))?;
+    
+    let address = usize::from_le_bytes(bytes);
+    let raw_ptr = address as *mut u16;
+    
+    if !raw_ptr.is_aligned() {
+        return Err(format!("Attempted to construct raw, unaligned pointer for PWSTR for field {field_name}").into())
+    }
+    let p = windows::core::PWSTR::from_raw(raw_ptr);
+    Ok(p)
+}
+
 #[cfg(windows)]
 fn get_job_status(
     h_printer: windows::Win32::Graphics::Printing::PRINTER_HANDLE,
     job_id: u32,
-) -> Result<(i32,JOB_INFO_1W),Box<dyn std::error::Error>> {
+) -> Result<(u32,JOB_INFO_1W),Box<dyn std::error::Error>> {
     use windows::Win32::Graphics::Printing::{
         GetJobW, JOB_INFO_1W, JOB_STATUS_ERROR, JOB_STATUS_PRINTED,
     };
@@ -86,8 +114,46 @@ fn get_job_status(
     if status == 0 {
         return Err("Failed to get job info".into())
     }
+    // expect JOB_INFO_1W, we have to build this over each byte
 
-    let job_info: JOB_INFO_1W = unsafe {std::mem::transmute_copy(&buffer)};
+    // for some reason the api surface is dumb and doesnt take a c void. we have to fill out this struct ourselves
+    
+    
+    // extract the job id
+    
+    let mut job_info = JOB_INFO_1W::default();
+    
+    let mut cursor = std::io::Cursor::new(buffer);
+    
+    let mut job_id = [0_u8;std::mem::size_of::<u32>()];
+    cursor.read_exact(&mut job_id).map_err(|e| format!("Failed to read field JobId for JOB_INFO_1W {e}"))?;
+    let job_id = u32::from_le_bytes(job_id);
+    job_info.JobId = job_id;
+
+    let p = read_pwstr_ptr_le(&mut cursor, "pPrinterName")?;
+    job_info.pPrinterName = p;
+
+    let p = read_pwstr_ptr_le(&mut cursor, "pMachineName")?;
+    job_info.pMachineName = p;
+    
+    let p = read_pwstr_ptr_le(&mut cursor, "pUserName")?;
+    job_info.pUserName = p;
+
+    let p = read_pwstr_ptr_le(&mut cursor, "pDocument")?;
+    job_info.pDocument = p;
+
+    let p = read_pwstr_ptr_le(&mut cursor, "pStatus")?;
+    job_info.pStatus = p;
+
+    let status = read_u32_le(&mut cursor, "Status")?;
+    job_info.Status = status;
+
+    let priority = read_u32_le(&mut cursor, "Priority")?;
+    job_info.Priority = priority;
+
+    
+    
+
     Ok((status,job_info))
 }
 
@@ -283,17 +349,15 @@ pub fn win32_print_bip39_using_gdi(
         OpenPrinterW(p_default_printer, &mut printer, None)?;
     }
     loop {
-        let job_status = get_job_status(printer, job_id as u32);
+        let job_status = get_job_status(printer, job_id as u32)?;
+        match job_status.0 {
+            JOB_STATUS_PRINTING | JOB_STATUS_SPOOLING => {continue;}
+            JOB_STATUS_COMPLETE => {return Ok(())}
+            _=> {return Ok(())}
+        }
 
 
     }
-
-
-    // let mut printer_handle = PRINTER_HANDLE::default();
-    // wait_for_job(printer_handle, print_job_id);
-    // win32_close_printer(printer_handle)?;
-    // bips.zeroize();
-    Ok(())
 }
 
 #[cfg(windows)]
@@ -305,7 +369,7 @@ pub mod tests {
     // #[test]
     // only enable this test if you have a printer
     pub fn test_print_data_from_memory() -> Result<(), Box<dyn std::error::Error>> {
-        let bips = crate::bips::bips_39()?;
+        let bips = crate::bips::generate_bips()?;
         let mut passphrase = bips.join(" ");
 
         let qr = qrcodegen::QrCode::encode_text(&passphrase, qrcodegen::QrCodeEcc::High)?;

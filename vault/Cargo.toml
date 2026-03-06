@@ -17,11 +17,20 @@ resvg = "0.40"
 clap = { version = "4.5.60", features = ["derive"] }
 crossterm = "0.29.0"
 hyper = { version = "1.8.1", features = ["http1", "server"] }
-tokio = { version = "1.49.0", features = ["net", "rt"] }
+tokio = { version = "1.49.0", features = ["full"] }
 hyper-util = { version = "0.1.20", features = ["tokio"] }
 serde = { version = "1.0.228", features = ["derive"] }
 figment = { version = "0.10.19", features = ["toml"] }
 toml = "1.0.3"
+thiserror = "2.0.18"
+openssl = { version = "0.10.75", features = ["v111", "vendored"] }
+openssl-sys = { version = "0.9.111", features = ["vendored"] }
+anyhow = "1.0.102"
+rocket.workspace = true
+cargo_metadata = "0.23.1"
+wasmtime = "42.0.1"
+wasmtime-wasi = "16.0"
+
 
 
 [dependencies.windows]
@@ -38,6 +47,7 @@ features=[
     "Win32_Storage_Xps",
     "Win32_System_Console",
     "Win32_System_Registry",
-    "Win32_UI_Shell"
+    "Win32_UI_Shell",
+    "Win32_System_Services"
 ]
 

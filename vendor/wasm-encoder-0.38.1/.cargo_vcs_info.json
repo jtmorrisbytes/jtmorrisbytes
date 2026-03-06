@@ -1,0 +1,6 @@
+{
+  "git": {
+    "sha1": "39a60291b6962d45e3b859e035d810c19161e6ee"
+  },
+  "path_in_vcs": "crates/wasm-encoder"
+}

@@ -1,0 +1,11 @@
+[package]
+name="vault_service"
+edition="2024"
+version="0.1.0"
+
+[dependencies]
+vault={path=".."}
+
+
+[build-dependencies]
+cargo_metadata = "0.23.1"

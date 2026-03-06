@@ -1,9 +1,10 @@
 
+
 [workspace]
-members = ["app","vault"]
+members = ["app","vault","vault/ui","vault/service"]
 resolver="3"
 [workspace.dependencies]
-hot-lib-reloader = "0.8.2"
+#hot-lib-reloader = "0.8.2"
 reqwest = "0.13.2"
 rocket = "0.5.1"
 
@@ -11,3 +12,10 @@ rocket = "0.5.1"
 version = "0.2.0"
 features = ["sqlx_sqlite"]
 
+
+
+[source.crates-io]
+replace-with = "vendored-sources"
+
+[source.vendored-sources]
+directory = "vendor"
