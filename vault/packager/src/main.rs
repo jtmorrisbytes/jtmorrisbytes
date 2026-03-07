@@ -2,7 +2,7 @@ use std::{collections::HashMap, str::FromStr};
 
 use cargo_metadata::camino::Utf8PathBuf;
 use flate2::read::GzDecoder;
-use tokio::io::AsyncBufReadExt;
+// use tokio::io::AsyncBufReadExt;
 
 // bundle the service and its dependencies to prepare it for installation or distrobution
 const X86_64_PC_WINDOWS_MSVC: &'static str = "x86_64-pc-windows-msvc";
@@ -87,6 +87,7 @@ pub struct ZigIndexEntry {
 pub struct ZigIndex(HashMap<String, ZigIndexEntry>);
 
 async fn try_dowload_zig(workspace_root: Utf8PathBuf) -> Result<(), Box<dyn std::error::Error>> {
+    use tokio::io::AsyncBufReadExt;
     // download the community mirror
     let txt_response = reqwest::get("https://ziglang.org/download/community-mirrors.txt").await?;
     let status = txt_response.status();
@@ -170,15 +171,18 @@ async fn try_dowload_zig(workspace_root: Utf8PathBuf) -> Result<(), Box<dyn std:
     Ok(())
 }
 
-fn install_required_targets_using_rustup(targets: &[&str]) -> Result<(),Box<dyn std::error::Error>> {
-    let status = std::process::Command::new("rustup").args(&["target","add"]).args(targets).status()?;
+fn install_required_targets_using_rustup(
+    targets: &[&str],
+) -> Result<(), Box<dyn std::error::Error>> {
+    let status = std::process::Command::new("rustup")
+        .args(&["target", "add"])
+        .args(targets)
+        .status()?;
     if !status.success() {
-        return Err("Failed to install required targets".into())
+        return Err("Failed to install required targets".into());
     }
     Ok(())
-
 }
-
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
@@ -186,7 +190,13 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     println!(
         "This command will compile the local source code and prepare it for installation or distrobution"
     );
-    install_required_targets_using_rustup(&[TARGET_I686_PC_WINDOWS_MSVC,TARGET_I686_PC_WINDOWS_MSVC,TARGET_WASM32_UNKNOWN_UNKNOWN,TARGET_WASM32_WASIP1,TARGET_X86_64_UNKNOWN_LINUX_GNU])?;
+    install_required_targets_using_rustup(&[
+        TARGET_I686_PC_WINDOWS_MSVC,
+        TARGET_I686_PC_WINDOWS_MSVC,
+        TARGET_WASM32_UNKNOWN_UNKNOWN,
+        TARGET_WASM32_WASIP1,
+        TARGET_X86_64_UNKNOWN_LINUX_GNU,
+    ])?;
 
     let metadata = cargo_metadata::MetadataCommand::new().exec()?;
     // check if zig in project root. assume zig in worskpace zig
@@ -196,7 +206,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     }
 
     // the name of the package 'this software'
-    const PACKAGE_NAME: &str = env!("CARGO_PKG_NAME");
+    const PACKAGE_NAME: &str = "vault_service";
     let package_metadata = metadata
         .packages
         .iter()
@@ -315,34 +325,100 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     )?;
 
     // build the linux service. (may not work right now so these can 'silently' fail)
-    let zigpath =             &metadata
-                .workspace_root
-                .join("zig")
-                .join("zig-x86_64-windows-0.15.2")
-                ;
-                // .join("zig.exe");
+    build_and_run_tests_linux(&metadata, package_metadata)?;
+
+    Ok(())
+}
+
+fn build_and_run_tests_linux(
+    metadata: &cargo_metadata::Metadata,
+    package_metadata: &cargo_metadata::Package,
+) -> Result<(), Box<dyn std::error::Error>> {
+    let zigpath = &metadata
+        .workspace_root
+        .join("zig")
+        .join("zig-x86_64-windows-0.15.2");
     dbg!(zigpath);
-    let status = std::process::Command::new("cargo")
+    let output = std::process::Command::new("cargo")
         .args(&[
             "zigbuild",
             "--tests",
+            // "-vv",
             "-p",
             &package_metadata.name,
             &format!("--{RELEASE_TYPE_RELEASE}"),
             "--target",
             TARGET_X86_64_UNKNOWN_LINUX_GNU,
+            "--message-format=json",
         ])
-        
+        .env("ZIG", &zigpath.canonicalize()?)
         .env(
-            "ZIG",
-            &zigpath.canonicalize()?
+            "ZIG_EXE_PATH",
+            &zigpath.join("zig.exe").canonicalize_utf8()?,
         )
-        .env("ZIG_EXE_PATH",&zigpath.join("zig.exe").canonicalize_utf8()?)
-        .env("PATH",std::env::var("PATH").unwrap() + ";" + zigpath.as_str())
-        .status()?;
-    if !status.success() {
+        .env(
+            "PATH",
+            std::env::var("PATH").unwrap() + ";" + zigpath.as_str(),
+        )
+        .env("NUM_JOBS", "10")
+        .output()?;
+    if !output.status.success() {
         return Err("Cargo zigbuild failed for linux".into());
     }
+    let mut artifacts = vec![];
+    use std::io::BufRead;
+    let cursor = std::io::BufReader::new(std::io::Cursor::new(output.stdout));
+    for line in cursor.lines() {
+        let line = line?;
 
+        let message: serde_json::Value = serde_json::from_str(&line)?;
+        if message.get("$message_type")
+            == Some(&serde_json::Value::String("diagnostic".to_string()))
+        {
+            let message_txt = message.get("message").unwrap_or_default();
+            let rendered_text = message_txt
+                .get("rendered")
+                .map(|v| v.to_string())
+                .unwrap_or(String::new());
+            print!("{rendered_text}");
+        }
+        if message.get("reason")
+            == Some(&serde_json::Value::String("compiler-artifact".to_string()))
+            && message.get("executable").is_some()
+        {
+            let excutable = message.get("executable").unwrap().to_string();
+            if excutable != "null" {
+                // println!("test artifact? {}", message.get("executable").unwrap());
+                artifacts.push(excutable);
+            }
+        }
+    }
+    // run each build artifact. should be the test
+    for mut artifact in artifacts {
+        #[cfg(target_os = "linux")]
+        {}
+        #[cfg(all(not(target_os = "linux"), target_os = "windows"))]
+        {
+            // let mut artifact = artifact.replace("\\\\", "/");
+            // the start end of the drive letter
+            // let drive_path_end = artifact.rfind("\\\\").unwrap();
+
+            // let drive_path = &artifact[0..drive_path_end];
+            artifact = artifact.replace("\"", "");
+            let drive_letter = artifact.chars().nth(0).unwrap().to_lowercase().to_string();
+            // let drive_letter = drive_letter.to_lowercase();
+            let artifact = artifact.replace("\\\\", "/");
+            let artifact = &artifact[3..];
+            // let artifact2 = artifact.replace(drive_path, &drive_letter);
+            // these are no longer valid
+            // artifact = artifact2;
+            let mut artifact =  "/mnt/".to_string() + &drive_letter + &artifact;
+            artifact = artifact.trim().to_string();
+            let wsl = std::process::Command::new("wsl").arg(artifact).status()?;
+            if !wsl.success() {
+                return Err("Tests failed!".into())
+            }
+        }
+    }
     Ok(())
 }

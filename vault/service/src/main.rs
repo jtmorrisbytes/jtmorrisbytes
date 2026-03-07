@@ -3,6 +3,8 @@ use std::sync::mpsc::{Sender, channel};
 use std::sync::{Arc, OnceLock};
 
 use vault::config::Config;
+
+#[cfg(target_os = "windows")]
 use windows::Win32::System::Services::{
     SERVICE_ACCEPT_STOP, SERVICE_RUNNING, SERVICE_START_PENDING, SERVICE_STATUS,
     SERVICE_STOP_PENDING, SERVICE_WIN32_OWN_PROCESS, SetServiceStatus,
@@ -33,6 +35,7 @@ pub enum ServiceStatusChangeMessage {
     Stopping,
     Stopped,
 }
+#[cfg(windows)]
 // a function that handles requests to tell the windows scm api about the current state of the application
 fn run_svc_status_handler(reciever: std::sync::mpsc::Receiver<ServiceStatusChangeMessage>) {
     use windows::Win32::System::Services::RegisterServiceCtrlHandlerExW;
@@ -349,9 +352,9 @@ fn main() {
         }
         #[cfg(all(not(target_os = "windows"), target_os = "linux"))]
         {
-            todo!();
+            
             // listen for signals and forward them to the seperate thread
-            run_vault(svc_rx, svc_tx);
+            app_main();
         }
     }
     else {

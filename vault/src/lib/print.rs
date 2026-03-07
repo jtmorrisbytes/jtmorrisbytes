@@ -16,14 +16,14 @@ use windows::Win32::{
     },
     Storage::Xps::{EndDoc, EndPage},
 };
+#[cfg(windows)]
 use windows::{
     Win32::Graphics::Gdi::{CreateFontW, FW_NORMAL, HFONT},
     core::PCWSTR,
 };
-#[cfg(windows)]
 use zeroize::Zeroize;
 
-use crate::tpm_2_0::win32;
+
 
 #[cfg(windows)]
 pub fn win32_get_default_printer() -> windows::core::Result<String> {
@@ -76,6 +76,7 @@ fn read_u32_le<R: std::io::Read>(r:&mut R,field_name: &str) -> Result<u32,Box<dy
     let n = u32::from_le_bytes(bytes);
     Ok(n)
 }
+#[cfg(windows)]
 pub fn read_pwstr_ptr_le<R:std::io::Read>(r:&mut R, field_name: &str) -> Result<windows::core::PWSTR,Box<dyn std::error::Error>> {
     let mut bytes = [0_u8; std::mem::size_of::<windows::core::PWSTR>()];
     r.read_exact(&mut bytes).map_err(|e| format!("Failed to read {} bytes for field {field_name} with type PWSTR because: {e}",bytes.len()))?;
@@ -91,7 +92,7 @@ pub fn read_pwstr_ptr_le<R:std::io::Read>(r:&mut R, field_name: &str) -> Result<
 }
 
 #[cfg(windows)]
-fn get_job_status(
+fn win32_get_job_status(
     h_printer: windows::Win32::Graphics::Printing::PRINTER_HANDLE,
     job_id: u32,
 ) -> Result<(u32,JOB_INFO_1W),Box<dyn std::error::Error>> {
@@ -156,8 +157,8 @@ fn get_job_status(
 
     Ok((status,job_info))
 }
-
-fn create_printer_font(h_dc: HDC, point_size: i32, face_name: &str) -> HFONT {
+#[cfg(windows)]
+fn win32_create_printer_font(h_dc: HDC, point_size: i32, face_name: &str) -> HFONT {
     // 1. Get the actual vertical DPI of the printer
     let dpi_y = unsafe { GetDeviceCaps(h_dc.into(), LOGPIXELSY) };
 
@@ -240,7 +241,7 @@ pub fn win32_print_bip39_using_gdi(
         )
         .into());
     }
-    let h_font = create_printer_font(hdc, 12, "Arial");
+    let h_font = win32_create_printer_font(hdc, 12, "Arial");
     if h_font.is_invalid() {
         unsafe {
             let _ = EndPage(hdc);
@@ -349,7 +350,7 @@ pub fn win32_print_bip39_using_gdi(
         OpenPrinterW(p_default_printer, &mut printer, None)?;
     }
     loop {
-        let job_status = get_job_status(printer, job_id as u32)?;
+        let job_status = win32_get_job_status(printer, job_id as u32)?;
         match job_status.0 {
             JOB_STATUS_PRINTING | JOB_STATUS_SPOOLING => {continue;}
             JOB_STATUS_COMPLETE => {return Ok(())}

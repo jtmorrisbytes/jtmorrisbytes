@@ -84,10 +84,10 @@ fn win32_get_system_programdata_folder_path() -> windows::core::Result<PathBuf> 
 pub fn get_service_data_directory() -> Result<std::path::PathBuf, Box<dyn std::error::Error>> {
     #[cfg(target_os = "linux")]
     {
-        std::path::path::new("/var/lib")
+        Ok(std::path::Path::new("/var/lib")
             .join(vendor_name())
             .join(fmt_program_name_ascii())
-            .to_path_buf()
+            .to_path_buf())
     }
     #[cfg(all(not(target_os = "linux"), target_os = "windows"))]
     {

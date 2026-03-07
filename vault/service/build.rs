@@ -10,21 +10,21 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         return Err("Failed to find package vault_wasm_ui in the current workspace".into());
     }
     // all bin targets in this crate are assumed to be webassembly binaries with a main function
-    let package = package.unwrap();
+    // let package = package.unwrap();
 
-    println!("cargo:rerun-if-changed={}",package.manifest_path.parent().unwrap());
-    // 'collect' all the binaries into multiple 'bin' flags
+    // println!("cargo:rerun-if-changed={}",package.manifest_path.parent().unwrap());
+    // // 'collect' all the binaries into multiple 'bin' flags
 
-    let mut command = std::process::Command::new("cargo");
-    let mut c: &mut Command = &mut command;
+    // let mut command = std::process::Command::new("cargo");
+    // let mut c: &mut Command = &mut command;
     
-    c = c.args(&["build","--lib","--target","wasm32-wasip1", "--release","-p",package.name.as_str()])
-    .env("CARGO_TARGET_DIR", std::env::var("OUT_DIR").unwrap());    
-    let status = c.status()?;
-    if !status.success() {
-        println!("cargo::error=\"Build Failed\"");
-        return Err("Build Failed".into());
-    }
+    // c = c.args(&["build","--lib","--target","wasm32-wasip1", "--release","-p",package.name.as_str()])
+    // .env("CARGO_TARGET_DIR", std::env::var("OUT_DIR").unwrap());    
+    // let status = c.status()?;
+    // if !status.success() {
+    //     println!("cargo::error=\"Build Failed\"");
+    //     return Err("Build Failed".into());
+    // }
 
 
 

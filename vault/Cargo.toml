@@ -23,7 +23,7 @@ serde = { version = "1.0.228", features = ["derive"] }
 figment = { version = "0.10.19", features = ["toml"] }
 toml = "1.0.3"
 thiserror = "2.0.18"
-openssl-sys = { version = "0.9.111", features = ["vendored"] }
+#openssl-sys = { version = "0.9.111", features = ["vendored"] }
 anyhow = "1.0.102"
 
 cargo_metadata = "0.23.1"
