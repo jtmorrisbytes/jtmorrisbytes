@@ -1,6 +1,7 @@
 //  wordlist
 // https://github.com/bitcoin/bips/blob/master/bip-0039/english.txt
 
+use anyhow::Context;
 use zeroize::Zeroize;
 
 const WORDLIST: [&'static str; 2048] = [
@@ -247,16 +248,20 @@ pub const BIPS_WORDLEN_COUNT_ENTROPY_256_BITS: usize = 24;
 //     Ok(())
 // }
 
-pub fn generate_entropy<const N: usize>(buffer: &mut [u8; N]) -> Result<(), Box<dyn std::error::Error>> {
-    openssl::rand::rand_bytes(buffer.as_mut_slice())?;
+pub fn generate_entropy<const N: usize>(buffer: &mut [u8; N]) -> Result<(), anyhow::Error> {
+    aws_lc_rs::rand::fill(buffer).context("While generating entropy for bips")?;
     Ok(())
 }
 
 
-pub fn sha_256(data: impl AsRef<[u8]>) -> [u8;32] {
-    
-    let o = openssl::sha::sha256(data.as_ref());    
-    o
+pub fn sha_256<Input: AsRef<[u8]>,Output: AsMut<[u8]>>(input:Input, mut output: Output) {
+    let d = aws_lc_rs::digest::digest(&aws_lc_rs::digest::SHA256, input.as_ref());
+    if output.as_mut().len() < d.as_ref().len() {
+        panic!("Output len smaller than the length of the digest")
+    }
+    for (i, byte) in d.as_ref().iter().enumerate() {
+        output.as_mut()[i]  = *byte;
+    }
     
 }
 
@@ -269,13 +274,14 @@ pub fn generate_bips() -> Result<Vec<String>, Box<dyn std::error::Error>> {
         }
     }
     generate_entropy(&mut entropy)?;
-    let entropy_hash = sha_256(&entropy);
-    let checksum = entropy_hash
-        .get(0)
-        .ok_or("failed to get checksum from hash")?;
+
+    let mut entropy_hash= [0_u8;32];
+    sha_256(&entropy,&mut entropy_hash);
+    let checksum = entropy_hash[0];
+        // .ok_or("failed to get checksum from hash")?;
 
     let mut all_bits = Vec::with_capacity(264);
-    for byte in entropy.iter().chain(std::iter::once(checksum)) {
+    for byte in entropy.iter().chain(std::iter::once(&checksum)) {
         for i in (0..8).rev() {
             all_bits.push((byte >> i) & 1);
         }
@@ -388,7 +394,8 @@ where
         .collect();
 
     // 4. Calculate SHA-256 of Entropy
-    let mut hash = sha_256(&entropy_bytes);
+    let mut hash = [0_u8;32];
+    sha_256(&entropy_bytes, &mut hash);
     // dbg!(&hash);
 
     // 5. Compare hash bits to provided checksum bits

@@ -23,16 +23,16 @@ serde = { version = "1.0.228", features = ["derive"] }
 figment = { version = "0.10.19", features = ["toml"] }
 toml = "1.0.3"
 thiserror = "2.0.18"
-openssl = { version = "0.10.75", features = ["v111", "vendored"] }
 openssl-sys = { version = "0.9.111", features = ["vendored"] }
 anyhow = "1.0.102"
 
 cargo_metadata = "0.23.1"
+aws-lc-rs = "1.16.1"
 #wasmer = {version="7.0.1",features=["cranelift"]}
 #wasmer-compiler-cranelift = "7.0.1"
 #wasmer-wasix = "0.700.1"
 
-[dependencies.windows]
+[target.'cfg(windows)'.dependencies.windows]
 version = "0.61.2"
 features=[
     "Win32_Security_Tpm",

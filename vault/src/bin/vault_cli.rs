@@ -12,8 +12,6 @@ pub enum Command {
         #[arg(long)]
         with_existing_bips: bool,
     },
-    #[command(about="compiles and bundles the software for installation or distrobution")]
-    Package
 }
 
 #[derive(clap::Parser)]
@@ -21,39 +19,6 @@ pub enum Command {
 pub struct Cli {
     #[command(subcommand)]
     pub command: Command,
-}
-
-// fn initialize_vault()
-// bundle the service and its dependencies to prepare it for installation or distrobution
-fn package() -> Result<(),Box<dyn std::error::Error>> {
-    println!("This command will compile the local source code and prepare it for installation or distrobution");
-    let metadata = cargo_metadata::MetadataCommand::new().exec()?;
-    // the name of the package 'this software'
-    const PACKAGE_NAME: &str = env!("CARGO_PKG_NAME");
-    let package_metadata = metadata.packages.iter().find(|p|p.name == PACKAGE_NAME).ok_or("Expected to find the package in the current directory tree")?;
-    // package_metadata.manifest_path;
-
-    
-    
-    // std::process::Command::new("rustup target add x86_64-pc-windows-msvc")
-    #[cfg(target_os="windows")]
-    {
-        println!("running tests");
-        let s = std::process::Command::new("cargo").args(&["test", "--target","x86_64-pc-windows-msvc", "--target", "i686-pc-windows-msvc","--release","--manifest-path",package_metadata.manifest_path.as_str()]).status()?.success();
-        if !s {
-           return Err(format!("Test failed").into())
-        }
-        std::process::Command::new("cargo").args(&["build", "--target","x86_64-pc-windows-msvc", "--target", "i686-pc-windows-msvc","--release","--manifest-path",package_metadata.manifest_path.as_str()]).status().ok();
-    }
-
-    std::fs::remove_dir_all(path)
-    std::fs::create_dir_all(metadata.workspace_root.join("out")).ok();
-    // build the ui
-    let s = std::process::Command::new("cargo").arg(&["build", "--target","wasm32-wasip1", "-p","vault_ui_wasm"]).status()?;
-    if !s.success() {
-        return Err("Failed to compile webassembly".into())
-    }
-    Ok(())
 }
 
 
@@ -65,10 +30,6 @@ pub fn main() -> Result<(), Box<dyn std::error::Error>> {
     let args = Cli::parse();
     let mut bips = vec![];
     match args.command {
-        Command::Package => {
-            package();
-            Ok(())
-        }
         Command::Initialize { with_existing_bips } => {
             let config = if !vault::config::config_file_exists().unwrap() {
                 vault::config::Config::try_default().unwrap()
