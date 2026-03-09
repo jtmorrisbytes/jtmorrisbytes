@@ -554,6 +554,23 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "613afe47fcd5fac7ccf1db93babcb082c5994d996f20b8b159f2ad1658eb5724"
 
 [[package]]
+name = "chrome_devtools_protocol"
+version = "0.1.0"
+
+[[package]]
+name = "chrome_devtools_protocol_parser_and_builder"
+version = "0.1.0"
+dependencies = [
+ "anyhow",
+ "quote",
+ "reqwest 0.13.2",
+ "serde",
+ "serde_json",
+ "tokio",
+ "tokio-util",
+]
+
+[[package]]
 name = "chrono"
 version = "0.4.44"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -5824,7 +5841,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "vault_packager"
+name = "vault_ci"
 version = "0.1.0"
 dependencies = [
  "cargo_metadata",
@@ -5856,7 +5873,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "vault_wasm_ui"
+name = "vault_ui"
 version = "0.1.0"
 
 [[package]]

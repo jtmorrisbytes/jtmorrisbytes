@@ -4,7 +4,7 @@ edition="2024"
 version="0.1.0"
 
 [dependencies]
-vault={path=".."}
+vault={path="../vault"}
 rocket.workspace = true
 wasmer = {version="7.0.1",features=["cranelift"]}
 wasmer-compiler-cranelift = "7.0.1"
