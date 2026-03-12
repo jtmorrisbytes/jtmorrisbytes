@@ -29,4 +29,4 @@ impl UserStoreFactory {
         self.pools.insert(id.clone(), p);
         Ok(c)
     }
-}
+}1
