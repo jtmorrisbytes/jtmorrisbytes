@@ -1,7 +1,7 @@
 
 
 [workspace]
-members = ["app","vault","vault_ui","vault_service","vault_ci","chrome_devtools_protocol","chrome_devtools_protocol_parser_and_builder"]
+members = ["app","accounting_db","accounting_db/accounting_proc_macro","vault","vault_ui","vault_service","vault_ci","chrome_devtools_protocol","chrome_devtools_protocol_parser_and_builder"]
 resolver="3"
 [workspace.dependencies]
 #hot-lib-reloader = "0.8.2"

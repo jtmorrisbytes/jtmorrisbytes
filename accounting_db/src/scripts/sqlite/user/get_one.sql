@@ -1,0 +1,1 @@
+SELECT * from "users" where "users"."id" = ? and "users.id" is not null LIMIT 1

@@ -1,0 +1,1 @@
+insert into "users" (id) values (?) returning "users"."id"

@@ -9,6 +9,7 @@ path="src/lib/mod.rs"
 
 
 [dependencies]
+askama = { version = "0.15.4", features = ["full"] }
 reqwest.workspace=true
 rocket = {workspace=true, features=["secrets","tls"]}
 #hot-lib-reloader.workspace = true
