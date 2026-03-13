@@ -28,7 +28,7 @@ pub async fn up<'exec,BarrelBackend,SqlxDatabase>(tx:&mut Transaction<'_,SqlxDat
 
 
 
-    let q = tx.get_columns().await;
+    let q = tx.get_columns("users").await?;
     //     match SqlxDatabase::NAME {
     //     sqlx::Sqlite::NAME => {
     //         // tx.fetch_all(q).await?;
