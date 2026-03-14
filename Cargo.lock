@@ -2788,6 +2788,22 @@ dependencies = [
 ]
 
 [[package]]
+name = "jtmb-reflect-db"
+version = "0.1.0"
+dependencies = [
+ "anyhow",
+ "async-trait",
+ "barrel",
+ "dashmap",
+ "paste",
+ "refinery",
+ "serde",
+ "sqlx",
+ "tokio",
+ "uuid",
+]
+
+[[package]]
 name = "kqueue"
 version = "1.1.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"

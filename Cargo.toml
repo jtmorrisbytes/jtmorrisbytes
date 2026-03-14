@@ -1,7 +1,7 @@
 
 
 [workspace]
-members = ["app","accounting_db","accounting_db/accounting_proc_macro","accounting_db/migrations","vault","vault_ui","vault_service",
+members = ["app","jtmb-reflect-db","accounting_db","accounting_db/accounting_proc_macro","accounting_db/migrations","vault","vault_ui","vault_service",
 "vault_ci","chrome_devtools_protocol",
 "chrome_devtools_protocol_parser_and_builder"
 ]

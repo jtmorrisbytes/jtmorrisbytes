@@ -24,6 +24,7 @@ impl<'t> super::SchemaInspector<sqlx::any::Any> for sqlx::Transaction<'t, sqlx::
                 let q = query_sqlite_get_all_column_metdata_for_table!(for_table_name);
                 let t = q.fetch_all(&mut **self).await?;
                 let t = t.into_iter().map(|t|AnyColumnInfo::Sqlite(t)).collect();
+                dbg!(&t);
                 Ok(t)
             }
             _ => {
