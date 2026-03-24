@@ -39,21 +39,21 @@ impl<'q, DB: sqlx::Database> sqlx::Encode<'q, DB> for Id
 where
     uuid::Uuid: sqlx::Encode<'q, DB>,
 {
-    fn encode_by_ref(
+    fn encode_by_ref<'q>(
         &self,
         buf: &mut <DB as sqlx::database::HasArguments<'q>>::ArgumentBuffer,
     ) -> sqlx::encode::IsNull {
         <uuid::Uuid as sqlx::Encode<'q, DB>>::encode(self.value, buf)
     }
 }
-impl<'r, DB: sqlx::Database> sqlx::Decode<'r, DB> for Id
+impl<'r, DB: sqlx::Database> sqlx::Decode<DB> for Id
 where
-    uuid::Uuid: sqlx::Decode<'r, DB>,
+    uuid::Uuid: sqlx::Decode<DB>,
 {
-    fn decode(
+    fn decode<'r>(
         value: <DB as sqlx::database::HasValueRef<'r>>::ValueRef,
     ) -> Result<Self, sqlx::error::BoxDynError> {
-        let uuid = <uuid::Uuid as sqlx::Decode<'r, DB>>::decode(value)?;
+        let uuid = <uuid::Uuid as sqlx::Decode<DB>>::decode(value)?;
         Ok(Self {
             value: uuid,
             // _marker: PhantomData,

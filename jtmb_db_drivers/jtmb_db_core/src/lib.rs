@@ -8,7 +8,7 @@ pub trait DriverInitialize {
     type InitOptions;
     type ConnectionOptions;
     // type Error;
-    fn driver_initialize(driver_options: Self::InitOptions,connect_options: Self::ConnectionOptions) -> std::io::Result<Self>
+    fn driver_initialize(driver_options: Self::InitOptions,connect_options: Vec<Self::ConnectionOptions>) -> std::io::Result<Self>
     where Self:Sized;
 }
 

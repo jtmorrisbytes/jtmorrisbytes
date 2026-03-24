@@ -45,7 +45,7 @@ pub trait Encode<P,T>
     P: Sized + 'static + Protocol
 {
     type ByteOrder;
-    fn encode(value: T, protocol: &P) -> std::io::Result<&[u8]>{
+    fn encode<'q>(value: T, protocol: &P) -> std::io::Result<&[u8]>{
             let bytes = value.raw_encode();
             Ok(bytes)
     }

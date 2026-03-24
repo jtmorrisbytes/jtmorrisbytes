@@ -5,6 +5,7 @@ members = ["app","jtmb_db_drivers/jtmb_db_core","sql","sql/accounting_proc_macro
 "vault_ci","chrome_devtools_protocol",
 "chrome_devtools_protocol_parser_and_builder"
 ]
+exclude=["sqlx"]
 resolver="3"
 [workspace.dependencies]
 uuid = "~1.22.0"

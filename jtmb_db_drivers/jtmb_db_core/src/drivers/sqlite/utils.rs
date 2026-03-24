@@ -142,14 +142,14 @@ pub fn extract_integer_from_statement_checked(stmt: *mut sqlite3_stmt,col_index:
 
 }
 
-pub fn extract_integer_from_statement(stmt: *mut sqlite3_stmt,col_index: i32) -> std::io::Result<i64> {
-    #[cfg(debug_assertions)] {
-        extract_integer_from_statement_checked(stmt, col_index)
-    }
-    #[cfg(not(debug_assertions))] {
-        Ok(extract_integer_from_statement_unchecked(stmt, col_index))
-    }
-}
+// pub fn extract_integer_from_statement(stmt: *mut sqlite3_stmt,col_index: i32) -> std::io::Result<i64> {
+//     #[cfg(debug_assertions)] {
+//         extract_integer_from_statement_checked(stmt, col_index)
+//     }
+//     #[cfg(not(debug_assertions))] {
+//         Ok(extract_integer_from_statement_unchecked(stmt, col_index))
+//     }
+// }
 
 /// it is NOT SAFE to hold this beyond 'slice or sqlite3_step
 pub unsafe fn extract_blob_from_statement_checked<'slice>(stmt: *mut sqlite3_stmt,col_index: i32) -> std::io::Result<&'slice [u8]> {

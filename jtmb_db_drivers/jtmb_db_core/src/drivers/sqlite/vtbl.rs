@@ -14,6 +14,8 @@ pub(crate) static EXTRACT_TBL: [ExtractFn; 6] = [
 
 pub unsafe fn nop_extract(p:*mut libsqlite3_sys::sqlite3_stmt, c:i32, v:&mut Vec<u8>){}
 pub unsafe fn pack_int(p:*mut libsqlite3_sys::sqlite3_stmt,c:i32,v:&mut Vec<u8> ){
+        debug_assert!(p.is_null() == false);
+        
         unsafe {
         let f = libsqlite3_sys::sqlite3_column_int64(p, c);
         v.extend_from_slice(f.to_ne_bytes().as_slice());
@@ -21,13 +23,20 @@ pub unsafe fn pack_int(p:*mut libsqlite3_sys::sqlite3_stmt,c:i32,v:&mut Vec<u8> 
 
 }
 pub unsafe fn pack_float(p:*mut libsqlite3_sys::sqlite3_stmt,c:i32,v:&mut Vec<u8> ){
+    debug_assert!(p.is_null() == false);
     unsafe {
         let f = libsqlite3_sys::sqlite3_column_double(p, c);
         v.extend_from_slice(f.to_ne_bytes().as_slice());
     }
 }
 pub unsafe fn pack_text(p:*mut libsqlite3_sys::sqlite3_stmt,c:i32,v:&mut Vec<u8> ){
+    debug_assert!(p.is_null() == false);
     unsafe {
+        #[cfg(debug_assertions)] {
+            use libsqlite3_sys::SQLITE_TEXT;
+            let column_type = libsqlite3_sys::sqlite3_column_type(p, c);
+            debug_assert_eq!(column_type,SQLITE_TEXT)
+        }
         let ptr = libsqlite3_sys::sqlite3_column_text(p, c);
         debug_assert!(ptr.is_null() == false);
         let len = libsqlite3_sys::sqlite3_column_bytes(p, c);
@@ -36,6 +45,7 @@ pub unsafe fn pack_text(p:*mut libsqlite3_sys::sqlite3_stmt,c:i32,v:&mut Vec<u8>
     }
 }
 pub unsafe fn pack_blob(p:*mut libsqlite3_sys::sqlite3_stmt,c:i32,v:&mut Vec<u8> ){
+    debug_assert!(p.is_null() == false);
     unsafe {
         let ptr = libsqlite3_sys::sqlite3_column_blob(p, c);
         debug_assert!(ptr.is_null() == false);

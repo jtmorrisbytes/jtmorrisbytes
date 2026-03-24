@@ -1,18 +1,25 @@
 use std::{
-    clone, io::{BufRead, Read}, ops::DerefMut, random::random, sync::{Arc, atomic::AtomicU32, mpsc::TryRecvError}, thread::JoinHandle, time::Duration, u32
+    clone,
+    io::{BufRead, Read},
+    ops::DerefMut,
+    random::random,
+    sync::{Arc, atomic::AtomicU32, mpsc::TryRecvError},
+    thread::JoinHandle,
+    time::Duration,
+    u32,
 };
-pub mod utils;
+pub mod connection;
 pub mod types;
+pub mod utils;
 pub mod vtbl;
 pub mod worker;
-
 
 unsafe extern "C" {
     /// Manually linking the v2 close function
     pub fn sqlite3_close_v2(db: *mut sqlite3) -> std::ffi::c_int;
 }
 
-use crossbeam::{queue::ArrayQueue};
+use crossbeam::queue::ArrayQueue;
 use dashmap::DashMap;
 use libsqlite3_sys::*;
 
@@ -21,7 +28,7 @@ type WorkerId = u32;
 pub struct Driver {
     options: DriverOptions,
     workers: ArrayQueue<self::worker::Worker>,
-    connect_options: ConnectOptions,
+    connect_options: Vec<ConnectOptions>,
 }
 #[unsafe(no_mangle)]
 unsafe extern "C" fn sqlite_log_callback(
@@ -29,6 +36,7 @@ unsafe extern "C" fn sqlite_log_callback(
     err_code: i32,
     msg: *const std::ffi::c_char,
 ) {
+    // panic!("log msg called");
     let msg = unsafe { std::ffi::CStr::from_ptr(msg) }.to_string_lossy();
     eprintln!("[SQLite Log] ({}) {}", err_code, msg);
 }
@@ -49,7 +57,7 @@ impl Driver {
         unsafe {
             sqlite3_config(
                 SQLITE_CONFIG_LOG,
-                std::ptr::from_ref(&sqlite_log_callback),
+                sqlite_log_callback as unsafe extern "C" fn(*mut core::ffi::c_void, i32, *const i8),
                 std::ptr::null_mut::<std::ffi::c_void>(),
             )
         }
@@ -90,48 +98,6 @@ impl Driver {
     }
 }
 
-#[repr(transparent)]
-/// do not SYNC conns between threads, do not SHARE conns between workers only SEND them to the worker thread;
-/// it is UNSAFE to attempt to share this type between threads. as such it does NOT and WILL NOT implement clone or copy.
-/// if you abuse the deref and deref mut implementation to do something nasty, Author CANNOT GUARENTEE that it will be safe.
-/// unsafe impl SEND only allows it to be SENT to the worker thread it was meant for
-pub(crate) struct ConnectionHandle(*mut sqlite3);
-impl std::ops::Deref for ConnectionHandle {
-    type Target = *mut sqlite3;
-    fn deref(&self) -> &Self::Target {
-        &self.0
-    }
-}
-impl DerefMut for ConnectionHandle {
-    fn deref_mut(&mut self) -> &mut Self::Target {
-        &mut self.0
-    }
-}
-unsafe impl Send for ConnectionHandle {}
-// unsafe impl !Sync for ConnectionHandle{}
-
-// WARNING: DROP MUST BE CALLED BEFORE WORKER is dropped.
-// as long as connectionhandle goes out of scope when the worker exits
-// you should be fine
-
-impl Drop for ConnectionHandle {
-    fn drop(&mut self) {
-        // connection handle should never be null on drop
-        debug_assert!(self.0.is_null() == false);
-        unsafe {
-            // attempt to call interrupt to get sqlite3 to stop whatever its doing. our connection is geting closed
-            sqlite3_interrupt(self.0);
-
-            let r = sqlite3_close_v2(self.0);
-            // let r = sqlite3_close(self.0);
-            if r != SQLITE_OK {
-                eprintln!(
-                    "Call to sqlite3_close failed on implicit drop for ConnectionHandle: sqlite3_close returned: {r}"
-                )
-            }
-        }
-    }
-}
 
 pub struct DriverOptions {
     thread_mode: i32,
@@ -149,7 +115,7 @@ impl crate::DriverInitialize for self::Driver {
     type ConnectionOptions = self::ConnectOptions;
     fn driver_initialize(
         driver_options: Self::InitOptions,
-        connect_options: Self::ConnectionOptions,
+        connect_options: Vec<Self::ConnectionOptions>,
     ) -> std::io::Result<Self>
     where
         Self: Sized,
@@ -168,8 +134,8 @@ impl crate::DriverInitialize for self::Driver {
         // and drop the 0'th worker, but if you do that you have bigger problems
         let mut worker_id = 0_u32;
         let mut workers = ArrayQueue::new(driver_options.num_worker_threads as usize);
-        for _ in 0..driver_options.num_worker_threads {
-            let worker = self::worker::Worker::spawn(&connect_options)?;
+        for c in &connect_options {
+            let worker = self::worker::Worker::spawn(&c)?;
             unsafe { worker_id = worker_id.unchecked_add(1) };
             workers.push(worker).unwrap();
         }
@@ -310,41 +276,71 @@ impl Driver {
 pub fn test_reactor() -> std::io::Result<()> {
     use crate::DriverInitialize;
     // stress test, call this 20 times in a row. should not panic or error
-
-    for _ in 0..1 {
+    let mut conns = vec![];
+    for i in 0..10 {
         let connect_options = ConnectOptions {
-            url: ":memory:".to_string(),
+            url: format!("C:\\dbtest\\{i}.db"),
         };
+        conns.push(connect_options);
+    }
+
+    
         let driver_options = DriverOptions {
             allow_uris: true,
             thread_mode: SQLITE_CONFIG_SINGLETHREAD,
-            num_worker_threads: 1,
+            num_worker_threads: 10,
         };
-        let mut driver = Driver::driver_initialize(driver_options, connect_options)?;
-        for _ in 0..1 {
-            let r = driver.query(r#"SELECT 
-    42                 AS id,             -- SQLITE_INTEGER (1)
-    3.14159            AS pi_value,       -- SQLITE_FLOAT   (2)
-    'Reactor Core'     AS driver_name,    -- SQLITE_TEXT    (3)
-    NULL               AS empty_slot,     -- SQLITE_NULL    (5)
-    CAST('X' AS BLOB)  AS raw_data        -- SQLITE_BLOB    (4)"#)?;
+        let mut driver = Driver::driver_initialize(driver_options, conns)?;
+
+
+
+        for _ in 0..11 {
+            let r = driver.query(
+                r#"
+            
+BEGIN IMMEDIATE;
+
+-- 1. Wipe the current slice to force B-tree shrinkage
+DELETE FROM hydra_test WHERE worker_id = ?;
+
+-- 2. Recursive Generation + Massive Insert
+WITH RECURSIVE cnt(x) AS (
+    SELECT 1
+    UNION ALL
+    SELECT x + 1 FROM cnt WHERE x < 10000 -- Up to 10k per "Mega Burst"
+)
+INSERT INTO hydra_test (worker_id, payload)
+SELECT 
+    ?, 
+    'REACTOR_SHRAPNEL_' || x || '_' || randomblob(128) -- Random data prevents compression
+FROM cnt;
+
+COMMIT;
+
+            
+            
+            
+            "#,
+            )?;
             let s = std::thread::spawn(move || {
                 let mut schema = Vec::new();
                 while let Ok(message) = r.recv() {
                     let row = match message {
-                        WorkerResponse::Schema(s) => {schema = s; continue;},
+                        WorkerResponse::Schema(s) => {
+                            schema = s;
+                            continue;
+                        }
                         WorkerResponse::PrepareFailed(e) => {
                             eprintln!("Query Plan failed: {e}");
                             break;
-                        },
+                        }
                         WorkerResponse::Done => {
                             eprintln!("Done");
                             break;
                         }
-                        WorkerResponse::Row(row)=>{
+                        WorkerResponse::Row(row) => {
                             dbg!(row.len());
                             row
-                            
                         }
                     };
                     for b in &row {
@@ -355,28 +351,29 @@ pub fn test_reactor() -> std::io::Result<()> {
                     let len = row.len();
                     let mut cursor = std::io::Cursor::new(row);
                     while cursor.position() < len as u64 {
-
-                        let mut integer_bytes = [0_u8;std::mem::size_of::<i32>()];
+                        let mut integer_bytes = [0_u8; std::mem::size_of::<i32>()];
                         cursor.read_exact(&mut integer_bytes).unwrap();
-                        
+
                         let type_id = i32::from_ne_bytes(integer_bytes);
                         dbg!(type_id);
-                        let mut integer_bytes = [0_u8;std::mem::size_of::<u32>()];
+                        let mut integer_bytes = [0_u8; std::mem::size_of::<u32>()];
                         cursor.read_exact(&mut integer_bytes).unwrap();
-                        
+
                         let len = u32::from_ne_bytes(integer_bytes);
                         dbg!(len);
                         let len2 = len as usize;
                         let mut data_bytes = Vec::<u8>::with_capacity(10);
                         cursor.read_exact(&mut data_bytes).unwrap();
-                        
+
                         match type_id {
                             SQLITE_INTEGER => {
                                 let i = i64::from_ne_bytes(data_bytes.try_into().unwrap());
                                 dbg!(i);
                             }
                             SQLITE_FLOAT => {
-                                let f = f64::from_ne_bytes(data_bytes[0_usize..len as usize].try_into().unwrap());
+                                let f = f64::from_ne_bytes(
+                                    data_bytes[0_usize..len as usize].try_into().unwrap(),
+                                );
                                 dbg!(f);
                             }
                             SQLITE3_TEXT => {
@@ -389,26 +386,21 @@ pub fn test_reactor() -> std::io::Result<()> {
                             SQLITE_NULL => {
                                 dbg!("NULL COLUMN");
                             }
-                            _=>{
+                            _ => {
                                 dbg!(type_id);
                             }
                         }
                     }
 
                     // dbg!(type_id,len,data_bytes);
-                    
-
                 }
                 // let r = r.recv();
 
-
-
                 println!("sql thread sent {r:?}")
             });
-            s.join();
+            // s.join();
         }
+        
+        // std::thread::sleep(std::time::Duration::from_secs(2));
+        Ok(())
     }
-
-    // std::thread::sleep(std::time::Duration::from_secs(2));
-    Ok(())
-}
