@@ -1,15 +1,15 @@
 use std::{marker::PhantomData, ops::Deref};
 
-use sqlx::prelude::FromRow;
+// use sqlx::prelude::FromRow;
 use uuid::Uuid;
 
 pub mod models;
-
+pub mod connect;
+pub mod types;
 
 // where T: ParialEq
 /// the primary ID type for the entire library.
-#[derive(FromRow, PartialEq, Eq, Hash, Debug,Clone)]
-#[sqlx(transparent)]
+#[derive(PartialEq, Eq, Hash, Debug,Clone)]
 pub struct Id {
     pub value: uuid::Uuid,
     // #[sqlx(skip)]
@@ -26,40 +26,7 @@ impl Id {
 
 // enables us to use the id type in multiple databases
 
-impl<DB: sqlx::Database> sqlx::Type<DB> for Id
-where
-    uuid::Uuid: sqlx::Type<DB>,
-{
-    fn type_info() -> <DB as sqlx::Database>::TypeInfo {
-        <uuid::Uuid as sqlx::Type<DB>>::type_info()
-    }
-}
 
-impl<'q, DB: sqlx::Database> sqlx::Encode<'q, DB> for Id
-where
-    uuid::Uuid: sqlx::Encode<'q, DB>,
-{
-    fn encode_by_ref<'q>(
-        &self,
-        buf: &mut <DB as sqlx::database::HasArguments<'q>>::ArgumentBuffer,
-    ) -> sqlx::encode::IsNull {
-        <uuid::Uuid as sqlx::Encode<'q, DB>>::encode(self.value, buf)
-    }
-}
-impl<'r, DB: sqlx::Database> sqlx::Decode<DB> for Id
-where
-    uuid::Uuid: sqlx::Decode<DB>,
-{
-    fn decode<'r>(
-        value: <DB as sqlx::database::HasValueRef<'r>>::ValueRef,
-    ) -> Result<Self, sqlx::error::BoxDynError> {
-        let uuid = <uuid::Uuid as sqlx::Decode<DB>>::decode(value)?;
-        Ok(Self {
-            value: uuid,
-            // _marker: PhantomData,
-        })
-    }
-}
 
 impl std::ops::Deref for Id {
     type Target = Uuid;
@@ -93,35 +60,41 @@ pub trait GetId {
     where
         Self: Sized;
 }
-
-pub trait Entity: GetId {
-    fn primary_key(&self) -> &Id
-    where
-        Self: Sized,
-    {
-        self.id()
-    }
-    fn entity_eq(&self, other: &Self) -> bool
-    where
-        Self: Sized,
-    {
-        self.id().eq(other.id())
-    }
-}
-
 pub trait Table {
-    const TABLE_NAME: &'static str;
+    const NAME: &str;
+    // type Columns: [impl Column<Table=Self>];
+    // type PrimaryKey;
+}
+
+pub trait PrimaryKey {
+    type Table: Table;
+    type Type;
+    const NAME: &str;
+    const INDEX: usize = 0;
+    fn primary_key(&self) -> Self::Type;
 }
 
 
-impl<T> Entity for T
-where
-    T: GetId,
-{
-    fn primary_key(&self) -> &Id
-    where
-        Self: Sized,
-    {
-        self.id()
-    }
+pub trait Column {
+    const NAME: &str = "id";
+    type Table: self::Table;
+    type Type;
+}
+
+pub struct Passkeys;
+
+/// unless you want a headache. NEVER change this value
+impl Table for Passkeys {
+    const NAME: &str = "Passkeys";
+}
+
+pub struct PasskeysPrimaryID(uuid::Uuid);
+impl PrimaryKey for PasskeysPrimaryID {
+    // const NAME: &str = ;
+    type Type = uuid::Uuid;
+    type Table = self::Passkeys;
+    const NAME: &str = "id";
+    fn primary_key(&self) -> Self::Type {
+        self.0.clone()
+    }   
 }

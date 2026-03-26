@@ -1,1 +1,0 @@
-UPDATE "users" set "users"."id" = $1 where id = $1
