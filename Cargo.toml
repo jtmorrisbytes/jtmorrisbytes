@@ -1,12 +1,7 @@
-
-
-[workspace]
-members = ["app","sql","sql_proc_macros","vault","vault_ui","vault_service",
-"vault_ci","chrome_devtools_protocol",
-"chrome_devtools_protocol_parser_and_builder"
-]
-resolver="3"
-
+[package]
+name="jtmb"
+version="0.0.0"
+edition="2024"
 
 
 [profile.dev.package."*"]
@@ -14,14 +9,44 @@ opt-level = 3
 
 
 
-exclude=["sqlx"]
-resolver="3"
-[workspace.dependencies]
+[build-dependencies]
+postgres-types = { version = "0.2", features = ["derive","with-uuid-1"] }
+tokio-postgres = {version="^0.7.16",featues=["with-uuid-v1"]}
+tokio = { version = "^1.50", features = ["rt-multi-thread","macros","net","fs"] }
+rustls = "0.23.37"
+webpki-roots = "1.0.6"
+rustls-native-certs = "0.8.3"
+deadpool = "=0.12.3"
+deadpool-postgres = "=0.14.1"
+tokio-postgres-rustls = "0.13.0"
+uuid={version="1.7",features=["v7"]}
+refinery = {version="0.9.0",features=['tokio-postgres']}
+barrel = "0.7.0"
+dotenvy = "0.15.7"
+sha2 = "0.10.9"
+
+
+
+
+[dependencies]
 uuid = "~1.22.0"
 #hot-lib-reloader = "0.8.2"
 reqwest = "0.13.2"
-rocket = "0.5.1"
-#sqlx={version="^0.8",path="../sqlx_0_8_6_port"}
 tokio = { version = "1.50", features = ["full"] }
+askama = { version = "0.15.4", features = ["full"] }
+rocket = {version="0.5.1", features=["secrets","tls"]}
+#hot-lib-reloader.workspace = true
+rocket_dyn_templates = { version = "0.2.0", features = ["tera"] }
+tokio-postgres = { version = "^0.7.16", features = ["array-impls", "with-uuid-1"] }
+
+[dependencies.rocket_db_pools]
+version = "0.3.2"
+package="rocket_db_pools-community"
+#features = ["sqlx_sqlite"]
+webauthn-rs = "0.5.4"
+
+
+
+
 [profile.release]
 lto="fat"
