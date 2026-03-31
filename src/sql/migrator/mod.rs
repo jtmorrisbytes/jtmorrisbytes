@@ -2,7 +2,6 @@ use std::sync::Arc;
 
 // use barrel::Table;
 
-use crate::core::Passkeys;
 
 
 // the bring up protocol. WTF to do about this?
@@ -16,7 +15,7 @@ use crate::core::Passkeys;
 // final check pass?
 
 
-refinery::embed_migrations!("../migrations");
+// refinery::embed_migrations!("./migrations");
 
 pub fn bring_up<'client>(
     client: &'client mut tokio_postgres::Client,
@@ -26,7 +25,8 @@ pub fn bring_up<'client>(
     async move {
         // let txn = txn.await?;
         // client.con
-        migrations::runner().run_async(client).await?;
+        // migrations::runner().run_async(client).await?;
+        
         Ok(())
     }
     
@@ -36,7 +36,7 @@ pub fn bring_up<'client>(
 pub async fn it_migrates() -> Result<(), Box<dyn std::error::Error>> {
     let database_url = std::env::var("DATABASE_URL")
         .unwrap_or("postgres://postgres:postgres@localhost:5432/accounting_db".to_string());
-    let mut conn = crate::core::connect::connect(&database_url).await?;
+    let mut conn = crate::sql::connect::connect(&database_url).await?;
     let client = &mut conn.client;
     self::bring_up(client).await?;
 

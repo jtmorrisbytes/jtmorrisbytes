@@ -11,7 +11,7 @@ opt-level = 3
 
 [build-dependencies]
 postgres-types = { version = "0.2", features = ["derive","with-uuid-1"] }
-tokio-postgres = {version="^0.7.16",featues=["with-uuid-v1"]}
+tokio-postgres = {version="^0.7.16",featues=["with-uuid-v1","with-time-0_3"]}
 tokio = { version = "^1.50", features = ["rt-multi-thread","macros","net","fs"] }
 rustls = "0.23.37"
 webpki-roots = "1.0.6"
@@ -20,10 +20,11 @@ deadpool = "=0.12.3"
 deadpool-postgres = "=0.14.1"
 tokio-postgres-rustls = "0.13.0"
 uuid={version="1.7",features=["v7"]}
-refinery = {version="0.9.0",features=['tokio-postgres']}
-barrel = "0.7.0"
 dotenvy = "0.15.7"
 sha2 = "0.10.9"
+quote = "1.0.45"
+proc-macro2 = "1.0.106"
+time = "0.3.47"
 
 
 
@@ -37,7 +38,14 @@ askama = { version = "0.15.4", features = ["full"] }
 rocket = {version="0.5.1", features=["secrets","tls"]}
 #hot-lib-reloader.workspace = true
 rocket_dyn_templates = { version = "0.2.0", features = ["tera"] }
-tokio-postgres = { version = "^0.7.16", features = ["array-impls", "with-uuid-1"] }
+tokio-postgres = { version = "^0.7.16", features = ["array-impls", "with-time-0_3", "with-uuid-1"] }
+deadpool-postgres = "=0.14.1"
+rustls-native-certs = "0.8.3"
+webpki-roots = "1.0.6"
+rustls = "0.23.37"
+tokio-postgres-rustls = "0.13.0"
+deadpool = { version = "=0.12.3", features = ["rt_tokio_1"] }
+time = "0.3.47"
 
 [dependencies.rocket_db_pools]
 version = "0.3.2"
