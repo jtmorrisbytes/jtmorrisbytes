@@ -1,7 +1,7 @@
 use futures::Stream;
 pub fn login_box_fragment(challenge: webauthn_rs::prelude::RequestChallengeResponse) -> impl Stream<Item=String> {
     // if this fails no bytes will be serialized
-    let b = bitcode::serialize(&challenge).expect("failed to deserialize challenge");
+    let b = bitcode::encode(&challenge);
     let mut iter = b.into_iter();
     async_stream::stream! {
         yield "<div>".to_string();
