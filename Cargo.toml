@@ -3,55 +3,80 @@ name="jtmb"
 version="0.0.0"
 edition="2024"
 
+[lib]
+crate-type=["cdylib","rlib"]
 
 [profile.dev.package."*"]
 opt-level = 3
 
-
-
 [build-dependencies]
+sha2 = "0.10.9"
+
+[target.'cfg(not(target_arch = "wasm32"))'.build-dependencies]
 postgres-types = { version = "0.2", features = ["derive","with-uuid-1"] }
-tokio-postgres = {version="^0.7.16",featues=["with-uuid-v1","with-time-0_3"]}
+tokio-postgres = {version="^0.7.16",features=["with-uuid-1","with-time-0_3"]}
 tokio = { version = "^1.50", features = ["rt-multi-thread","macros","net","fs"] }
-rustls = "0.23.37"
-webpki-roots = "1.0.6"
-rustls-native-certs = "0.8.3"
+rustls = "=0.21.12"
+webpki-roots = "=0.25.2"
+rustls-native-certs = "=0.6.3"
 deadpool = "=0.12.3"
 deadpool-postgres = "=0.14.1"
-tokio-postgres-rustls = "0.13.0"
+tokio-postgres-rustls = "=0.10"
 uuid={version="1.7",features=["v7"]}
 dotenvy = "0.15.7"
-sha2 = "0.10.9"
 quote = "1.0.45"
 proc-macro2 = "1.0.106"
 time = "0.3.47"
 
 
-
-
 [dependencies]
 uuid = "~1.22.0"
-#hot-lib-reloader = "0.8.2"
 reqwest = "0.13.2"
+time = "0.3.47"
+bytes = "1.0"
+async-stream = "0.3.6"
+futures = "0.3.32"
+
+#wasm only deps dont use outside of browser webassembly but here to allow code to compile
+wasm-bindgen = "0.2.117"
+wasm-bindgen-futures = "0.4.67"
+web-sys = { version = "0.3", features = [
+    "CredentialsContainer",
+    "PublicKeyCredential",
+    "PublicKeyCredentialCreationOptions",
+    "PublicKeyCredentialRequestOptions",
+    "Window"
+]}
+js-sys = "0.3.94"
+tracing = "0.1.44"
+tracing-wasm = "0.2.1"
+console_error_panic_hook = "0.1.7"
+url = "2.5.8"
+bitcode = { version = "0.6.9", features = ["serde"] }
+
+
+
+[target.'cfg(not(target_arch = "wasm32"))'.dependencies]
+#hot-lib-reloader = "0.8.2"
 tokio = { version = "1.50", features = ["full"] }
-askama = { version = "0.15.4", features = ["full"] }
-rocket = {version="0.5.1", features=["secrets","tls"]}
+#askama = { version = "0.15.4", features = ["full"] }
+rocket = { version = "=0.5.1", features = ["secrets", "tls"] }
 #hot-lib-reloader.workspace = true
-rocket_dyn_templates = { version = "0.2.0", features = ["tera"] }
+#rocket_dyn_templates = { version = "0.2.0", features = ["tera"] }
 tokio-postgres = { version = "^0.7.16", features = ["array-impls", "with-time-0_3", "with-uuid-1"] }
 deadpool-postgres = "=0.14.1"
-rustls-native-certs = "0.8.3"
-webpki-roots = "1.0.6"
-rustls = "0.23.37"
-tokio-postgres-rustls = "0.13.0"
+rustls-native-certs = "=0.6.3"
+webpki-roots = "=0.25.2"
+rustls = "=0.21.12"
+tokio-postgres-rustls = "=0.10"
 deadpool = { version = "=0.12.3", features = ["rt_tokio_1"] }
-time = "0.3.47"
+tokio-util = { version = "0.7", features = ["io"] }
+webauthn-rs = {version="0.5.4",features=["danger-allow-state-serialisation"]}
+dotenvy = "0.15.7"
+rocket_db_pools={version = "0.1.0-rc.4"}
 
-[dependencies.rocket_db_pools]
-version = "0.3.2"
-package="rocket_db_pools-community"
-#features = ["sqlx_sqlite"]
-webauthn-rs = "0.5.4"
+
+
 
 
 

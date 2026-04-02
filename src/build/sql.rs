@@ -110,7 +110,8 @@ fn produce_rust_type_from_pg_type_and_udtname_as_tokenstream(pg_type: &str,udt_n
                     "integer"=> proc_macro2::TokenStream::from_str("i32").unwrap(),
                     "boolean" => proc_macro2::TokenStream::from_str("bool").unwrap(),
                     "character varying" => proc_macro2::TokenStream::from_str("String").unwrap(),
-                    "timestamp with time zone" => proc_macro2::TokenStream::from_str("time::OffsetDateTime").unwrap(),
+                    // chrono offsetdatetime or something
+                    "timestamp with time zone" => proc_macro2::TokenStream::from_str("i64").unwrap(),
                     "ARRAY"=> {
                         match udt_name {
                             "_text" => proc_macro2::TokenStream::from_str("Vec<String>").unwrap(),

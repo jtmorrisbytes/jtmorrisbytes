@@ -3,20 +3,20 @@ use std::collections::{BTreeMap, HashMap};
 use std::str::FromStr;
 
 use postgres_types::{FromSql, ToSql};
-use rustls::crypto::hash::Output;
+// use rustls::crypto::hash::Output;
 use tokio::io::AsyncWriteExt;
 // use crate::core::connect;
 use tokio_postgres::Transaction;
 
 // use crate::jtmb::sql;
-use crate::jtmb::sql::connect::SingleConnHandle;
+use crate::sql::connect::SingleConnHandle;
 
 
 
 pub fn c() -> impl Future<Output = Result<SingleConnHandle, Box<dyn std::error::Error>>> + Send {
     async move {
         let url = std::env::var("DATABASE_URL")?;
-        let conn = crate::jtmb::sql::connect::connect(&url).await?;
+        let conn = crate::sql::connect::connect(&url).await?;
         // run any migration code that may need to be performed
         Ok(conn)
     }

@@ -4,8 +4,8 @@ use tokio_postgres::Statement;
 #[path="src/build/mod.rs"]
 mod build;
 
-#[path="src/lib.rs"]
-mod jtmb;
+#[path="src/sql/mod.rs"]
+mod sql;
 #[tokio::main]
 async fn main() -> Result<(),Box<dyn std::error::Error>>{
     dotenvy::dotenv().ok();
@@ -13,7 +13,7 @@ async fn main() -> Result<(),Box<dyn std::error::Error>>{
     // database prebuild tasks
     // println!("cargo:rerun-if-changed=src/sql");
     println!("cargo:rerun-if-changed=build.rs");
-    println!("cargo:rerun-if-changed=src/build");
+    // println!("cargo:rerun-if-changed=src/build");
 
     println!("cargo:rerun-if-changed=migrations");
     let mut c = self::build::c().await?;

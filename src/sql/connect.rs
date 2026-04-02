@@ -51,12 +51,22 @@ pub fn connect<'url>(
 
 pub fn rustls_client_config() -> rustls::ClientConfig {
     let mut store = rustls::RootCertStore::empty();
-    store.extend(webpki_roots::TLS_SERVER_ROOTS.iter().cloned());
-    let native_result = rustls_native_certs::load_native_certs();
+            store.add_trust_anchors(
+           webpki_roots::TLS_SERVER_ROOTS
+            .iter()
+            .map(|ta| {
+                rustls::OwnedTrustAnchor::from_subject_spki_name_constraints(
+                    ta.subject,
+                    ta.spki,
+                    ta.name_constraints,
+                )
+            }));
+    let native_result = rustls_native_certs::load_native_certs().unwrap();
     // store.extend(native_result.certs.iter().cloned());
-    let _ = store.add_parsable_certificates(native_result.certs);
+    let _ = store.add_parsable_certificates(&native_result);
     let store = Arc::new(store);
     let config = rustls::ClientConfig::builder()
+        .with_safe_defaults()
         .with_root_certificates(store)
         .with_no_client_auth();
     config
