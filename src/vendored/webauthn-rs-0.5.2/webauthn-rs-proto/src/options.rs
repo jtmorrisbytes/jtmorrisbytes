@@ -4,7 +4,7 @@
 use base64urlsafedata::Base64UrlSafeData;
 use serde::{Deserialize, Serialize};
 use std::fmt::Display;
-use std::{collections::BTreeMap, str::FromStr};
+use std::{str::FromStr};
 
 /// Defines the User Authenticator Verification policy. This is documented
 /// <https://w3c.github.io/webauthn/#enumdef-userverificationrequirement>, and each
@@ -37,7 +37,7 @@ use std::{collections::BTreeMap, str::FromStr};
 /// > tracking of UV during registration through authentication, however preferred can cause
 /// > legitimate credentials to not prompt for UV correctly due to browser perhipheral exchange
 /// > leading Webauthn RS to deny them in what should otherwise be legitimate operations.
-#[derive(Clone, Copy, Debug, Default, Serialize, Deserialize, PartialEq, Eq, PartialOrd, Ord)]
+#[derive(Clone, Copy, Debug, Default, Serialize, Deserialize, PartialEq, Eq, PartialOrd, Ord,bitcode::Decode,bitcode::Encode)]
 #[allow(non_camel_case_types)]
 #[serde(rename_all = "lowercase")]
 pub enum UserVerificationPolicy {
@@ -64,7 +64,7 @@ pub enum UserVerificationPolicy {
 }
 
 /// Relying Party Entity
-#[derive(Debug, Serialize, Clone, Deserialize, PartialEq, Eq)]
+#[derive(Debug, Serialize, Clone, Deserialize, PartialEq, Eq,bitcode::Decode,bitcode::Encode)]
 #[serde(rename_all = "camelCase")]
 pub struct RelyingParty {
     /// The name of the relying party.
@@ -75,7 +75,7 @@ pub struct RelyingParty {
 }
 
 /// User Entity
-#[derive(Debug, Serialize, Clone, Deserialize, PartialEq, Eq)]
+#[derive(Debug, Serialize, Clone, Deserialize, PartialEq, Eq,bitcode::Decode,bitcode::Encode)]
 #[serde(rename_all = "camelCase")]
 pub struct User {
     /// The user's id in base64 form. This MUST be a unique id, and
@@ -92,7 +92,7 @@ pub struct User {
 }
 
 /// Public key cryptographic parameters
-#[derive(Debug, Serialize, Clone, Deserialize)]
+#[derive(Debug, Serialize, Clone, Deserialize,bitcode::Decode,bitcode::Encode)]
 pub struct PubKeyCredParams {
     /// The type of public-key credential.
     #[serde(rename = "type")]
@@ -102,7 +102,7 @@ pub struct PubKeyCredParams {
 }
 
 /// <https://www.w3.org/TR/webauthn/#enumdef-attestationconveyancepreference>
-#[derive(Debug, Serialize, Clone, Deserialize, Default)]
+#[derive(Debug, Serialize, Clone, Deserialize, Default,bitcode::Decode,bitcode::Encode)]
 #[serde(rename_all = "lowercase")]
 pub enum AttestationConveyancePreference {
     /// Do not request attestation.
@@ -120,7 +120,7 @@ pub enum AttestationConveyancePreference {
 }
 
 /// <https://www.w3.org/TR/webauthn/#enumdef-authenticatortransport>
-#[derive(Debug, Serialize, Clone, Deserialize, PartialEq, Eq)]
+#[derive(Debug, Serialize, Clone, Deserialize, PartialEq, Eq,bitcode::Decode,bitcode::Encode)]
 #[serde(rename_all = "lowercase")]
 #[allow(unused)]
 pub enum AuthenticatorTransport {
@@ -188,7 +188,7 @@ impl AsRef<str> for AuthenticatorTransport {
 /// The type of attestation on the credential
 ///
 /// <https://www.iana.org/assignments/webauthn/webauthn.xhtml>
-#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize, Hash)]
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize, Hash,bitcode::Decode,bitcode::Encode)]
 pub enum AttestationFormat {
     /// Packed attestation
     #[serde(rename = "packed", alias = "Packed")]
@@ -236,7 +236,7 @@ impl TryFrom<&str> for AttestationFormat {
 }
 
 /// <https://www.w3.org/TR/webauthn/#dictdef-publickeycredentialdescriptor>
-#[derive(Debug, Serialize, Clone, Deserialize, PartialEq, Eq)]
+#[derive(Debug, Serialize, Clone, Deserialize, PartialEq, Eq,bitcode::Decode,bitcode::Encode)]
 pub struct PublicKeyCredentialDescriptor {
     /// The type of credential
     #[serde(rename = "type")]
@@ -253,7 +253,7 @@ pub struct PublicKeyCredentialDescriptor {
 /// to help a user select a relevant authenticator type.
 ///
 /// <https://www.w3.org/TR/webauthn/#attachment>
-#[derive(Debug, Copy, Clone, Serialize, Deserialize, PartialEq, Eq)]
+#[derive(Debug, Copy, Clone, Serialize, Deserialize, PartialEq, Eq,bitcode::Decode,bitcode::Encode)]
 pub enum AuthenticatorAttachment {
     /// Request a device that is part of the machine aka inseperable.
     /// <https://www.w3.org/TR/webauthn/#attachment>
@@ -268,7 +268,7 @@ pub enum AuthenticatorAttachment {
 /// A hint as to the class of device that is expected to fufil this operation.
 ///
 /// <https://www.w3.org/TR/webauthn-3/#enumdef-publickeycredentialhints>
-#[derive(Debug, Serialize, Clone, Deserialize, PartialEq, Eq)]
+#[derive(Debug, Serialize, Clone, Deserialize, PartialEq, Eq,bitcode::Decode,bitcode::Encode)]
 #[serde(rename_all = "kebab-case")]
 #[allow(unused)]
 pub enum PublicKeyCredentialHints {
@@ -283,7 +283,7 @@ pub enum PublicKeyCredentialHints {
 /// The Relying Party's requirements for client-side discoverable credentials.
 ///
 /// <https://www.w3.org/TR/webauthn-2/#enumdef-residentkeyrequirement>
-#[derive(Clone, Copy, Debug, Serialize, Deserialize, PartialEq, Eq, PartialOrd, Ord)]
+#[derive(Clone, Copy, Debug, Serialize, Deserialize, PartialEq, Eq, PartialOrd, Ord,bitcode::Decode,bitcode::Encode)]
 #[serde(rename_all = "lowercase")]
 pub enum ResidentKeyRequirement {
     /// <https://www.w3.org/TR/webauthn-2/#dom-residentkeyrequirement-discouraged>
@@ -297,7 +297,7 @@ pub enum ResidentKeyRequirement {
 }
 
 /// <https://www.w3.org/TR/webauthn/#dictdef-authenticatorselectioncriteria>
-#[derive(Debug, Default, Serialize, Clone, Deserialize)]
+#[derive(Debug, Default, Serialize, Clone, Deserialize,bitcode::Decode,bitcode::Encode)]
 #[serde(rename_all = "camelCase")]
 pub struct AuthenticatorSelectionCriteria {
     /// How the authenticator should be attached to the client machine.
@@ -325,7 +325,7 @@ pub struct AuthenticatorSelectionCriteria {
 }
 
 /// A descriptor of a credential that can be used.
-#[derive(Debug, Serialize, Clone, Deserialize)]
+#[derive(Debug, Serialize, Clone, Deserialize,bitcode::Decode,bitcode::Encode)]
 pub struct AllowCredentials {
     #[serde(rename = "type")]
     /// The type of credential.
@@ -338,9 +338,23 @@ pub struct AllowCredentials {
     pub transports: Option<Vec<AuthenticatorTransport>>,
 }
 
+#[derive(bitcode::Decode,bitcode::Encode,serde::Deserialize,serde::Serialize,Debug,Clone)]
+/// Allows a Url to be transmitted over the wire as binary data without modifying url::Url itself, obtained by using from and into from url::Url
+pub struct BinaryUrl(String);
+
+impl std::convert::From<url::Url> for BinaryUrl {
+    fn from(value: url::Url) -> Self {
+        Self(value.to_string())
+    }
+}
+impl std::convert::From<BinaryUrl> for url::Url {
+    fn from(value: BinaryUrl) -> Self {
+        url::Url::parse(&value.0).expect("You really shouldnt manually construct BinaryUrl.. make sure you have a valid url to start with")
+    }
+}
 /// The data collected and hashed in the operation.
 /// <https://www.w3.org/TR/webauthn-2/#dictdef-collectedclientdata>
-#[derive(Debug, Serialize, Clone, Deserialize)]
+#[derive(Debug, Serialize, Clone, Deserialize,bitcode::Decode,bitcode::Encode)]
 pub struct CollectedClientData {
     /// The credential type
     #[serde(rename = "type")]
@@ -348,7 +362,7 @@ pub struct CollectedClientData {
     /// The challenge.
     pub challenge: Base64UrlSafeData,
     /// The rp origin as the browser understood it.
-    pub origin: url::Url,
+    pub origin: BinaryUrl,
     /// The inverse of the sameOriginWithAncestors argument value that was
     /// passed into the internal method.
     #[serde(rename = "crossOrigin", skip_serializing_if = "Option::is_none")]
@@ -356,10 +370,10 @@ pub struct CollectedClientData {
     /// tokenBinding.
     #[serde(rename = "tokenBinding")]
     pub token_binding: Option<TokenBinding>,
-    /// This struct be extended, so it's important to be tolerant of unknown
-    /// keys.
-    #[serde(flatten)]
-    pub unknown_keys: BTreeMap<String, serde_json::value::Value>,
+    // This struct be extended, so it's important to be tolerant of unknown
+    //  keys.
+    // #[serde(flatten)]
+    // pub unknown_keys: BTreeMap<String, serde_json::value::Value>,
 }
 
 /*
@@ -374,7 +388,7 @@ impl TryFrom<&[u8]> for CollectedClientData {
 */
 
 /// Token binding
-#[derive(Debug, Clone, Deserialize, Serialize)]
+#[derive(Debug, Clone, Deserialize, Serialize,bitcode::Decode,bitcode::Encode)]
 pub struct TokenBinding {
     /// status
     pub status: String,

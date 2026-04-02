@@ -11,7 +11,7 @@ use crate::options::*;
 use crate::BASE64_ENGINE;
 
 /// <https://w3c.github.io/webauthn/#dictionary-makecredentialoptions>
-#[derive(Debug, Serialize, Clone, Deserialize)]
+#[derive(Debug, Serialize, Clone, Deserialize, bitcode::Decode,bitcode::Encode)]
 #[serde(rename_all = "camelCase")]
 pub struct PublicKeyCredentialCreationOptions {
     /// The relying party
@@ -56,7 +56,7 @@ pub struct PublicKeyCredentialCreationOptions {
 /// for handling. This is meant to be opaque, that is, you should not need
 /// to inspect or alter the content of the struct - you should serialise it
 /// and transmit it to the client only.
-#[derive(Debug, Serialize, Clone, Deserialize)]
+#[derive(Debug, Serialize, Clone, Deserialize, bitcode::Decode,bitcode::Encode)]
 #[serde(rename_all = "camelCase")]
 pub struct CreationChallengeResponse {
     /// The options.
@@ -122,7 +122,7 @@ impl From<CreationChallengeResponse> for web_sys::CredentialCreationOptions {
 }
 
 /// <https://w3c.github.io/webauthn/#authenticatorattestationresponse>
-#[derive(Debug, Serialize, Clone, Deserialize)]
+#[derive(Debug, Serialize, Clone, Deserialize, bitcode::Decode,bitcode::Encode)]
 pub struct AuthenticatorAttestationResponseRaw {
     /// <https://w3c.github.io/webauthn/#dom-authenticatorattestationresponse-attestationobject>
     #[serde(rename = "attestationObject")]
@@ -144,7 +144,7 @@ pub struct AuthenticatorAttestationResponseRaw {
 /// You should not need to handle the inner content of this structure - you should
 /// provide this to the correctly handling function of Webauthn only.
 /// <https://w3c.github.io/webauthn/#iface-pkcredential>
-#[derive(Debug, Clone, Deserialize, Serialize)]
+#[derive(Debug, Clone, Deserialize, Serialize, bitcode::Decode,bitcode::Encode)]
 pub struct RegisterPublicKeyCredential {
     /// The id of the PublicKey credential, likely in base64.
     ///

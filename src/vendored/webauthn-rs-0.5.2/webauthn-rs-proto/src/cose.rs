@@ -5,7 +5,7 @@ use serde::{Deserialize, Serialize};
 /// A COSE signature algorithm, indicating the type of key and hash type
 /// that should be used. You shouldn't need to alter or use this value.
 #[allow(non_camel_case_types)]
-#[derive(Copy, Clone, Debug, Serialize, Deserialize, PartialEq, Eq)]
+#[derive(Copy, Clone, Debug, Serialize, Deserialize, PartialEq, Eq, bitcode::Decode,bitcode::Encode)]
 #[repr(i32)]
 pub enum COSEAlgorithm {
     /// Identifies this key as ECDSA (recommended SECP256R1) with SHA256 hashing

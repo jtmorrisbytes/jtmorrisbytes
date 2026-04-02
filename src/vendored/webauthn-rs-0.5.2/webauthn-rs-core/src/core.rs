@@ -486,7 +486,7 @@ impl WebauthnCore {
             Self::origins_match(
                 self.allow_subdomains_origin,
                 self.allow_any_port,
-                &data.client_data_json.origin,
+                &data.client_data_json.origin.clone().into(),
                 origin,
             )
         }) {
@@ -811,7 +811,7 @@ impl WebauthnCore {
             Self::origins_match(
                 self.allow_subdomains_origin,
                 self.allow_any_port,
-                &c.origin,
+                &c.origin.clone().into(),
                 origin,
             )
         }) {

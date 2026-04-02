@@ -120,3 +120,6 @@ tungstenite = { version = "^0.24.0", default-features = false, features = [
 ] }
 url = "2"
 uuid = "^1.1.2"
+
+# jordan morris added this because he wants binary encoding
+bitcode = "0.6.9"
