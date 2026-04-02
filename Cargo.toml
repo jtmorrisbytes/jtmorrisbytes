@@ -71,7 +71,9 @@ rustls = "=0.21.12"
 tokio-postgres-rustls = "=0.10"
 deadpool = { version = "=0.12.3", features = ["rt_tokio_1"] }
 tokio-util = { version = "0.7", features = ["io"] }
-webauthn-rs = {version="0.5.4",features=["danger-allow-state-serialisation"]}
+# I MUST lock this crate to 0.5.2 in order to support binary ser/deserialization because of spec
+webauthn-rs = {version="=0.5.2",features=["danger-allow-state-serialisation"]}
+# I MUST lock this crate to 0.5.2 in order to support binary ser/deserialization because of spec
 dotenvy = "0.15.7"
 rocket_db_pools={version = "0.1.0-rc.4"}
 
@@ -83,3 +85,11 @@ rocket_db_pools={version = "0.1.0-rc.4"}
 
 [profile.release]
 lto="fat"
+
+
+# IM SO MAD. webauthn spec'd to use json but I want binary caps. going to manually stuff bitcode into this proto crate..
+[patch.crates-io]
+webauthn-rs = { path = "src/vendored/webauthn-rs-0.5.2/webauthn-rs" }
+webauthn-rs-proto={path="src/vendored/webauthn-rs-0.5.2/webauthn-rs-proto"}
+webauthn-rs-core = { path = "src/vendored/webauthn-rs-0.5.2/webauthn-rs-core" }
+base64urlsafedata = { path = "src/vendored/webauthn-rs-0.5.2/base64urlsafedata" }
