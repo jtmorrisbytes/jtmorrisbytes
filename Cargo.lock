@@ -202,6 +202,7 @@ name = "base64urlsafedata"
 version = "0.5.2"
 dependencies = [
  "base64 0.21.7",
+ "bitcode",
  "pastey",
  "serde",
 ]
@@ -1409,6 +1410,7 @@ dependencies = [
  "deadpool-postgres",
  "dotenvy",
  "futures",
+ "getrandom 0.2.17",
  "js-sys",
  "postgres-types",
  "proc-macro2",
@@ -1432,6 +1434,7 @@ dependencies = [
  "wasm-bindgen-futures",
  "web-sys",
  "webauthn-rs",
+ "webauthn-rs-proto",
  "webpki-roots",
 ]
 
@@ -2547,6 +2550,17 @@ dependencies = [
 ]
 
 [[package]]
+name = "serde-wasm-bindgen"
+version = "0.6.5"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "8302e169f0eddcc139c70f139d19d6467353af16f9fce27e8c30158036a1e16b"
+dependencies = [
+ "js-sys",
+ "serde",
+ "wasm-bindgen",
+]
+
+[[package]]
 name = "serde_cbor_2"
 version = "0.12.0-dev"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -3381,6 +3395,8 @@ dependencies = [
  "cfg-if",
  "once_cell",
  "rustversion",
+ "serde",
+ "serde_json",
  "wasm-bindgen-macro",
  "wasm-bindgen-shared",
 ]
@@ -3536,9 +3552,14 @@ version = "0.5.2"
 dependencies = [
  "base64 0.21.7",
  "base64urlsafedata",
+ "bitcode",
+ "js-sys",
  "serde",
+ "serde-wasm-bindgen",
  "serde_json",
  "url",
+ "wasm-bindgen",
+ "web-sys",
 ]
 
 [[package]]

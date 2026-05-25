@@ -18,3 +18,5 @@ url="postgres://postgres:postgres@localhost:5432/accounting_db"
 [debug]
 secret_key="6Zoa8SoaMlN++toh1BFO7rfEvAzon3KeX6szC+hUEhk="
 
+[release]
+secret_key="o7Dd2G8Grfn4mfRzArIbWst/R5mrQqAfWzOd9/aBm1U="

@@ -41,11 +41,27 @@ futures = "0.3.32"
 wasm-bindgen = "0.2.117"
 wasm-bindgen-futures = "0.4.67"
 web-sys = { version = "0.3", features = [
+    "Event",
+    "HtmlElement",
+    "HtmlInputElement",
     "CredentialsContainer",
     "PublicKeyCredential",
     "PublicKeyCredentialCreationOptions",
     "PublicKeyCredentialRequestOptions",
-    "Window"
+    "CredentialRequestOptions",
+    "Credential",
+    "AuthenticatorResponse",
+    "AuthenticatorAssertionResponse", # Specifically for .get() results
+    "Navigator",
+    "Document",
+    "Element",
+    "Window",
+    "AbortController",
+    "AbortSignal",
+    "AuthenticatorSelectionCriteria", # This gives you the selection struct
+    "AuthenticatorAttachment",
+    "UserVerificationRequirement",
+    "ResidentKeyRequirement",
 ]}
 js-sys = "0.3.94"
 tracing = "0.1.44"
@@ -78,8 +94,11 @@ dotenvy = "0.15.7"
 rocket_db_pools={version = "0.1.0-rc.4"}
 
 
-
-
+[target.'cfg(target_arch="wasm32")'.dependencies]
+#webauthn-rs = {version="=0.5.2",default-features=false,features=["danger-allow-state-serialisation"]}
+getrandom={version="*",features=["js"]}
+uuid={version="*",features=["v7","js"]}
+webauthn-rs-proto={version="=0.5.2",features=["wasm"]}
 
 
 

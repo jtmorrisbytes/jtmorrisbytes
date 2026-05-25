@@ -18,9 +18,13 @@ pub async fn render_login_page(cookie_jar: &CookieJar<'_>) -> crate::rockets::Ht
         yield meta_charset("utf-8");
         yield bootstrap_js_async();
         yield bootstrap_css_preload();
-        r#"</head><body>"#;
+        // preload the webassembly to decrease tti (time to interactive)
+        yield r#"<link rel="preload" href="/public/static/wasm/passkeys/passkeys_bg.wasm" as="fetch" type="application/wasm" crossorigin>"#.to_string();
+        yield r#"</head><body>"#.to_string();
+        let challenge = bitcode::encode(&challenge);
+        dbg!(&challenge,&challenge.len());
         
-        for await txt in crate::templates::authentication::login_box_fragment(challenge) {
+        for await txt in crate::templates::authentication::login_box_fragment(&challenge) {
             yield txt.to_string();
         }
         yield r#"</body></html>"#.to_string();

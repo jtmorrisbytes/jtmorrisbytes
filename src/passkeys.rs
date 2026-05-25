@@ -3,13 +3,7 @@
 use std::str::FromStr;
 
 
-// the serde serilizer is finicky with bitcode
-#[repr(transparent)]
-// #[derive(Debug,bitcode::Encode,bitcode::Decode)]
-pub struct PasskeyAuthentication(pub webauthn_rs::prelude::PasskeyAuthentication);
-
-
-
+#[cfg(not(target_arch="wasm32"))]
 pub fn build_webauthn_instance() -> webauthn_rs::Webauthn {
     // this will always be a valid url
     let url = unsafe {url::Url::from_str("https://jt-morris.com").unwrap_unchecked()};
@@ -21,7 +15,7 @@ pub fn bytes_to_hex_cookie_safe(b: &[u8]) -> String {
      b.iter().map(|b| format!("{:02x}", b)).collect()
 }
 
-
+#[cfg(not(target_arch="wasm32"))]
 pub fn serialize_passkey_auth_state_as_hex_encoded_binary(auth_state: &webauthn_rs::prelude::PasskeyAuthentication) -> String {
     // serialize to bytes
     let b = bitcode::serialize(auth_state).expect("Serialization failed. Should always succeed?");
